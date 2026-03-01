@@ -1,16 +1,37 @@
 # Definitions de macros
 
-CXX     = g++
+CXX      = g++
 CXXFLAGS = -g -Wall -std=c++11
-CXXFILES = prog.cc calendrier.cc diff.cc
-OFILES = $(CXXFILES : .cc= .o)
+CXXFILES = project.cc game.cc brick.cc ball.cc paddle.cc message.cc tools.cc
+OFILES   = $(CXXFILES:.cc=.o)
 
 # Definition de la premiere regle
 
-prog: $(OFILES)
+project.o : project.cc project.h game.h
+	$(CXX) $(CXXFLAGS) -c project.cc -o project.o
+
+game.o : game.cc game.h message.h brick.h ball.h paddle.h
+	$(CXX) $(CXXFLAGS) -c game.cc -o game.o
+
+brick.o : brick.cc brick.h message.h
+	$(CXX) $(CXXFLAGS) -c brick.cc -o brick.o
+
+ball.o : ball.cc ball.h message.h
+	$(CXX) $(CXXFLAGS) -c ball.cc -o ball.o
+
+paddle.o : paddle.cc paddle.h message.h
+	$(CXX) $(CXXFLAGS) -c paddle.cc -o paddle.o
+
+message.o : message.cc message.h
+	$(CXX) $(CXXFLAGS) -c message.cc -o message.o
+
+tools.o : tools.cc tools.h
+	$(CXX) $(CXXFLAGS) -c tools.cc -o tools.o
+
+project : $(OFILES)
 	$(CXX) $(OFILES) -o prog
 
-game
+
 # Definitions de cibles particulieres
 
 depend:
