@@ -45,3 +45,6 @@ depend:
 clean:
 	@echo " *** EFFACE MODULES OBJET ET EXECUTABLE ***"
 	@/bin/rm -f *.o *.x *.cc~ *.h~ prog
+
+
+	
