@@ -3,7 +3,5 @@ int deux;
 
 
 int main(){
-
-
     return 0;
 }
