@@ -47,4 +47,10 @@ clean:
 	@/bin/rm -f *.o *.x *.cc~ *.h~ prog
 
 
-	
+	project.o: project.cc
+game.o: game.cc
+brick.o: brick.cc
+ball.o: ball.cc
+paddle.o: paddle.cc
+message.o: message.cc
+tools.o: tools.cc
