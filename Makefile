@@ -2,7 +2,7 @@
 
 CXX     = g++
 CXXFLAGS = -g -Wall -std=c++11
-CXXFILES = prog.cc calendrier.cc difference.cc
+CXXFILES = prog.cc calendrier.cc diff.cc
 OFILES = $(CXXFILES : .cc= .o)
 
 # Definition de la premiere regle
@@ -10,6 +10,7 @@ OFILES = $(CXXFILES : .cc= .o)
 prog: $(OFILES)
 	$(CXX) $(OFILES) -o prog
 
+game
 # Definitions de cibles particulieres
 
 depend:
@@ -23,11 +24,3 @@ depend:
 clean:
 	@echo " *** EFFACE MODULES OBJET ET EXECUTABLE ***"
 	@/bin/rm -f *.o *.x *.cc~ *.h~ prog
-
-#
-# -- Regles de dependances generees automatiquement
-#
-# DO NOT DELETE THIS LINE
-prog.o: prog.cc calendrier.h difference.h
-calendrier.o: calendrier.cc calendrier.h
-difference.o: difference.cc calendrier.h difference.h
