@@ -7,7 +7,9 @@ OFILES   = $(CXXFILES:.cc=.o)
 
 # Definition de la premiere regle
 
-project.o : project.cc project.h game.h
+all: project
+
+project.o : project.cc game.h
 	$(CXX) $(CXXFLAGS) -c project.cc -o project.o
 
 game.o : game.cc game.h message.h brick.h ball.h paddle.h
@@ -47,10 +49,11 @@ clean:
 	@/bin/rm -f *.o *.x *.cc~ *.h~ prog
 
 
-	project.o: project.cc
-game.o: game.cc
-brick.o: brick.cc
-ball.o: ball.cc
-paddle.o: paddle.cc
-message.o: message.cc
-tools.o: tools.cc
+
+project.o: project.cc game.h
+game.o: game.cc game.h message.h brick.h ball.h
+brick.o: brick.cc brick.h message.h
+ball.o: ball.cc ball.h message.h
+paddle.o: paddle.cc paddle.h message.h
+message.o: message.cc message.h
+tools.o: tools.cc tools.h

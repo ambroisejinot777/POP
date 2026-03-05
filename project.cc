@@ -1,10 +1,11 @@
 #include <iostream> 
+#include "game.h"
 
 
 
 int main(){
 
-    int deux;
+
 
     return 0;
 }
