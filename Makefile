@@ -31,7 +31,7 @@ tools.o : tools.cc tools.h
 	$(CXX) $(CXXFLAGS) -c tools.cc -o tools.o
 
 project : $(OFILES)
-	$(CXX) $(OFILES) -o prog
+	$(CXX) $(OFILES) -o project
 
 
 # Definitions de cibles particulieres
