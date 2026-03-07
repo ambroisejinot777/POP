@@ -10,6 +10,5 @@ struct Game_data{
     int lives;
 };
 
-typedef vector<Bricks_data> Bricks_list;
+void read_file(string file);
 
-Game_data read_file(string file);

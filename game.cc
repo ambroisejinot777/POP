@@ -11,7 +11,7 @@
 
 
 
-Game_data read_file(string file_name){
+void read_file(string file_name){
 
     ifstream file(file_name);
     Game_data game_data;
@@ -33,15 +33,15 @@ Game_data read_file(string file_name){
 
         while(data >> value){
 
-            if(line_counter == 1){
-                game_data.score = value;
-            }
-            else if(line_counter == 2){
-                game_data.lives = value;
-            }
-            else if (line_counter == 3){
-                game_data.paddle.x = value;
-            }
+            // if(line_counter == 1){
+            //     game_data.score = value;
+            // }
+            // else if(line_counter == 2){
+            //     game_data.lives = value;
+            // }
+            // else if (line_counter == 3){
+            //     game_data.paddle.x = value;
+            // }
 
         }
     }
@@ -49,5 +49,4 @@ Game_data read_file(string file_name){
     file.close();
 
 
-    return ;
 }
