@@ -49,11 +49,11 @@ clean:
 	@/bin/rm -f *.o *.x *.cc~ *.h~ project
 
 
-
+# DO NOT DELETE THIS LINE -- make depend depends on it.
 project.o: project.cc game.h
 game.o: game.cc game.h message.h brick.h ball.h
 brick.o: brick.cc brick.h message.h
-ball.o: ball.cc ball.h message.h
+ball.o: ball.cc ball.h message.h tools.h
 paddle.o: paddle.cc paddle.h message.h
 message.o: message.cc message.h
 tools.o: tools.cc tools.h
