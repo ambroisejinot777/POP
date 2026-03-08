@@ -5,10 +5,8 @@ using namespace std;
 
 
 
-struct Game_data{
-    int score;
-    int lives;
-};
+
+// FUNCTIONS //
 
 void read_file(string file);
 

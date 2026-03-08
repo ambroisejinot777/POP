@@ -13,6 +13,8 @@ int main(int argc, char* argv[])
     }
     else file_name = argv[1];
 
+
+    read_file(file_name);
     
 
     return 0;
