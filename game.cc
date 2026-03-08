@@ -15,21 +15,24 @@ void read_file(string file_name){
 
     ifstream file(file_name);
 
-    if (file.fail())
+    if (file.fail()){
         cout << "Cannot open the file: " << file_name << endl;
+        return;
+    }
     
     string line;
     int line_counter(0);
+    int nb_ball;
+    int nb_brick;
 
    
 
     while(getline(file >> ws, line)){
 
         istringstream data(line);
-        int nb_ball;
-        int nb_brick;
 
-        if (line[0] == '#'){
+
+        if (line.empty() or line[0] == '#'){
             continue;
         }
         line_counter++;
