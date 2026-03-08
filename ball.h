@@ -12,19 +12,49 @@ class Point {
         {}
         Point (double x, double y, double r, double dx, double dy)
         {
-          center_x = x;
-          center_y = y;
-          radius = r;
+          if (x >= 0 && x <= 1) {
+            center_x = x;
+          }
+          else {
+            cout << message::ball_outside(x, y) << endl;
+          }
+          if (y >= 0 && y <= arena_size) {
+            center_y = y;
+          }
+          else {
+            cout << message::ball_outside(x, y) << endl;
+          }
+          if (r == 1.)  {
+            radius = r;
+          }
+          else {
+            cout << "Rayon de balle mauvais" << endl;
+          }
           delta_x = dx;  
           delta_y = dy;
         }
         Point (double x=0.0, double y=0.0, double r=0.0, double dx=0.0, double dy=0.0)
         {
-          center_x = x;
-          center_y = y;
-          radius = r;
-          delta_x = dx;  
-          delta_y = dy;
+            if (x >= 0 && x <= 1) {
+                center_x = x;
+            }
+            else {
+                cout << message::ball_outside(x, y) << endl;
+            }
+            if (y >= 0 && y <= arena_size) {
+                center_y = y;
+            }
+            else {
+                cout << message::ball_outside(x, y) << endl;
+            }
+            if (r == 1.)  {
+                radius = r;
+            }
+            else {
+                cout << "Rayon de balle mauvais" << endl;
+            }
+            delta_x = dx;  
+            delta_y = dy;
         }
         Point(Point const& nouv_point)
         : center_x(nouv_point.center_x), center_y(nouv_point.center_y), radius(nouv_point.radius), delta_x(nouv_point.delta_x), delta_y(nouv_point.delta_y)
@@ -60,8 +90,7 @@ class Ball {
         bool Check_collision_paddle_ball();
 
     private :
-        Point associated_point;
-        
+        Point associated_point;       
 };
 
 
