@@ -5,11 +5,11 @@
 
 using namespace std;
 
-void Change_position() {
+void Ball::change_position() {
     associated_point.center_x += associated_point.delta_x;
     associated_point.center_y += associated_point.delta_y;
 }
-void Change_delta() {
+void change_delta() {
     switch (collision_type()) {
         case 1: // collision with a vertical wall
             vertical_wall_collision();
@@ -31,8 +31,8 @@ void Change_delta() {
     }
 }
 
-bool Check_invalid_delta();
-bool Check_ball_outside();
-bool Check_collision_balls();
-bool Check_collision_ball_brick();
-bool Check_collision_paddle_ball();
+bool Ball::check_invalid_delta();
+bool Ball::check_ball_outside();
+bool Ball::check_collision_balls();
+bool Ball::check_collision_ball_brick();
+bool Ball::check_collision_paddle_ball();
