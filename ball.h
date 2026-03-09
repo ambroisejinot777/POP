@@ -2,6 +2,7 @@
 #define BALL_H
 
 #include <iostream>
+#include "constants.h"
 
 using namespace std;
 
@@ -12,7 +13,7 @@ class Point {
         {}
         Point (double x, double y, double r, double dx, double dy)
         {
-          if (x >= 0 && x <= 1) {
+          if (x >= 0 && x <= arena_size) {
             center_x = x;
           }
           else {
@@ -34,6 +35,7 @@ class Point {
           delta_y = dy;
         }
         Point (double x=0.0, double y=0.0, double r=0.0, double dx=0.0, double dy=0.0)
+        : center_x(x), center_y(y), radius(r), delta_x(dx), delta_y(dy)
         {
             if (x >= 0 && x <= 1) {
                 center_x = x;
@@ -56,11 +58,11 @@ class Point {
             delta_x = dx;  
             delta_y = dy;
         }
-        Point(Point const& nouv_point)
-        : center_x(nouv_point.center_x), center_y(nouv_point.center_y), radius(nouv_point.radius), delta_x(nouv_point.delta_x), delta_y(nouv_point.delta_y)
+        Point(Point const& old_point)
+        : center_x(old_point.center_x), center_y(old_point.center_y), radius(old_point.radius), delta_x(old_point.delta_x), delta_y(old_point.delta_y)
         {}
-        void Change_position();
-        void Change_delta();
+        void change_position();
+        void change_delta();
 
     private :
         double center_x;
@@ -80,14 +82,14 @@ class Ball {
         Ball (double x=0.0, double y=0.0, double r=0.0, double dx=0.0, double dy=0.0)
         : associated_point(x, y, r, dx, dy)
         {}
-        Ball(Ball const& nouv_ball)
-        : associated_point(nouv_ball.associated_point)
+        Ball(Ball const& old_ball)
+        : associated_point(old_ball.associated_point)
         {}
-        bool Check_invalid_delta();
-        bool Check_ball_outside();
-        bool Check_collision_balls();
-        bool Check_collision_ball_brick();
-        bool Check_collision_paddle_ball();
+        bool check_invalid_delta();
+        bool check_ball_outside();
+        bool check_collision_balls();
+        bool check_collision_ball_brick();
+        bool check_collision_paddle_ball();
 
     private :
         Point associated_point;       
