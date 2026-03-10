@@ -65,11 +65,10 @@ class Point {
         void change_delta();
 
     private :
-        double center_x;
-        double center_y;
-        double radius;
-        double delta_x; 
-        double delta_y;
+        Point Ball_center;
+        Point Ball_delta;
+        double Ball_radius;
+        
 };
 class Ball {
     public :
@@ -92,7 +91,9 @@ class Ball {
         bool check_collision_paddle_ball();
 
     private :
-        Point associated_point;       
+        Point Ball_center;
+        Point Ball_delta;
+        double Ball_radius;       
 };
 
 

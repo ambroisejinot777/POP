@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void Ball::change_position() {
+void Point::change_position() {
     associated_point.center_x += associated_point.delta_x;
     associated_point.center_y += associated_point.delta_y;
 }
