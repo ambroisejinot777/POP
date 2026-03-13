@@ -14,11 +14,11 @@ Point::Point(Point const& old_point)
 
 // SQUARE
 
-Square::Square (double x=0.0, double y=0.0, double w=0.0, double h=0.0)
-    : square_center(x, y), width(w), height(h){} 
+Square::Square (double x=0.0, double y=0.0, double w=0.0)
+    : square_center(x, y), width(w){} 
 
 Square::Square (Square const& old_square)
-    : square_center(old_square.square_center), width(old_square.width), height(old_square.height){}
+    : square_center(old_square.square_center), width(old_square.width){}
 
 // CIRCLE
 
@@ -29,7 +29,9 @@ Circle::Circle (Circle const& old_circle)
     :circle_center(old_circle.circle_center), radius(old_circle.radius){}
 
 
+// UTILITY FUNCTIONS
+
 void error(string message){
     cout << message << endl;
-    exit(0);
+    exit(1);
 }
