@@ -28,8 +28,8 @@ enum Reading_state{
 
 // FUNCTIONS //
 
-void start_project(string file, Brick_list& brick_list, Ball_list& ball_list);
-int check_score(istringstream data);
-int check_lives(istringstream data);
+void start_project(string file_name, Brick_list& brick_list, Ball_list& ball_list, int& score, int& lives);
+int check_score(istringstream& data);
+int check_lives(istringstream& data);
 
 #endif

@@ -1,6 +1,6 @@
 #include "game.h"
 
-void start_project(string file_name)
+void start_project(string file_name, Brick_list& brick_list, Ball_list& ball_list, int& score, int& lives)
 {
 
     ifstream file(file_name);
@@ -33,14 +33,14 @@ void start_project(string file_name)
 
         case SCORE:
         {
-            int score = check_score(data);
+            score = check_score(data);
             reading_state = LIVES;
             break;
         }
 
         case LIVES:
         {
-            int lives = check_lives(data);
+            lives = check_lives(data);
             reading_state = PADDLE;
             break;
         }
@@ -69,12 +69,12 @@ void start_project(string file_name)
             data >> type >> brick_x >> brick_y >> brick_width >> left_bracket >> hit_points >> right_bracket;
 
             Brick brick(brick_x, brick_y, brick_width, hit_points, type);
+            brick_list.push_back(brick);
 
-            if (brick_counter >= nb_brick)
+            if (++brick_counter >= nb_brick)
             {
                 reading_state = NB_BALL;
             }
-            ++brick_counter;
             break;
         }
 
@@ -91,12 +91,12 @@ void start_project(string file_name)
             data >> ball_x >> ball_y >> ball_radius >> ball_dx >> ball_dy;
 
             Ball ball(ball_x, ball_y, ball_radius, ball_dx, ball_dy);
+            ball_list.push_back(ball);
 
-            if (ball_counter >= nb_ball)
+            if (++ball_counter >= nb_ball)
             {
                 reading_state = FINISHED;
             }
-            ++ball_counter;
             break;
         }
 
@@ -111,7 +111,7 @@ void start_project(string file_name)
     file.close();
 }
 
-int check_score(istringstream data)
+int check_score(istringstream& data)
 {
     int score;
     data >> score;
@@ -120,7 +120,7 @@ int check_score(istringstream data)
     return score;
 }
 
-int check_lives(istringstream data)
+int check_lives(istringstream& data)
 {
     int lives;
     data >> lives;

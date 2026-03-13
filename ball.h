@@ -24,17 +24,13 @@ private:
     Point delta;
 };
 
-<<<<<<< HEAD
+
 void check_ball_x_axis(double x, double y, double r);
 void check_ball_y_axis(double x, double y, double r);
 void check_ball_delta(double dx, double dy);
-=======
+
 typedef vector<Ball> Ball_list;
 
 
-void check_x_axis(double x, double y, double r);
-void check_y_axis(double x, double y, double r);
-void check_delta(double dx, double dy);
->>>>>>> 23f0d16 (cleaned code)
 
 #endif
