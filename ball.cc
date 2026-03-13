@@ -22,7 +22,7 @@ Ball::Ball(double x = 0.0, double y = 0.0, double r = 0.0, double dx = 0.0, doub
         error(ball_outside(x, y));
     }
 
-    if (sqrt(dx * dx + dy * dy) > (delta_norm_max))
+    if ((sqrt(dx * dx + dy * dy)) > (delta_norm_max))
     {
         error(invalid_delta(dx, dy));
     }
