@@ -70,7 +70,7 @@ double Circle::get_radius() const
 
 void error(string message)
 {
-    cout << message << endl;
+    cout << message;
     exit(1);
 }
 
