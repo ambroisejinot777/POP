@@ -9,15 +9,8 @@ using namespace message;
 Paddle::Paddle(double x = 0.0, double y = 0.0, double r = 0.0)
     : paddle_center(x, y), radius(r)
 {
-        if ((y > 0) or ((y + r) <= 0))
-        {
-                error(paddle_outside(x, y));
-        }
-
-        if (((x - sqrt(r * r - y * y)) < 0) or ((x + sqrt(r * r - y * y)) > arena_size))
-        {
-                error(paddle_outside(x, y));
-        }
+        check_y_axis(x, y, r);
+        check_x_axis(x, y, r);
 }
 
 Paddle::Paddle(Paddle const &old_paddle)
@@ -26,3 +19,19 @@ Paddle::Paddle(Paddle const &old_paddle)
 }
 
 // FONCTIONS DE VERIFICATION DE SAISIE POUR PADDLE
+
+void check_y_axis(double x, double y, double r)
+{
+        if ((y > 0) or ((y + r) <= 0))
+        {
+                error(paddle_outside(x, y));
+        }
+}
+
+void check_x_axis(double x, double y, double r)
+{
+        if (((x - sqrt(r * r - y * y)) < 0) or ((x + sqrt(r * r - y * y)) > arena_size))
+        {
+                error(paddle_outside(x, y));
+        }
+}
