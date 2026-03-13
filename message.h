@@ -14,7 +14,7 @@ namespace message
 // score must be >= 0
 std::string invalid_score(int score);
 // lives must be >= 0
-std::string invalid_lives(int score);
+std::string invalid_lives(int lives);
 
 // contained in the arena
 std::string brick_outside(double x, double y);

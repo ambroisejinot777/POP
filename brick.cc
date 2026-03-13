@@ -5,7 +5,7 @@
 Brick::Brick(double x = 0.0, double y = 0.0, double width = 0.0, int hit_points = 0, int type = 0)
     : square(x, y, width), hit_points(hit_points), type(type)
 {
-    check_brick_position(x, y);
+    check_brick_position(x, y, width);
     check_brick_size(width);
     check_brick_hit_points(hit_points);
     check_brick_type(type);
@@ -16,9 +16,9 @@ Brick::Brick(Brick const &old_brick)
 
 // CHECKING FUNCTIONS
 
-void check_brick_position(double x, double y)
+void check_brick_position(double x, double y, double width)
 {
-    if ((x + width / 2 > arena_size) or
+    if ((x + width/2 > arena_size) or
         (x - width / 2 < 0) or
         (y + width / 2 > arena_size) or
         (y - width / 2 < 0))

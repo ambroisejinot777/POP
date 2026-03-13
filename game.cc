@@ -1,6 +1,5 @@
 #include "game.h"
 
-
 void start_project(string file_name)
 {
 
@@ -33,71 +32,99 @@ void start_project(string file_name)
         {
 
         case SCORE:
-            int score;
-            data >> score;
-            cout << "score: " << score << endl;
+        {
+            int score = check_score(data);
             reading_state = LIVES;
             break;
+        }
 
         case LIVES:
-            int nb_lives;
-            data >> nb_lives;
-            cout << "lives: " << nb_lives << endl;
-            cout << endl;
+        {
+            int lives = check_lives(data);
             reading_state = PADDLE;
             break;
+        }
 
         case PADDLE:
+        {
             double paddle_x, paddle_y, paddle_radius;
             data >> paddle_x >> paddle_y >> paddle_radius;
-            cout << "Paddle x position: " << paddle_x << ", Paddle y position: " << paddle_y << ", Paddle radius: " << paddle_radius << endl;
-            cout << endl;
+            Paddle paddle(paddle_x, paddle_y, paddle_radius);
             reading_state = NB_BRICK;
             break;
+        }
 
         case NB_BRICK:
+        {
             data >> nb_brick;
-            cout << "There is " << nb_brick << " bricks:" << endl;
-            cout << endl;
             reading_state = BRICKS;
             break;
+        }
 
         case BRICKS:
+        {
             int type, hit_points;
-            double brick_x, brick_y, brick_size;
+            double brick_x, brick_y, brick_width;
             char left_bracket, right_bracket;
-            data >> type >> brick_x >> brick_y >> brick_size >> left_bracket >> hit_points >> right_bracket;
-            cout << "Brick type: " << type << ", Brick x position: " << brick_x << ", Brick y position: " << brick_y << ", Brick size: " << brick_size << ", Brick hit points: " << hit_points << endl;
+            data >> type >> brick_x >> brick_y >> brick_width >> left_bracket >> hit_points >> right_bracket;
+
+            Brick brick(brick_x, brick_y, brick_width, hit_points, type);
+
             if (brick_counter >= nb_brick)
             {
                 reading_state = NB_BALL;
             }
             ++brick_counter;
             break;
+        }
 
         case NB_BALL:
-            cout << endl;
+        {
             data >> nb_ball;
-            cout << "There is " << nb_ball << " balls:" << endl;
-            cout << endl;
             reading_state = BALLS;
             break;
+        }
 
         case BALLS:
+        {
             double ball_x, ball_y, ball_radius, ball_dx, ball_dy;
             data >> ball_x >> ball_y >> ball_radius >> ball_dx >> ball_dy;
-            cout << "Ball x position: " << ball_x << ", Ball y position: " << ball_y << ", Ball radius: " << ball_radius << ", Ball x speed: " << ball_dx << ", Ball y speed " << ball_dy << endl;
+
+            Ball ball(ball_x, ball_y, ball_radius, ball_dx, ball_dy);
+
             if (ball_counter >= nb_ball)
             {
                 reading_state = FINISHED;
             }
             ++ball_counter;
             break;
+        }
 
         case FINISHED:
-            cout << "Reading part is finished" << endl;
+        {
+            // cout << "Reading part is finished" << endl;
+            break;
+        }
         }
     }
 
     file.close();
+}
+
+int check_score(istringstream data)
+{
+    int score;
+    data >> score;
+    if (score < 0)
+        error(message::invalid_score(score));
+    return score;
+}
+
+int check_lives(istringstream data)
+{
+    int lives;
+    data >> lives;
+    if (lives < 0)
+        error(message::invalid_lives(lives));
+    return lives;
 }

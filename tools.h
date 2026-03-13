@@ -3,7 +3,11 @@
 
 #include <string>
 #include <iostream>
+<<<<<<< HEAD
 #include <cmath>
+=======
+#include <vector>
+>>>>>>> 23f0d16 (cleaned code)
 
 #include "constants.h"
 
