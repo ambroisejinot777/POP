@@ -27,6 +27,9 @@ class Square
 public:
     Square(double x, double y, double w);
     Square(Square const &old_square);
+    double get_x() const;
+    double get_y() const;
+    double get_width() const;
 
 private:
     Point square_center;

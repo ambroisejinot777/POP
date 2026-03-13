@@ -28,14 +28,14 @@ double Ball::get_y() const
     return circle.get_y();
 }
 
-double Ball::get_dx() const
-{
-    return delta.get_x();
-}
-
 double Ball::get_radius() const
 {
     return circle.get_radius();
+}
+
+double Ball::get_dx() const
+{
+    return delta.get_x();
 }
 
 double Ball::get_dy() const

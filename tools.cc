@@ -28,6 +28,21 @@ Square::Square(double x = 0.0, double y = 0.0, double w = 0.0)
 Square::Square(Square const &old_square)
     : square_center(old_square.square_center), width(old_square.width) {}
 
+double Square::get_x() const
+{
+    return square_center.get_x();
+}
+
+double Square::get_y() const
+{
+    return square_center.get_y();
+}
+
+double Square::get_width() const
+{
+    return width;
+}
+
 // CIRCLE
 
 Circle::Circle(double x = 0.0, double y = 0.0, double r = 0.0)
