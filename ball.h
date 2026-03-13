@@ -18,6 +18,7 @@ public:
     double get_dx() const;
     double get_dy() const;
     double get_radius() const;
+    Circle get_circle() const;
 
 private:
     Circle circle;
@@ -29,7 +30,7 @@ void check_ball_x_axis(double x, double y, double r);
 void check_ball_y_axis(double x, double y, double r);
 void check_ball_delta(double dx, double dy);
 
-typedef vector<Ball*> Ball_list;
+typedef vector<Ball> Ball_list;
 
 
 

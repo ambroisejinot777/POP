@@ -43,6 +43,11 @@ double Ball::get_dy() const
     return delta.get_y();
 }
 
+Circle Ball::get_circle() const
+{
+    return circle;
+}
+
 // FONCTIONS D'ACTIONS DE BALL
 void check_ball_x_axis(double x, double y, double r)
 {

@@ -13,10 +13,10 @@ void start_project(string file_name, Brick_list &brick_list, Ball_list &ball_lis
 
     string line;
     Reading_state reading_state(SCORE);
-    int nb_brick;
-    int brick_counter(1);
-    int nb_ball;
-    int ball_counter(1);
+    unsigned int nb_brick;
+    unsigned int brick_counter(1);
+    unsigned int nb_ball;
+    unsigned int ball_counter(1);
 
     while (getline(file >> ws, line))
     {
@@ -81,7 +81,7 @@ void start_project(string file_name, Brick_list &brick_list, Ball_list &ball_lis
 
         case BALLS:
         {
-            read_ball_data(data, ball_list);
+            check_ball_data(data, ball_list, ball_counter);
 
             if (++ball_counter >= nb_ball)
             {
@@ -127,14 +127,21 @@ void read_brick_data(istringstream &data, Brick_list &brick_list)
     data >> type >> brick_x >> brick_y >> brick_width >> left_bracket >> hit_points >> right_bracket;
 
     Brick brick(brick_x, brick_y, brick_width, hit_points, type);
-    brick_list.push_back(&brick);
+    brick_list.push_back(brick);
 }
 
-void read_ball_data(istringstream &data, Ball_list &ball_list)
+void check_ball_data(istringstream &data, Ball_list &ball_list, unsigned int ball_counter)
 {
     double ball_x, ball_y, ball_radius, ball_dx, ball_dy;
     data >> ball_x >> ball_y >> ball_radius >> ball_dx >> ball_dy;
-
     Ball ball(ball_x, ball_y, ball_radius, ball_dx, ball_dy);
-    ball_list.push_back(&ball);
+
+
+    for (size_t i(0); i < ball_list.size(); ++i)
+    {
+        if (circle_circle_intersection(ball_list[i].get_circle(), ball.get_circle()))
+            error(message::collision_balls(i+1, ball_counter));
+    }
+
+    ball_list.push_back(ball);
 }
