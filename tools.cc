@@ -98,6 +98,7 @@ bool circle_square_intersection(Circle const &c, Square const &s)
 
 bool square_square_intersection(Square const &s1, Square const &s2)
 {
-    return (abs(s1.get_x() - s2.get_x()) * 2 < (s1.get_width() + s2.get_width())) &&
-           (abs(s1.get_y() - s2.get_y()) * 2 < (s1.get_width() + s2.get_width()));
+    bool x_overlap = abs(s1.get_x() - s2.get_x()) < (s1.get_width() / 2 + s2.get_width() / 2);
+    bool y_overlap = abs(s1.get_y() - s2.get_y()) < (s1.get_width() / 2 + s2.get_width() / 2);
+    return x_overlap && y_overlap;
 }
