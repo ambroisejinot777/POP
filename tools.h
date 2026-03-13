@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 
+#include "constants.h"
+
 using namespace std;
 
 class Point

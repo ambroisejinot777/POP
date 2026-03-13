@@ -1,8 +1,5 @@
-#include <iostream>
-#include <cmath>
 #include "ball.h"
-#include "message.h"
-#include "tools.h"
+
 
 using namespace std;
 using namespace message;

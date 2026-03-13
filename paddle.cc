@@ -1,8 +1,11 @@
-#include <iostream>
 #include "paddle.h"
+<<<<<<< HEAD
 #include "message.h"
 #include "tools.h"
 #include "constants.h"
+=======
+
+>>>>>>> 17adeb8 (arranged imclusions)
 
 using namespace std;
 

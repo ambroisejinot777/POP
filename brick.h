@@ -1,6 +1,7 @@
 #ifndef BRICK_H
 #define BRICK_H
 
+#include "message.h"
 #include "tools.h"
 
 enum Brick_type

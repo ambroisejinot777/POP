@@ -2,7 +2,11 @@
 #define BALL_H
 
 #include <iostream>
-#include "constants.h"
+#include <iostream>
+#include <cmath>
+
+#include "message.h"
+#include "tools.h"
 
 using namespace std;
 

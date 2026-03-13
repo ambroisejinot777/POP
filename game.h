@@ -1,10 +1,13 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <fstream>
+#include <sstream>
+
 #include "message.h"
 #include "brick.h"
 #include "ball.h"
-#include "brick.h"
+
 
 using namespace std;
 

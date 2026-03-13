@@ -1,7 +1,8 @@
 #ifndef PADDLE_H
 #define PADDLE_H
-#include <iostream>
+
 #include "tools.h"
+#include "message.h"
 
 class Paddle {
     public :
