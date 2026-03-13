@@ -12,9 +12,9 @@ class Ball {
         Ball(Ball const& old_ball);
 
     private :
-        Point ball_center;
-        Point ball_delta;
-        double ball_radius;       
+        Point center;
+        Point delta;
+        double radius;       
 };
 
 
