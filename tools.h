@@ -44,6 +44,10 @@ class Circle {
         double radius;
 };
 
+bool circle_circle_intersection(Circle const& c1, Circle const& c2);
+bool circle_square_intersection(Circle const& c, Square const& s);
+bool square_square_intersection(Square const& s1, Square const& s2);
+
 int collision_type() ;
 void vertical_wall_collision();
 void horizontal_wall_collision();
