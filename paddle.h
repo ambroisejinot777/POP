@@ -16,7 +16,7 @@ private:
     double radius;
 };
 
-void check_y_axis(double x, double y, double r);
-void check_x_axis(double x, double y, double r);
+void check_paddle_y_axis(double x, double y, double r);
+void check_paddle_x_axis(double x, double y, double r);
 
 #endif

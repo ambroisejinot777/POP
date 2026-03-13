@@ -8,9 +8,9 @@ using namespace message;
 Ball::Ball(double x = 0.0, double y = 0.0, double r = 0.0, double dx = 0.0, double dy = 0.0)
     : center(x, y), delta(dx, dy), radius(r)
 {
-    check_x_axis(x, y, r);
-    check_y_axis(x, y, r);
-    check_delta(dx, dy);
+    check_ball_x_axis(x, y, r);
+    check_ball_y_axis(x, y, r);
+    check_ball_delta(dx, dy);
 }
 
 Ball::Ball(Ball const &old_ball)
@@ -19,7 +19,7 @@ Ball::Ball(Ball const &old_ball)
 }
 
 // FONCTIONS D'ACTIONS DE BALL
-void check_x_axis(double x, double y, double r)
+void check_ball_x_axis(double x, double y, double r)
 {
     if ((x < r) or (x > (arena_size - r)))
     {
@@ -27,7 +27,7 @@ void check_x_axis(double x, double y, double r)
     }
 }
 
-void check_y_axis(double x, double y, double r)
+void check_ball_y_axis(double x, double y, double r)
 {
     if ((y < 0) or (y > (arena_size - r)))
     {
@@ -35,7 +35,7 @@ void check_y_axis(double x, double y, double r)
     }
 }
 
-void check_delta(double dx, double dy)
+void check_ball_delta(double dx, double dy)
 {
     if ((sqrt(dx * dx + dy * dy)) > (delta_norm_max))
     {

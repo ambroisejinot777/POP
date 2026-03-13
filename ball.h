@@ -22,8 +22,8 @@ private:
     double radius;
 };
 
-void check_x_axis(double x, double y, double r);
-void check_y_axis(double x, double y, double r);
-void check_delta(double dx, double dy);
+void check_ball_x_axis(double x, double y, double r);
+void check_ball_y_axis(double x, double y, double r);
+void check_ball_delta(double dx, double dy);
 
 #endif
