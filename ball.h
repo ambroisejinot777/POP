@@ -8,14 +8,11 @@ using namespace std;
 
 class Ball {
     public :
-        Ball ()
-        : 
-        {}
         Ball (double x=0.0, double y=0.0, double r=0.0, double dx=0.0, double dy=0.0)
-        : Ball_center(x, y), Ball_delta(dx, dy), Ball_radius(r)
+        : ball_center(x, y), ball_delta(dx, dy), ball_radius(r)
         {}
         Ball(Ball const& old_ball)
-        : Ball_center(old_ball.Ball_center), Ball_delta(old_ball.Ball_delta), Ball_radius(old_ball.Ball_radius)
+        : ball_center(old_ball.ball_center), ball_delta(old_ball.ball_delta), ball_radius(old_ball.ball_radius)
         {}
         bool check_invalid_delta();
         bool check_ball_outside();
@@ -24,9 +21,9 @@ class Ball {
         bool check_collision_paddle_ball();
 
     private :
-        Point Ball_center;
-        Point Ball_delta;
-        double Ball_radius;       
+        Point ball_center;
+        Point ball_delta;
+        double ball_radius;       
 };
 
 

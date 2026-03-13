@@ -5,9 +5,8 @@
 
 using namespace std;
 
-void Point::change_position() {
-    associated_point.center_x += associated_point.delta_x;
-    associated_point.center_y += associated_point.delta_y;
+void change_position() {
+        // code to change the position of the ball based on its current delta
 }
 void change_delta() {
     switch (collision_type()) {
@@ -31,8 +30,8 @@ void change_delta() {
     }
 }
 
-bool Ball::check_invalid_delta();
-bool Ball::check_ball_outside();
-bool Ball::check_collision_balls();
-bool Ball::check_collision_ball_brick();
-bool Ball::check_collision_paddle_ball();
+bool check_invalid_delta();
+bool check_ball_outside();
+bool check_collision_balls();
+bool check_collision_ball_brick();
+bool check_collision_paddle_ball();

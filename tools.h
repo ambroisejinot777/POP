@@ -4,20 +4,12 @@
 
 class Point {
     public : 
-    Point ()
-        : center_x(0.0), center_y(0.0)
-        {}
-        Point (double x, double y)
-        {}
     Point (double x=0.0, double y=0.0)
         : center_x(x), center_y(y)
         {} 
     Point(Point const& old_point)
-        : center_x(old_point.center_x), center_y(old_point.center_y), radius(old_point.radius), delta_x(old_point.delta_x), delta_y(old_point.delta_y)
+        : center_x(old_point.center_x), center_y(old_point.center_y)
         {}
-    void change_position(Point& associated_point);
-    void change_delta(Point& associated_point);
-        
     private :
         double center_x;
         double center_y;
@@ -25,6 +17,12 @@ class Point {
 
 class Square {
     public : 
+    Square (double x=0.0, double y=0.0, double w=0.0, double h=0.0)
+        : square_center(x, y), width(w), height(h)
+        {} 
+    Square (Square const& old_square)
+        : square_center(old_square.square_center), width(old_square.width), height(old_square.height)
+        {}
         
     private :
         Point square_center;
@@ -34,6 +32,12 @@ class Square {
 
 class Circle {
     public : 
+    Circle (double x=0.0, double y=0.0, double r=0.0)
+        : circle_center(x, y), radius(r)
+        {} 
+    Circle (Circle const& old_circle)
+        : circle_center(old_circle.circle_center), radius(old_circle.radius)
+        {}
         
     private :
         Point circle_center;
