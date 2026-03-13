@@ -65,10 +65,39 @@ double Circle::get_radius() const
 {
     return radius;
 }
+
 // UTILITY FUNCTIONS
 
 void error(string message)
 {
     cout << message << endl;
     exit(1);
+}
+
+// INTERSECTION FUNCTIONS
+bool circle_circle_intersection(Circle const &c1, Circle const &c2)
+{
+    double distance = sqrt((c1.get_x() - c2.get_x()) * (c1.get_x() - c2.get_x()) + (c1.get_y() - c2.get_y()) * (c1.get_y() - c2.get_y()));
+    if (distance < (c1.get_radius() + c2.get_radius()))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool circle_square_intersection(Circle const &c, Square const &s)
+{
+    double closest_x = max(s.get_x() - s.get_width() / 2, min(c.get_x(), s.get_x() + s.get_width() / 2));
+    double closest_y = max(s.get_y() - s.get_width() / 2, min(c.get_y(), s.get_y() + s.get_width() / 2));
+    double distance = sqrt(pow(c.get_x() - closest_x, 2) + pow(c.get_y() - closest_y, 2));
+    return distance < c.get_radius();
+}
+
+bool square_square_intersection(Square const &s1, Square const &s2)
+{
+    return (abs(s1.get_x() - s2.get_x()) * 2 < (s1.get_width() + s2.get_width())) &&
+           (abs(s1.get_y() - s2.get_y()) * 2 < (s1.get_width() + s2.get_width()));
 }
