@@ -1,8 +1,5 @@
 #include "paddle.h"
 
-
-
-
 using namespace std;
 
 using namespace message;
@@ -17,7 +14,7 @@ Paddle::Paddle(double x = 0.0, double y = 0.0, double r = 0.0)
                 error(paddle_outside(x, y));
         }
 
-        if ((y < 0) and (y > (arena_size - r)))
+        if (((x - sqrt(r * r - y * y)) < 0) or ((x + sqrt(r * r - y * y)) > arena_size))
         {
                 error(paddle_outside(x, y));
         }

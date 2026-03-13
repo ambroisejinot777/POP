@@ -1,6 +1,5 @@
 #include "ball.h"
 
-
 using namespace std;
 using namespace message;
 
@@ -9,12 +8,12 @@ using namespace message;
 Ball::Ball(double x = 0.0, double y = 0.0, double r = 0.0, double dx = 0.0, double dy = 0.0)
     : center(x, y), delta(dx, dy), radius(r)
 {
-    if ((x < r) and (x > (arena_size - r)))
+    if ((x < r) or (x > (arena_size - r)))
     {
         error(ball_outside(x, y));
     }
 
-    if ((y < 0) and (y > (arena_size - r)))
+    if ((y < 0) or (y > (arena_size - r)))
     {
         error(ball_outside(x, y));
     }
