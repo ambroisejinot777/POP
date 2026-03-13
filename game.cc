@@ -11,7 +11,7 @@
 
 
 
-void read_file(string file_name){
+void start_project(string file_name){
 
     ifstream file(file_name);
 
@@ -21,9 +21,11 @@ void read_file(string file_name){
     }
     
     string line;
-    int line_counter(0);
-    int nb_ball;
+    Reading_state reading_state(SCORE);
     int nb_brick;
+    int brick_counter(0);
+    int nb_ball;
+    int ball_counter(0);
 
    
 
@@ -35,52 +37,73 @@ void read_file(string file_name){
         if (line.empty() or line[0] == '#'){
             continue;
         }
-        line_counter++;
 
-        if(line_counter == 1){
-            int score;
-            data >> score;
-            cout << "score: "<< score << endl;
-        }
+        switch(reading_state){
 
-        else if(line_counter == 2){
-            int nb_lives;
-            data >> nb_lives;
-            cout << "lives: "<< nb_lives << endl;
-            cout << endl;
-        }
+            case SCORE:
+                int score;
+                data >> score;
+                cout << "score: "<< score << endl;
+                reading_state = LIVES;
+                break;
 
-        else if (line_counter == 3){
-            double x, y, radius;
-            data >> x >> y >> radius;
-            cout << "Paddle x position: "<< x << ", Paddle y position: "<< y << ", Paddle radius: "<< radius << endl;
-            cout << endl;
-        }
+            case LIVES:
+                int nb_lives;
+                data >> nb_lives;
+                cout << "lives: "<< nb_lives << endl;
+                cout << endl;
+                reading_state = PADDLE;
+                break;
+            
+            case PADDLE:
+                double paddle_x, paddle_y, paddle_radius;
+                data >> paddle_x >> paddle_y >> paddle_radius;
+                cout << "Paddle x position: "<< paddle_x << ", Paddle y position: "<< paddle_y << ", Paddle radius: "<< paddle_radius << endl;
+                cout << endl;
+                reading_state = NB_BRICK;
+                break;
 
-        else if (line_counter == 4){
-            data >> nb_brick;
-            cout << "There is "<< nb_brick << " bricks:"<< endl;
-            cout << endl;
-        }
-        else if ((line_counter >= 5) && (line_counter <= 4 + nb_brick)){
-            int type, hit_points;
-            double x, y, size;
-            char left_bracket, right_bracket;
-            data >> type >> x >> y >> size >> left_bracket >> hit_points >> right_bracket;
-            cout << "Brick x position: "<< x << ", Brick y position: "<< y << ", Brick type: "<< type<<
-                 ", Brick size: " << size << ", Brick hit points: " << hit_points <<endl;
-        }
-        else if (line_counter == 5 + nb_brick){
-            cout << endl;
-            data >> nb_ball;
-            cout << "There is "<< nb_ball << " balls:"<< endl;
-            cout << endl;
-        }
-        else if ((line_counter > 5 + nb_brick) && (line_counter <= 5 + nb_brick + nb_ball)){
-            double x, y, radius, dx, dy;
-            data >> x >> y >> radius  >> dx >> dy;
-            cout << "Ball x position: "<< x << ", Ball y position: "<< y << ", Ball radius: "<< radius <<
-                 ", Ball x speed: " << dx << ", Ball y speed " << dy <<endl;
+            case NB_BRICK:
+                data >> nb_brick;
+                cout << "There is "<< nb_brick << " bricks:"<< endl;
+                cout << endl;
+                reading_state = BRICKS;
+                break;
+
+            case BRICKS:
+                int type, hit_points;
+                double brick_x, brick_y, brick_size;
+                char left_bracket, right_bracket;
+                data >> type >> brick_x >> brick_y >> brick_size >> left_bracket >> hit_points >> right_bracket;
+                cout << "Brick x position: "<< brick_x << ", Brick y position: "<< brick_y << ", Brick type: "<< type<<
+                        ", Brick size: " << brick_size << ", Brick hit points: " << hit_points <<endl;
+                if (brick_counter >= nb_brick){
+                    reading_state = NB_BALL;
+                }
+                ++brick_counter;
+                break;
+
+            case NB_BALL:
+                cout << endl;
+                data >> nb_ball;
+                cout << "There is "<< nb_ball << " balls:"<< endl;
+                cout << endl;
+                reading_state = BALLS;
+                break;
+
+            case BALLS:
+                double ball_x, ball_y, ball_radius, ball_dx, ball_dy;
+                data >> ball_x >> ball_y >> ball_radius  >> ball_dx >> ball_dy;
+                cout << "Ball x position: "<< ball_x << ", Ball y position: "<< ball_y << ", Ball radius: "<< ball_radius <<
+                    ", Ball x speed: " << ball_dx << ", Ball y speed " << ball_dy <<endl; 
+                if (ball_counter >= nb_ball){
+                    reading_state = FINISHED;
+                }
+                ++ball_counter;
+                break;
+            
+            case FINISHED:
+                cout << "Reading part is finished" << endl;
         }
     }
 
