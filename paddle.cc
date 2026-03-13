@@ -16,7 +16,7 @@ using namespace message;
 Paddle::Paddle(double x = 0.0, double y = 0.0, double r = 0.0)
     : paddle_center(x, y), radius(r)
 {
-        if ((x < r) and (x > (arena_size - r)))
+        if ((y > 0) or ((y + r) <= 0))
         {
                 error(paddle_outside(x, y));
         }
