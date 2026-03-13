@@ -7,14 +7,14 @@ using namespace message;
 // CONSTRUCTEURS DE PADDLE
 
 Paddle::Paddle(double x = 0.0, double y = 0.0, double r = 0.0)
-    : paddle_center(x, y), radius(r)
+    : paddle_circle(x, y, r)
 {
         check_paddle_y_axis(x, y, r);
         check_paddle_x_axis(x, y, r);
 }
 
 Paddle::Paddle(Paddle const &old_paddle)
-    : paddle_center(old_paddle.paddle_center), radius(old_paddle.radius)
+    : paddle_circle(old_paddle.paddle_circle)
 {
 }
 

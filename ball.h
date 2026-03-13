@@ -3,8 +3,6 @@
 
 #include <iostream>
 #include <iostream>
-#include <cmath>
-
 #include "message.h"
 #include "tools.h"
 
@@ -15,11 +13,15 @@ class Ball
 public:
     Ball(double x, double y, double r, double dx, double dy);
     Ball(Ball const &old_ball);
+    double get_x() const;
+    double get_y() const;
+    double get_dx() const;
+    double get_dy() const;
+    double get_radius() const;
 
 private:
-    Point center;
+    Circle circle;
     Point delta;
-    double radius;
 };
 
 void check_ball_x_axis(double x, double y, double r);

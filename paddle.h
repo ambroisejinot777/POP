@@ -12,8 +12,7 @@ public:
     Paddle(Paddle const &old_paddle);
 
 private:
-    Point paddle_center;
-    double radius;
+    Circle paddle_circle;
 };
 
 void check_paddle_y_axis(double x, double y, double r);

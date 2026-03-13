@@ -12,8 +12,9 @@ class Point
 {
 public:
     Point(double x, double y);
-
     Point(Point const &old_point);
+    double get_x() const;
+    double get_y() const;
 
 private:
     double center_x;
@@ -36,6 +37,9 @@ class Circle
 public:
     Circle(double x, double y, double r);
     Circle(Circle const &old_circle);
+    double get_x() const;
+    double get_y() const;
+    double get_radius() const;
 
 private:
     Point circle_center;
