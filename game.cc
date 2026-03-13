@@ -23,9 +23,9 @@ void start_project(string file_name){
     string line;
     Reading_state reading_state(SCORE);
     int nb_brick;
-    int brick_counter(0);
+    int brick_counter(1);
     int nb_ball;
-    int ball_counter(0);
+    int ball_counter(1);
 
    
 
@@ -75,7 +75,7 @@ void start_project(string file_name){
                 double brick_x, brick_y, brick_size;
                 char left_bracket, right_bracket;
                 data >> type >> brick_x >> brick_y >> brick_size >> left_bracket >> hit_points >> right_bracket;
-                cout << "Brick x position: "<< brick_x << ", Brick y position: "<< brick_y << ", Brick type: "<< type<<
+                cout << "Brick type: "<< type << ", Brick x position: "<< brick_x << ", Brick y position: "<< brick_y <<
                         ", Brick size: " << brick_size << ", Brick hit points: " << hit_points <<endl;
                 if (brick_counter >= nb_brick){
                     reading_state = NB_BALL;
