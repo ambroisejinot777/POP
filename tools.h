@@ -1,10 +1,16 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
+#include <string>
+#include <iostream>
+
+
+using namespace std;
+
 
 class Point {
     public : 
-    Point (double x=0.0, double y=0.0);
+    Point (double x, double y);
 
     Point(Point const& old_point);
     private :
@@ -14,7 +20,7 @@ class Point {
 
 class Square {
     public : 
-    Square (double x=0.0, double y=0.0, double w=0.0, double h=0.0);
+    Square (double x, double y, double w, double h);
     Square (Square const& old_square);
         
     private :
@@ -25,13 +31,15 @@ class Square {
 
 class Circle {
     public : 
-        Circle (double x=0.0, double y=0.0, double r=0.0);
+        Circle (double x, double y, double r);
         Circle (Circle const& old_circle);
 
     private :
         Point circle_center;
         double radius;
 };
+
+void error(string message);
 
 bool circle_circle_intersection(Circle const& c1, Circle const& c2);
 bool circle_square_intersection(Circle const& c, Square const& s);

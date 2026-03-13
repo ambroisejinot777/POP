@@ -1,6 +1,7 @@
 #include "tools.h"
 
 
+
 // UTILITY CLASSES
 
 // POINT
@@ -28,31 +29,7 @@ Circle::Circle (Circle const& old_circle)
     :circle_center(old_circle.circle_center), radius(old_circle.radius){}
 
 
-
-
-
-
-
-int collision_type() {
-
-}
-
-void vertical_wall_collision(){
-
-}
-
-void horizontal_wall_collision() {
-
-}
-
-void brick_collision() {
-
-}
-
-void paddle_collision() {
-
-}
-
-void ball_collision() {
-
+void error(string message){
+    cout << message << endl;
+    exit(0);
 }

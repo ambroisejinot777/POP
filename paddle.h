@@ -5,7 +5,7 @@
 
 class Paddle {
     public :
-        Paddle (double x=0.0, double y=0.0, double r=0.0);
+        Paddle (double x, double y, double r);
         Paddle (Paddle const& old_paddle);
         
     private :
