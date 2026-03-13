@@ -1,6 +1,6 @@
 #include "game.h"
 
-void start_project(string file_name, Brick_list& brick_list, Ball_list& ball_list, int& score, int& lives)
+void start_project(string file_name, Brick_list &brick_list, Ball_list &ball_list, int &score, int &lives)
 {
 
     ifstream file(file_name);
@@ -63,13 +63,7 @@ void start_project(string file_name, Brick_list& brick_list, Ball_list& ball_lis
 
         case BRICKS:
         {
-            int type, hit_points;
-            double brick_x, brick_y, brick_width;
-            char left_bracket, right_bracket;
-            data >> type >> brick_x >> brick_y >> brick_width >> left_bracket >> hit_points >> right_bracket;
-
-            Brick brick(brick_x, brick_y, brick_width, hit_points, type);
-            brick_list.push_back(brick);
+            read_brick_data(data, brick_list);
 
             if (++brick_counter >= nb_brick)
             {
@@ -87,11 +81,7 @@ void start_project(string file_name, Brick_list& brick_list, Ball_list& ball_lis
 
         case BALLS:
         {
-            double ball_x, ball_y, ball_radius, ball_dx, ball_dy;
-            data >> ball_x >> ball_y >> ball_radius >> ball_dx >> ball_dy;
-
-            Ball ball(ball_x, ball_y, ball_radius, ball_dx, ball_dy);
-            ball_list.push_back(ball);
+            read_ball_data(data, ball_list);
 
             if (++ball_counter >= nb_ball)
             {
@@ -111,7 +101,7 @@ void start_project(string file_name, Brick_list& brick_list, Ball_list& ball_lis
     file.close();
 }
 
-int check_score(istringstream& data)
+int check_score(istringstream &data)
 {
     int score;
     data >> score;
@@ -120,11 +110,31 @@ int check_score(istringstream& data)
     return score;
 }
 
-int check_lives(istringstream& data)
+int check_lives(istringstream &data)
 {
     int lives;
     data >> lives;
     if (lives < 0)
         error(message::invalid_lives(lives));
     return lives;
+}
+
+void read_brick_data(istringstream &data, Brick_list &brick_list)
+{
+    int type, hit_points;
+    double brick_x, brick_y, brick_width;
+    char left_bracket, right_bracket;
+    data >> type >> brick_x >> brick_y >> brick_width >> left_bracket >> hit_points >> right_bracket;
+
+    Brick brick(brick_x, brick_y, brick_width, hit_points, type);
+    brick_list.push_back(&brick);
+}
+
+void read_ball_data(istringstream &data, Ball_list &ball_list)
+{
+    double ball_x, ball_y, ball_radius, ball_dx, ball_dy;
+    data >> ball_x >> ball_y >> ball_radius >> ball_dx >> ball_dy;
+
+    Ball ball(ball_x, ball_y, ball_radius, ball_dx, ball_dy);
+    ball_list.push_back(&ball);
 }
