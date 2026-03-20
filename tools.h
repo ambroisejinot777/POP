@@ -8,6 +8,8 @@
 
 #include "constants.h"
 
+constexpr double epsil_zero(0.0);
+
 using namespace std;
 
 // POINT
