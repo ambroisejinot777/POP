@@ -2,7 +2,7 @@
 
 // CONSTRUCTORS
 
-Brick::Brick(double x = 0.0, double y = 0.0, double width = 0.0, int hit_points = 0, int type = 0)
+Brick::Brick(double x, double y, double width, int hit_points, int type)
     : square(x, y, width), hit_points(hit_points), type(type)
 {
     check_brick_position(x, y, width);

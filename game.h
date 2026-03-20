@@ -28,7 +28,7 @@ enum Reading_state{
 
 // FUNCTIONS //
 
-void start_project(string file_name, Brick_list& brick_list, Ball_list& ball_list, int& score, int& lives);
+void start_project(string file_name);
 int check_score(istringstream& data);
 int check_lives(istringstream& data);
 void read_and_check_brick_data(istringstream &data, Brick_list &brick_list, int brick_counter);

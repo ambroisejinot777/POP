@@ -4,7 +4,7 @@
 
 // POINT
 
-Point::Point(double x = 0.0, double y = 0.0)
+Point::Point(double x, double y)
     : center_x(x), center_y(y) {}
 
 Point::Point(Point const &old_point)
@@ -22,7 +22,7 @@ double Point::get_y() const
 
 // SQUARE
 
-Square::Square(double x = 0.0, double y = 0.0, double w = 0.0)
+Square::Square(double x, double y, double w)
     : square_center(x, y), width(w) {}
 
 Square::Square(Square const &old_square)
@@ -45,7 +45,7 @@ double Square::get_width() const
 
 // CIRCLE
 
-Circle::Circle(double x = 0.0, double y = 0.0, double r = 0.0)
+Circle::Circle(double x, double y, double r)
     : circle_center(x, y), radius(r) {}
 
 Circle::Circle(Circle const &old_circle)

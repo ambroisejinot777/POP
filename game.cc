@@ -1,7 +1,13 @@
 #include "game.h"
 
+static int score(0);
+static int lives(0);
+static Paddle paddle(50, -10, 15);
+static Ball_list ball_list;
+static Brick_list brick_list;
 
-void start_project(string file_name, Brick_list &brick_list, Ball_list &ball_list, int &score, int &lives)
+
+void start_project(string file_name)
 {
 
     ifstream file(file_name);
@@ -50,7 +56,7 @@ void start_project(string file_name, Brick_list &brick_list, Ball_list &ball_lis
         {
             double paddle_x, paddle_y, paddle_radius;
             data >> paddle_x >> paddle_y >> paddle_radius;
-            Paddle paddle(paddle_x, paddle_y, paddle_radius);
+            paddle = Paddle(paddle_x, paddle_y, paddle_radius);
             reading_state = NB_BRICK;
             break;
         }
@@ -93,13 +99,12 @@ void start_project(string file_name, Brick_list &brick_list, Ball_list &ball_lis
 
         case FINISHED:
         {
-            // cout << "Reading part is finished" << endl;
             break;
         }
         }
     }
-
     file.close();
+    cout << message::success();
 }
 
 int check_score(istringstream &data)
@@ -147,6 +152,10 @@ void read_and_check_ball_data(istringstream &data, Ball_list &ball_list, unsigne
     {
         if (circle_circle_intersection(ball_list[i].get_circle(), ball.get_circle()))
             error(message::collision_balls(i, ball_counter));
+        else if (circle_circle_intersection(ball.get_circle(), paddle.get_circle()))
+        {
+            error(message::collision_paddle_ball(ball_counter));
+        }
     }
 
     ball_list.push_back(ball);

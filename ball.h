@@ -8,11 +8,10 @@
 
 using namespace std;
 
-
 class Ball
 {
 public:
-    Ball(double x, double y, double r, double dx, double dy);
+    Ball(double x = 0.0, double y = 0.0, double r = 0.0, double dx = 0.0, double dy = 0.0);
     Ball(Ball const &old_ball);
     double get_x() const;
     double get_y() const;

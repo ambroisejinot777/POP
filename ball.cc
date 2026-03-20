@@ -5,7 +5,7 @@ using namespace message;
 
 // CONSTRUCTEURS DE BALL
 
-Ball::Ball(double x = 0.0, double y = 0.0, double r = 0.0, double dx = 0.0, double dy = 0.0)
+Ball::Ball(double x, double y, double r, double dx, double dy)
     : circle(x, y, r), delta(dx, dy)
 {
     check_ball_x_axis(x, y, r);

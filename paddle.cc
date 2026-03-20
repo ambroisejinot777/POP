@@ -6,7 +6,7 @@ using namespace message;
 
 // CONSTRUCTEURS DE PADDLE
 
-Paddle::Paddle(double x = 0.0, double y = 0.0, double r = 0.0)
+Paddle::Paddle(double x, double y, double r)
     : paddle_circle(x, y, r)
 {
         check_paddle_y_axis(x, y, r);
@@ -15,7 +15,11 @@ Paddle::Paddle(double x = 0.0, double y = 0.0, double r = 0.0)
 
 Paddle::Paddle(Paddle const &old_paddle)
     : paddle_circle(old_paddle.paddle_circle)
+{}
+
+Circle Paddle::get_circle() const
 {
+        return paddle_circle;
 }
 
 // FONCTIONS DE VERIFICATION DE SAISIE POUR PADDLE

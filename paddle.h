@@ -8,8 +8,9 @@
 class Paddle
 {
 public:
-    Paddle(double x, double y, double r);
+    Paddle(double x = 0.0, double y = 0.0, double r = 0.0);
     Paddle(Paddle const &old_paddle);
+    Circle get_circle() const;
 
 private:
     Circle paddle_circle;
