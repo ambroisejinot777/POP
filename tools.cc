@@ -141,6 +141,7 @@ bool circle_square_intersection(Circle const &c, Square const &s)
 
     double distance_squared = (distance_x * distance_x) + (distance_y * distance_y);
     bool check = (distance_squared - (c.get_radius() * c.get_radius())) < epsil_zero;
+    return check;
 }
 
 bool square_square_intersection(Square const &s1, Square const &s2)
