@@ -6,8 +6,57 @@ static Paddle paddle(50, -10, 15);
 static Ball_list ball_list;
 static Brick_list brick_list;
 
+int Game::get_score() const
+{
+    return score;
+}
 
-void start_project(string file_name)
+int Game::get_lives() const
+{
+    return lives;
+}
+
+Paddle Game::get_paddle() const
+{
+    return paddle;
+}
+
+Brick_list Game::get_brick_list() const
+{
+    return brick_list;
+}
+
+Ball_list Game::get_ball_list() const
+{
+    return ball_list;
+}
+
+void Game::set_score(int new_score)
+{
+    score = new_score;
+}
+
+void Game::set_lives(int new_lives)
+{
+    lives = new_lives;
+}
+
+void Game::set_paddle(Paddle new_paddle)
+{
+    paddle = new_paddle;
+}
+
+void Game::add_brick_list(Brick new_brick)
+{
+    brick_list.push_back(new_brick);
+}
+
+void Game::add_ball_list(Ball new_ball)
+{
+    ball_list.push_back(new_ball);
+}
+
+void Game::init(string file_name)
 {
 
     ifstream file(file_name);
@@ -107,7 +156,7 @@ void start_project(string file_name)
     cout << message::success();
 }
 
-int check_score(istringstream &data)
+int Game::check_score(istringstream &data)
 {
     int score;
     data >> score;
@@ -116,7 +165,7 @@ int check_score(istringstream &data)
     return score;
 }
 
-int check_lives(istringstream &data)
+int Game::check_lives(istringstream &data)
 {
     int lives;
     data >> lives;
@@ -125,7 +174,7 @@ int check_lives(istringstream &data)
     return lives;
 }
 
-void read_and_check_brick_data(istringstream &data, Brick_list &brick_list, int brick_counter)
+void Game::read_and_check_brick_data(istringstream &data, Brick_list &brick_list, int brick_counter)
 {
     int type, hit_points;
     double brick_x, brick_y, brick_width;
@@ -145,7 +194,7 @@ void read_and_check_brick_data(istringstream &data, Brick_list &brick_list, int 
     brick_list.push_back(brick);
 }
 
-void read_and_check_ball_data(istringstream &data, Ball_list &ball_list, unsigned int ball_counter)
+void Game::Game::read_and_check_ball_data(istringstream &data, Ball_list &ball_list, unsigned int ball_counter)
 {
     double ball_x, ball_y, ball_radius, ball_dx, ball_dy;
     data >> ball_x >> ball_y >> ball_radius >> ball_dx >> ball_dy;
