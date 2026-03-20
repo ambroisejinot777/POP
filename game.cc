@@ -1,10 +1,10 @@
 #include "game.h"
 
-static int score(0);
-static int lives(0);
-static Paddle paddle(50, -10, 15);
-static Ball_list ball_list;
-static Brick_list brick_list;
+Game::Game() : paddle(50, -10, 15), brick_list({}), ball_list({})
+{
+}
+
+// GETTER AND SETTER
 
 int Game::get_score() const
 {
@@ -46,15 +46,17 @@ void Game::set_paddle(Paddle new_paddle)
     paddle = new_paddle;
 }
 
-void Game::add_brick_list(Brick new_brick)
+void Game::add_brick(Brick new_brick)
 {
     brick_list.push_back(new_brick);
 }
 
-void Game::add_ball_list(Ball new_ball)
+void Game::add_ball(Ball new_ball)
 {
     ball_list.push_back(new_ball);
 }
+
+// INIT AND CHECKING FUNCTIONS
 
 void Game::init(string file_name)
 {
@@ -87,94 +89,95 @@ void Game::init(string file_name)
         switch (reading_state)
         {
 
-            case SCORE:
+        case SCORE:
+        {
+            read_and_check_score(data);
+            reading_state = LIVES;
+            break;
+        }
+
+        case LIVES:
+        {
+            read_and_check_lives(data);
+            reading_state = PADDLE;
+            break;
+        }
+
+        case PADDLE:
+        {
+            read_and_check_paddle_data(data);
+            reading_state = NB_BRICK;
+            break;
+        }
+
+        case NB_BRICK:
+        {
+            data >> nb_brick;
+            reading_state = BRICKS;
+            break;
+        }
+
+        case BRICKS:
+        {
+            read_and_check_brick_data(data, brick_counter);
+
+            if (++brick_counter >= nb_brick)
             {
-                score = check_score(data);
-                reading_state = LIVES;
-                break;
+                reading_state = NB_BALL;
             }
+            break;
+        }
 
-            case LIVES:
+        case NB_BALL:
+        {
+            data >> nb_ball;
+            reading_state = BALLS;
+            break;
+        }
+
+        case BALLS:
+        {
+            read_and_check_ball_data(data, ball_counter);
+
+            if (++ball_counter >= nb_ball)
             {
-                lives = check_lives(data);
-                reading_state = PADDLE;
-                break;
+                reading_state = FINISHED;
             }
+            break;
+        }
 
-            case PADDLE:
-            {
-                double paddle_x, paddle_y, paddle_radius;
-                data >> paddle_x >> paddle_y >> paddle_radius;
-                paddle = Paddle(paddle_x, paddle_y, paddle_radius);
-                reading_state = NB_BRICK;
-                break;
-            }
-
-            case NB_BRICK:
-            {
-                data >> nb_brick;
-                reading_state = BRICKS;
-                break;
-            }
-
-            case BRICKS:
-            {
-                read_and_check_brick_data(data, brick_list, brick_counter);
-
-                if (++brick_counter >= nb_brick)
-                {
-                    reading_state = NB_BALL;
-                }
-                break;
-            }
-
-            case NB_BALL:
-            {
-                data >> nb_ball;
-                reading_state = BALLS;
-                break;
-            }
-
-            case BALLS:
-            {
-                read_and_check_ball_data(data, ball_list, ball_counter);
-
-                if (++ball_counter >= nb_ball)
-                {
-                    reading_state = FINISHED;
-                }
-                break;
-            }
-
-            case FINISHED:
-            {
-                break;
-            }
+        case FINISHED:
+        {
+            break;
+        }
         }
     }
     file.close();
     cout << message::success();
 }
 
-int Game::check_score(istringstream &data)
+void Game::read_and_check_score(istringstream &data)
 {
-    int score;
     data >> score;
     if (score < 0)
         error(message::invalid_score(score));
-    return score;
 }
 
-int Game::check_lives(istringstream &data)
+void Game::read_and_check_lives(istringstream &data)
 {
-    int lives;
     data >> lives;
     if (lives < 0)
         error(message::invalid_lives(lives));
-    return lives;
 }
 
-void Game::read_and_check_brick_data(istringstream &data, Brick_list &brick_list, int brick_counter)
+void Game::read_and_check_paddle_data(istringstream &data)
+{
+    double paddle_x, paddle_y, paddle_radius;
+    data >> paddle_x >> paddle_y >> paddle_radius;
+    paddle = Paddle(paddle_x, paddle_y, paddle_radius);
+}
+
+void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_counter)
 {
     int type, hit_points;
     double brick_x, brick_y, brick_width;
@@ -191,10 +194,10 @@ void Game::read_and_check_brick_data(istringstream &data, Brick_list &brick_list
             error(message::collision_bricks(i, brick_counter));
     }
 
-    brick_list.push_back(brick);
+    add_brick(brick);
 }
 
-void Game::Game::read_and_check_ball_data(istringstream &data, Ball_list &ball_list, unsigned int ball_counter)
+void Game::read_and_check_ball_data(istringstream &data, unsigned int ball_counter)
 {
     double ball_x, ball_y, ball_radius, ball_dx, ball_dy;
     data >> ball_x >> ball_y >> ball_radius >> ball_dx >> ball_dy;
@@ -211,9 +214,9 @@ void Game::Game::read_and_check_ball_data(istringstream &data, Ball_list &ball_l
 
     for (size_t i(0); i < brick_list.size(); i++)
     {
-        if(circle_square_intersection(ball.get_circle(), brick_list[i].get_square()))
-            error(message::collision_ball_brick(ball_counter, i));   
+        if (circle_square_intersection(ball.get_circle(), brick_list[i].get_square()))
+            error(message::collision_ball_brick(ball_counter, i));
     }
 
-    ball_list.push_back(ball);
+    add_ball(ball);
 }
