@@ -20,6 +20,16 @@ double Point::get_y() const
     return center_y;
 }
 
+void Point::set_x(double x)
+{
+    center_x = x;
+}
+
+void Point::set_y(double y)
+{
+    center_y = y;
+}
+
 // SQUARE
 
 Square::Square(double x, double y, double w)
@@ -43,6 +53,21 @@ double Square::get_width() const
     return width;
 }
 
+void Square::set_x(double x)
+{
+    square_center.set_x(x);
+}
+
+void Square::set_y(double y)
+{
+    square_center.set_y(y);
+}
+
+void Square::set_width(double w)
+{
+    width = w;
+}
+
 // CIRCLE
 
 Circle::Circle(double x, double y, double r)
@@ -64,6 +89,21 @@ double Circle::get_y() const
 double Circle::get_radius() const
 {
     return radius;
+}
+
+void Circle::set_x(double x)
+{
+    circle_center.set_x(x);
+}
+
+void Circle::set_y(double y)
+{
+    circle_center.set_y(y);
+}
+
+void Circle::set_radius(double r)
+{
+    radius = r;
 }
 
 // UTILITY FUNCTIONS

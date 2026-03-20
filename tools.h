@@ -17,13 +17,15 @@ public:
     Point(Point const &old_point);
     double get_x() const;
     double get_y() const;
+    void set_x(double x);
+    void set_y(double y);
 
 private:
     double center_x;
     double center_y;
 };
 
-class Square 
+class Square
 {
 public:
     Square(double x = 0.0, double y = 0.0, double w = 0.0);
@@ -31,6 +33,9 @@ public:
     double get_x() const;
     double get_y() const;
     double get_width() const;
+    void set_x(double x);
+    void set_y(double y);
+    void set_width(double w);
 
 private:
     Point square_center;
@@ -45,6 +50,9 @@ public:
     double get_x() const;
     double get_y() const;
     double get_radius() const;
+    void set_x(double x);
+    void set_y(double y);
+    void set_radius(double r);
 
 private:
     Point circle_center;
