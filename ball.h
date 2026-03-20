@@ -28,6 +28,7 @@ private:
 
 typedef vector<Ball> Ball_list;
 
+// CHECKING FUNCTIONS
 
 void check_ball_x_axis(double x, double y, double r);
 void check_ball_y_axis(double x, double y, double r);

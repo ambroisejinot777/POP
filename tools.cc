@@ -5,47 +5,47 @@
 // POINT
 
 Point::Point(double x, double y)
-    : center_x(x), center_y(y) {}
+    : x(x), y(y) {}
 
 Point::Point(Point const &old_point)
-    : center_x(old_point.center_x), center_y(old_point.center_y) {}
+    : x(old_point.x), y(old_point.y) {}
 
 double Point::get_x() const
 {
-    return center_x;
+    return x;
 }
 
 double Point::get_y() const
 {
-    return center_y;
+    return y;
 }
 
 void Point::set_x(double x)
 {
-    center_x = x;
+    x = x;
 }
 
 void Point::set_y(double y)
 {
-    center_y = y;
+    y = y;
 }
 
 // SQUARE
 
 Square::Square(double x, double y, double w)
-    : square_center(x, y), width(w) {}
+    : center(x, y), width(w) {}
 
 Square::Square(Square const &old_square)
-    : square_center(old_square.square_center), width(old_square.width) {}
+    : center(old_square.center), width(old_square.width) {}
 
 double Square::get_x() const
 {
-    return square_center.get_x();
+    return center.get_x();
 }
 
 double Square::get_y() const
 {
-    return square_center.get_y();
+    return center.get_y();
 }
 
 double Square::get_width() const
@@ -55,12 +55,12 @@ double Square::get_width() const
 
 void Square::set_x(double x)
 {
-    square_center.set_x(x);
+    center.set_x(x);
 }
 
 void Square::set_y(double y)
 {
-    square_center.set_y(y);
+    center.set_y(y);
 }
 
 void Square::set_width(double w)
@@ -71,19 +71,19 @@ void Square::set_width(double w)
 // CIRCLE
 
 Circle::Circle(double x, double y, double r)
-    : circle_center(x, y), radius(r) {}
+    : center(x, y), radius(r) {}
 
 Circle::Circle(Circle const &old_circle)
-    : circle_center(old_circle.circle_center), radius(old_circle.radius) {}
+    : center(old_circle.center), radius(old_circle.radius) {}
 
 double Circle::get_x() const
 {
-    return circle_center.get_x();
+    return center.get_x();
 }
 
 double Circle::get_y() const
 {
-    return circle_center.get_y();
+    return center.get_y();
 }
 
 double Circle::get_radius() const
@@ -93,12 +93,12 @@ double Circle::get_radius() const
 
 void Circle::set_x(double x)
 {
-    circle_center.set_x(x);
+    center.set_x(x);
 }
 
 void Circle::set_y(double y)
 {
-    circle_center.set_y(y);
+    center.set_y(y);
 }
 
 void Circle::set_radius(double r)

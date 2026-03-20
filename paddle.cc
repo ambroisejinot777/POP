@@ -7,19 +7,37 @@ using namespace message;
 // CONSTRUCTEURS DE PADDLE
 
 Paddle::Paddle(double x, double y, double r)
-    : paddle_circle(x, y, r)
+    : circle(x, y, r)
 {
-        check_paddle_y_axis(x, y, r);
-        check_paddle_x_axis(x, y, r);
+    check_paddle_y_axis(x, y, r);
+    check_paddle_x_axis(x, y, r);
 }
 
 Paddle::Paddle(Paddle const &old_paddle)
-    : paddle_circle(old_paddle.paddle_circle)
+    : circle(old_paddle.circle)
 {}
 
 Circle Paddle::get_circle() const
 {
-        return paddle_circle;
+    return circle;
+}
+
+double Paddle::get_x() const
+{
+    return circle.get_x();
+}
+
+double Paddle::get_y() const
+{
+    return circle.get_y();
+}
+void Paddle::set_x(double x)
+{
+    circle.set_x(x);
+}
+void Paddle::set_y(double y)
+{
+    circle.set_y(y);
 }
 
 // FONCTIONS DE VERIFICATION DE SAISIE POUR PADDLE

@@ -1,7 +1,6 @@
 #include "ball.h"
 
 using namespace std;
-using namespace message;
 
 // CONSTRUCTEURS DE BALL
 
@@ -15,8 +14,7 @@ Ball::Ball(double x, double y, double r, double dx, double dy)
 
 Ball::Ball(Ball const &old_ball)
     : circle(old_ball.circle), delta(old_ball.delta)
-{
-}
+{}
 
 double Ball::get_x() const
 {
@@ -53,7 +51,7 @@ void check_ball_x_axis(double x, double y, double r)
 {
     if ((x < r) or (x > (arena_size - r)))
     {
-        error(ball_outside(x, y));
+        error(message::ball_outside(x, y));
     }
 }
 
@@ -61,7 +59,7 @@ void check_ball_y_axis(double x, double y, double r)
 {
     if ((y < 0) or (y > (arena_size - r)))
     {
-        error(ball_outside(x, y));
+        error(message::ball_outside(x, y));
     }
 }
 
@@ -69,6 +67,6 @@ void check_ball_delta(double dx, double dy)
 {
     if ((dx * dx + dy * dy) > (delta_norm_max * delta_norm_max))
     {
-        error(invalid_delta(dx, dy));
+        error(message::invalid_delta(dx, dy));
     }
 }

@@ -10,6 +10,8 @@
 
 using namespace std;
 
+// POINT
+
 class Point
 {
 public:
@@ -21,9 +23,11 @@ public:
     void set_y(double y);
 
 private:
-    double center_x;
-    double center_y;
+    double x;
+    double y;
 };
+
+// SQUARE
 
 class Square
 {
@@ -38,9 +42,11 @@ public:
     void set_width(double w);
 
 private:
-    Point square_center;
+    Point center;
     double width;
 };
+
+// CIRCLE
 
 class Circle
 {
@@ -55,11 +61,13 @@ public:
     void set_radius(double r);
 
 private:
-    Point circle_center;
+    Point center;
     double radius;
 };
 
 void error(string message);
+
+// CHECKING FUNCTIONS
 
 bool circle_circle_intersection(Circle const &c1, Circle const &c2);
 bool circle_square_intersection(Circle const &c, Square const &s);
