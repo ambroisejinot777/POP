@@ -9,7 +9,8 @@ string check_input_arguments(int argc, char *argv[]);
 int main(int argc, char *argv[])
 {
     string file_name = check_input_arguments(argc, argv);
-    start_project(file_name);
+    Game game;
+    game.init(file_name);
 
     return 0;
 }
