@@ -39,9 +39,9 @@ Brick 1 superposed with brick 2
 Code de retour : 1
 
 ----- Test tests/t07.txt -----
-Correct file
+Paddle superposed with brick 3
 
-Code de retour : 0
+Code de retour : 1
 
 ----- Test tests/t08.txt -----
 Ball 1 superposed with ball 2
@@ -49,9 +49,9 @@ Ball 1 superposed with ball 2
 Code de retour : 1
 
 ----- Test tests/t09.txt -----
-Correct file
+Ball 0 superposed with brick 0
 
-Code de retour : 0
+Code de retour : 1
 
 ----- Test tests/t10.txt -----
 Paddle superposed with ball 1
@@ -64,9 +64,9 @@ Delta norm (3.000000;0.100000) must be <= delta_norm_max
 Code de retour : 1
 
 ----- Test tests/t12.txt -----
-Ball at (0.000000;0.000000) is is_outside the arena
+Correct file
 
-Code de retour : 1
+Code de retour : 0
 
 ----- Test tests/t13.txt -----
 Correct file

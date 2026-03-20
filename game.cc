@@ -38,69 +38,69 @@ void start_project(string file_name)
         switch (reading_state)
         {
 
-        case SCORE:
-        {
-            score = check_score(data);
-            reading_state = LIVES;
-            break;
-        }
-
-        case LIVES:
-        {
-            lives = check_lives(data);
-            reading_state = PADDLE;
-            break;
-        }
-
-        case PADDLE:
-        {
-            double paddle_x, paddle_y, paddle_radius;
-            data >> paddle_x >> paddle_y >> paddle_radius;
-            paddle = Paddle(paddle_x, paddle_y, paddle_radius);
-            reading_state = NB_BRICK;
-            break;
-        }
-
-        case NB_BRICK:
-        {
-            data >> nb_brick;
-            reading_state = BRICKS;
-            break;
-        }
-
-        case BRICKS:
-        {
-            read_and_check_brick_data(data, brick_list, brick_counter);
-
-            if (++brick_counter >= nb_brick)
+            case SCORE:
             {
-                reading_state = NB_BALL;
+                score = check_score(data);
+                reading_state = LIVES;
+                break;
             }
-            break;
-        }
 
-        case NB_BALL:
-        {
-            data >> nb_ball;
-            reading_state = BALLS;
-            break;
-        }
-
-        case BALLS:
-        {
-            read_and_check_ball_data(data, ball_list, ball_counter);
-
-            if (++ball_counter >= nb_ball)
+            case LIVES:
             {
-                reading_state = FINISHED;
+                lives = check_lives(data);
+                reading_state = PADDLE;
+                break;
             }
-            break;
-        }
 
-        case FINISHED:
-        {
-            break;
-        }
+            case PADDLE:
+            {
+                double paddle_x, paddle_y, paddle_radius;
+                data >> paddle_x >> paddle_y >> paddle_radius;
+                paddle = Paddle(paddle_x, paddle_y, paddle_radius);
+                reading_state = NB_BRICK;
+                break;
+            }
+
+            case NB_BRICK:
+            {
+                data >> nb_brick;
+                reading_state = BRICKS;
+                break;
+            }
+
+            case BRICKS:
+            {
+                read_and_check_brick_data(data, brick_list, brick_counter);
+
+                if (++brick_counter >= nb_brick)
+                {
+                    reading_state = NB_BALL;
+                }
+                break;
+            }
+
+            case NB_BALL:
+            {
+                data >> nb_ball;
+                reading_state = BALLS;
+                break;
+            }
+
+            case BALLS:
+            {
+                read_and_check_ball_data(data, ball_list, ball_counter);
+
+                if (++ball_counter >= nb_ball)
+                {
+                    reading_state = FINISHED;
+                }
+                break;
+            }
+
+            case FINISHED:
+            {
+                break;
+            }
         }
     }
     file.close();
@@ -133,6 +133,9 @@ void read_and_check_brick_data(istringstream &data, Brick_list &brick_list, int 
     data >> type >> brick_x >> brick_y >> brick_width >> left_bracket >> hit_points >> right_bracket;
     Brick brick(brick_x, brick_y, brick_width, hit_points, type);
 
+    if (circle_square_intersection(paddle.get_circle(), brick.get_square()))
+        error(message::collision_paddle_brick(brick_counter));
+
     for (size_t i(0); i < brick_list.size(); i++)
     {
         if (square_square_intersection(brick_list[i].get_square(), brick.get_square()))
@@ -148,14 +151,19 @@ void read_and_check_ball_data(istringstream &data, Ball_list &ball_list, unsigne
     data >> ball_x >> ball_y >> ball_radius >> ball_dx >> ball_dy;
     Ball ball(ball_x, ball_y, ball_radius, ball_dx, ball_dy);
 
+    if (circle_circle_intersection(ball.get_circle(), paddle.get_circle()))
+        error(message::collision_paddle_ball(ball_counter));
+
     for (size_t i(0); i < ball_list.size(); i++)
     {
         if (circle_circle_intersection(ball_list[i].get_circle(), ball.get_circle()))
             error(message::collision_balls(i, ball_counter));
-        else if (circle_circle_intersection(ball.get_circle(), paddle.get_circle()))
-        {
-            error(message::collision_paddle_ball(ball_counter));
-        }
+    }
+
+    for (size_t i(0); i < brick_list.size(); i++)
+    {
+        if(circle_square_intersection(ball.get_circle(), brick_list[i].get_square()))
+            error(message::collision_ball_brick(ball_counter, i));   
     }
 
     ball_list.push_back(ball);
