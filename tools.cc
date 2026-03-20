@@ -92,8 +92,12 @@ bool circle_square_intersection(Circle const &c, Square const &s)
 {
     double closest_x = max(s.get_x() - s.get_width() / 2, min(c.get_x(), s.get_x() + s.get_width() / 2));
     double closest_y = max(s.get_y() - s.get_width() / 2, min(c.get_y(), s.get_y() + s.get_width() / 2));
-    double distance = sqrt(pow(c.get_x() - closest_x, 2) + pow(c.get_y() - closest_y, 2));
-    return distance < c.get_radius();
+
+    double distance_x = c.get_x() - closest_x;
+    double distance_y = c.get_y() - closest_y;
+
+    double distance_squared = (distance_x * distance_x) + (distance_y * distance_y);
+    return distance_squared < (c.get_radius() * c.get_radius());
 }
 
 bool square_square_intersection(Square const &s1, Square const &s2)
