@@ -182,7 +182,8 @@ void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_cou
     int type, hit_points;
     double brick_x, brick_y, brick_width;
     char left_bracket, right_bracket;
-    data >> type >> brick_x >> brick_y >> brick_width >> left_bracket >> hit_points >> right_bracket;
+    data >> type >> brick_x >> brick_y >> brick_width >> left_bracket 
+         >> hit_points >> right_bracket;
     Brick brick(brick_x, brick_y, brick_width, hit_points, type);
 
     if (circle_square_intersection(paddle.get_circle(), brick.get_square()))
@@ -190,7 +191,8 @@ void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_cou
 
     for (size_t i(0); i < brick_list.size(); i++)
     {
-        if (square_square_intersection(brick_list[i].get_square(), brick.get_square()))
+        if (square_square_intersection(brick_list[i].get_square(),
+                                         brick.get_square()))
             error(message::collision_bricks(i, brick_counter));
     }
 

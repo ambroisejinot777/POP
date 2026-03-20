@@ -52,7 +52,8 @@ void check_paddle_y_axis(double x, double y, double r)
 
 void check_paddle_x_axis(double x, double y, double r)
 {
-        if (((x - sqrt(r * r - y * y)) < 0) or ((x + sqrt(r * r - y * y)) > arena_size))
+        if (((x - sqrt(r * r - y * y)) < 0) or
+            ((x + sqrt(r * r - y * y)) > arena_size))
         {
                 error(paddle_outside(x, y));
         }

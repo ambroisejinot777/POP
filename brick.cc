@@ -12,7 +12,8 @@ Brick::Brick(double x, double y, double width, int hit_points, int type)
 }
 
 Brick::Brick(Brick const &old_brick)
-    : square(old_brick.square), hit_points(old_brick.hit_points), type(old_brick.type) {}
+    : square(old_brick.square), hit_points(old_brick.hit_points), type(old_brick.type)
+    {}
 
 double Brick::get_x() const 
 {
