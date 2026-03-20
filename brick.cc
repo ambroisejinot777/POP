@@ -14,6 +14,21 @@ Brick::Brick(double x = 0.0, double y = 0.0, double width = 0.0, int hit_points 
 Brick::Brick(Brick const &old_brick)
     : square(old_brick.square), hit_points(old_brick.hit_points), type(old_brick.type) {}
 
+double Brick::get_x() const 
+{
+    return square.get_x();
+}
+
+double Brick::get_y() const
+{
+    return square.get_y();
+}
+
+Square Brick::get_square() const
+{
+    return square;
+}
+
 // CHECKING FUNCTIONS
 
 void check_brick_position(double x, double y, double width)

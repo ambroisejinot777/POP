@@ -12,6 +12,9 @@ class Brick
 public:
     Brick(double x, double y, double width, int hit_points, int type);
     Brick(Brick const &old_brick);
+    double get_x() const;
+    double get_y() const;
+    Square get_square() const;
 
 private:
     Square square;
