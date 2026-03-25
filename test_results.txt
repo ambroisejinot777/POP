@@ -1,6 +1,5 @@
 ===== Compilation avec make =====
-g++ -g -Wall -std=c++11 -c tools.cc -o tools.o
-g++ project.o game.o brick.o ball.o paddle.o message.o tools.o -o project
+make: Nothing to be done for 'all'.
 
 ===== Début des tests =====
 

@@ -1,6 +1,6 @@
 #include "game.h"
 
-Game::Game() : paddle(50, -10, 15), brick_list({}), ball_list({})
+Game::Game() : paddle(), brick_list({}), ball_list({})
 {
 }
 
