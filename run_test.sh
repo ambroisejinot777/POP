@@ -3,7 +3,7 @@
 set -u
 
 OUTPUT_FILE="test_results.txt"
-EXECUTABLE="./project"
+EXECUTABLE="./projet"
 TEST_DIR="tests"
 
 : > "$OUTPUT_FILE"
