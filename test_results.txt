@@ -1,4 +1,11 @@
 ===== Compilation avec make =====
+g++ -g -Wall -std=c++17 -c project.cc -o project.o
+g++ -g -Wall -std=c++17 -c game.cc -o game.o
+g++ -g -Wall -std=c++17 -c brick.cc -o brick.o
+g++ -g -Wall -std=c++17 -c ball.cc -o ball.o
+g++ -g -Wall -std=c++17 -c paddle.cc -o paddle.o
+g++ -g -Wall -std=c++17 -c message.cc -o message.o
+g++ -g -Wall -std=c++17 -c tools.cc -o tools.o
 g++ project.o game.o brick.o ball.o paddle.o message.o tools.o -o projet
 
 ===== Début des tests =====

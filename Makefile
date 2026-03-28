@@ -1,7 +1,7 @@
 # Definitions de macros
 
 CXX      = g++
-CXXFLAGS = -g -Wall -std=c++11
+CXXFLAGS = -g -Wall -std=c++17
 CXXFILES = project.cc game.cc brick.cc ball.cc paddle.cc message.cc tools.cc
 OFILES   = $(CXXFILES:.cc=.o)
 
@@ -46,7 +46,7 @@ depend:
 
 clean:
 	@echo " *** EFFACE MODULES OBJET ET EXECUTABLE ***"
-	@/bin/rm -f *.o *.x *.cc~ *.h~ project
+	@/bin/rm -f *.o *.x *.cc~ *.h~ projet
 
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
