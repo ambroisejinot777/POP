@@ -51,7 +51,7 @@ void check_brick_size(double width)
 
 void check_brick_hit_points(int hit_points)
 {
-    if (hit_points < 1 and hit_points > 7)
+    if (hit_points < 1 or hit_points > 7)
     {
         error(message::invalid_hit_points(hit_points));
     }
@@ -59,6 +59,6 @@ void check_brick_hit_points(int hit_points)
 
 void check_brick_type(int type)
 {
-    if (type < 0 or type > 3)
+    if (type < 0 or type > 2)
         error(message::invalid_brick_type(type));
 }
