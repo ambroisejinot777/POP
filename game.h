@@ -29,11 +29,7 @@ public:
     Game();
     // Game(Game const &old_game);
     void init(string file_name);
-    void read_and_check_score(istringstream &data);
-    void read_and_check_lives(istringstream &data);
-    void read_and_check_paddle_data(istringstream &data);
-    void read_and_check_brick_data(istringstream &data, unsigned int brick_counter);
-    void read_and_check_ball_data(istringstream &data, unsigned int ball_counter);
+
     int get_score() const;
     int get_lives() const;
     const Paddle_ptr& get_paddle() const;
@@ -44,7 +40,7 @@ public:
     void set_paddle(Paddle_ptr new_paddle_ptr);
     void add_brick(Brick new_brick);
     void add_ball(Ball new_ball);
-    void empty_lists();
+    void error_and_empty_canvas(string message);
 
 private:
     int score;
@@ -52,6 +48,12 @@ private:
     Paddle_ptr paddle_ptr;
     Brick_list brick_list;
     Ball_list ball_list;
+
+    void read_and_check_score(istringstream &data);
+    void read_and_check_lives(istringstream &data);
+    void read_and_check_paddle_data(istringstream &data);
+    void read_and_check_brick_data(istringstream &data, unsigned int brick_counter);
+    void read_and_check_ball_data(istringstream &data, unsigned int ball_counter);
 };
 
 #endif

@@ -39,26 +39,26 @@ void check_brick_position(double x, double y, double width)
         (y + width / 2 > arena_size) or
         (y - width / 2 < 0))
     {
-        error(message::brick_outside(x, y));
+        display_error(message::brick_outside(x, y));
     }
 }
 
 void check_brick_size(double width)
 {
     if (width < brick_size_min)
-        error(message::invalid_brick_size(width));
+        display_error(message::invalid_brick_size(width));
 }
 
 void check_brick_hit_points(int hit_points)
 {
     if (hit_points < 1 or hit_points > 7)
     {
-        error(message::invalid_hit_points(hit_points));
+        display_error(message::invalid_hit_points(hit_points));
     }
 }
 
 void check_brick_type(int type)
 {
     if (type < 0 or type > 2)
-        error(message::invalid_brick_type(type));
+        display_error(message::invalid_brick_type(type));
 }

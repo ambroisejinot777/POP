@@ -162,14 +162,14 @@ void Game::read_and_check_score(istringstream &data)
 {
     data >> score;
     if (score < 0)
-        error(message::invalid_score(score));
+        display_error(message::invalid_score(score));
 }
 
 void Game::read_and_check_lives(istringstream &data)
 {
     data >> lives;
     if (lives < 0)
-        error(message::invalid_lives(lives));
+        display_error(message::invalid_lives(lives));
 }
 
 void Game::read_and_check_paddle_data(istringstream &data)
@@ -183,19 +183,18 @@ void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_cou
 {
     int type, hit_points;
     double brick_x, brick_y, brick_width;
-    char left_bracket, right_bracket;
-    data >> type >> brick_x >> brick_y >> brick_width >> left_bracket 
-         >> hit_points >> right_bracket;
+    // char left_bracket, right_bracket;
+    data >> type >> brick_x >> brick_y >> brick_width >> hit_points;
     Brick brick(brick_x, brick_y, brick_width, hit_points, type);
 
     if (circle_square_intersection(paddle_ptr->get_circle(), brick.get_square()))
-        error(message::collision_paddle_brick(brick_counter));
+        display_error(message::collision_paddle_brick(brick_counter));
 
     for (size_t i(0); i < brick_list.size(); i++)
     {
         if (square_square_intersection(brick_list[i]->get_square(),
                                          brick.get_square()))
-            error(message::collision_bricks(i, brick_counter));
+            display_error(message::collision_bricks(i, brick_counter));
     }
 
     add_brick(brick);
@@ -208,18 +207,18 @@ void Game::read_and_check_ball_data(istringstream &data, unsigned int ball_count
     Ball ball(ball_x, ball_y, ball_radius, ball_dx, ball_dy);
 
     if (circle_circle_intersection(ball.get_circle(), paddle_ptr->get_circle()))
-        error(message::collision_paddle_ball(ball_counter));
+        display_error(message::collision_paddle_ball(ball_counter));
 
     for (size_t i(0); i < ball_list.size(); i++)
     {
         if (circle_circle_intersection(ball_list[i]->get_circle(), ball.get_circle()))
-            error(message::collision_balls(i, ball_counter));
+            display_error(message::collision_balls(i, ball_counter));
     }
 
     for (size_t i(0); i < brick_list.size(); i++)
     {
         if (circle_square_intersection(ball.get_circle(), brick_list[i]->get_square()))
-            error(message::collision_ball_brick(ball_counter, i));
+            display_error(message::collision_ball_brick(ball_counter, i));
     }
 
     add_ball(ball);
@@ -228,8 +227,10 @@ void Game::read_and_check_ball_data(istringstream &data, unsigned int ball_count
 
 // CLEARING FUNCTIONS
 
-void Game::empty_lists()
+void Game::error_and_empty_canvas(string message)
 {
+    display_error(message);
     brick_list.clear();
     ball_list.clear();
+    paddle_ptr.reset();
 }

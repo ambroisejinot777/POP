@@ -1,0 +1,97 @@
+===== Compilation avec make =====
+g++ -g -Wall -std=c++17 -c tools.cc -o tools.o
+g++ project.o game.o brick.o ball.o paddle.o message.o tools.o -o projet
+
+===== Début des tests =====
+
+----- Test tests/t00.txt -----
+Correct file
+
+Code de retour : 0
+
+----- Test tests/t01.txt -----
+Score (-1) must be >= 0
+
+Code de retour : 1
+
+----- Test tests/t02.txt -----
+Lives (-3) must be >= 0
+
+Code de retour : 1
+
+----- Test tests/t03.txt -----
+Paddle at (50.000000;-20.000000) is is_outside its allowed arena
+
+Code de retour : 1
+
+----- Test tests/t04.txt -----
+Paddle at (11.000000;-16.000000) is is_outside its allowed arena
+
+Code de retour : 1
+
+----- Test tests/t05.txt -----
+Paddle at (50.000000;1.000000) is is_outside its allowed arena
+
+Code de retour : 1
+
+----- Test tests/t06.txt -----
+Brick 1 superposed with brick 2
+
+Code de retour : 1
+
+----- Test tests/t07.txt -----
+Paddle superposed with brick 3
+
+Code de retour : 1
+
+----- Test tests/t08.txt -----
+Ball 1 superposed with ball 2
+
+Code de retour : 1
+
+----- Test tests/t09.txt -----
+Ball 0 superposed with brick 0
+
+Code de retour : 1
+
+----- Test tests/t10.txt -----
+Paddle superposed with ball 1
+
+Code de retour : 1
+
+----- Test tests/t11.txt -----
+Delta norm (3.000000;0.100000) must be <= delta_norm_max
+
+Code de retour : 1
+
+----- Test tests/t12.txt -----
+Correct file
+
+Code de retour : 0
+
+----- Test tests/t13.txt -----
+Correct file
+
+Code de retour : 0
+
+----- Test tests/t14.txt -----
+Color number (32764) must be in [1, 7]
+
+Code de retour : 1
+
+----- Test tests/t15.txt -----
+Color number (32764) must be in [1, 7]
+
+Code de retour : 1
+
+----- Test tests/t16.txt -----
+Color number (32767) must be in [1, 7]
+
+Code de retour : 1
+
+----- Test tests/t17.txt -----
+Color number (32767) must be in [1, 7]
+
+Code de retour : 1
+
+===== Fin des tests =====

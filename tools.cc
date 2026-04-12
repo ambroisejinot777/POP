@@ -108,7 +108,7 @@ void Circle::set_radius(double r)
 
 // UTILITY FUNCTIONS
 
-void error(string message)
+void display_error(string message)
 {
     cout << message;
     exit(1);
