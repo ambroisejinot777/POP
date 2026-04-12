@@ -19,6 +19,8 @@ private:
     Circle circle;
 };
 
+typedef unique_ptr<Paddle> Paddle_ptr; 
+
 // CHECKING FUNCTIONS
 
 void check_paddle_y_axis(double x, double y, double r);

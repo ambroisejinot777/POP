@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <memory>
 
 #include "constants.h"
 
@@ -66,6 +67,8 @@ private:
     Point center;
     double radius;
 };
+
+// ERROR FUNCTION 
 
 void error(string message);
 

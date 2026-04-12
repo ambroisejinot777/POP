@@ -36,19 +36,20 @@ public:
     void read_and_check_ball_data(istringstream &data, unsigned int ball_counter);
     int get_score() const;
     int get_lives() const;
-    Paddle get_paddle() const;
-    Brick_list get_brick_list() const;
-    Ball_list get_ball_list() const;
+    const Paddle_ptr& get_paddle() const;
+    const Brick_list& get_brick_list() const;
+    const Ball_list& get_ball_list() const;
     void set_score(int new_score);
     void set_lives(int new_lives);
-    void set_paddle(Paddle new_paddle);
+    void set_paddle(Paddle_ptr new_paddle_ptr);
     void add_brick(Brick new_brick);
     void add_ball(Ball new_ball);
+    void empty_lists();
 
 private:
     int score;
     int lives;
-    Paddle paddle;
+    Paddle_ptr paddle_ptr;
     Brick_list brick_list;
     Ball_list ball_list;
 };

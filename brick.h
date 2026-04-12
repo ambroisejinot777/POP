@@ -23,7 +23,7 @@ private:
     int type;
 };
 
-typedef vector<Brick>  Brick_list;
+typedef vector<unique_ptr<Brick>>  Brick_list;
 
 
 // CHECKING FUNCTIONS

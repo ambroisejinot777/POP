@@ -27,7 +27,7 @@ private:
 };
 
 
-typedef vector<Ball> Ball_list;
+typedef vector<unique_ptr<Ball>> Ball_list;
 
 // CHECKING FUNCTIONS
 

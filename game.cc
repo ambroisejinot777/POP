@@ -1,6 +1,6 @@
 #include "game.h"
 
-Game::Game() : paddle(), brick_list({}), ball_list({})
+Game::Game() : score(0), lives(0), paddle_ptr(nullptr)
 {
 }
 
@@ -16,17 +16,17 @@ int Game::get_lives() const
     return lives;
 }
 
-Paddle Game::get_paddle() const
+const Paddle_ptr& Game::get_paddle() const
 {
-    return paddle;
+    return paddle_ptr;
 }
 
-Brick_list Game::get_brick_list() const
+const Brick_list& Game::get_brick_list() const
 {
     return brick_list;
 }
 
-Ball_list Game::get_ball_list() const
+const Ball_list& Game::get_ball_list() const
 {
     return ball_list;
 }
@@ -41,19 +41,21 @@ void Game::set_lives(int new_lives)
     lives = new_lives;
 }
 
-void Game::set_paddle(Paddle new_paddle)
+void Game::set_paddle(Paddle_ptr new_paddle_ptr)
 {
-    paddle = new_paddle;
+    paddle_ptr = move(new_paddle_ptr);
 }
 
 void Game::add_brick(Brick new_brick)
 {
-    brick_list.push_back(new_brick);
+    unique_ptr<Brick> ptr = make_unique<Brick>(move(new_brick));
+    brick_list.push_back(move(ptr));
 }
 
 void Game::add_ball(Ball new_ball)
 {
-    ball_list.push_back(new_ball);
+    unique_ptr<Ball> ptr = make_unique<Ball>(move(new_ball));
+    ball_list.push_back(move(ptr));
 }
 
 // INIT AND CHECKING FUNCTIONS
@@ -65,7 +67,7 @@ void Game::init(string file_name)
 
     if (file.fail())
     {
-        cout << "Cannot open the file: " << file_name << endl;
+        cout << "Didn't find the file: " << file_name << endl;
         return;
     }
 
@@ -174,7 +176,7 @@ void Game::read_and_check_paddle_data(istringstream &data)
 {
     double paddle_x, paddle_y, paddle_radius;
     data >> paddle_x >> paddle_y >> paddle_radius;
-    paddle = Paddle(paddle_x, paddle_y, paddle_radius);
+    paddle_ptr = make_unique<Paddle>(Paddle(paddle_x, paddle_y, paddle_radius));
 }
 
 void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_counter)
@@ -186,12 +188,12 @@ void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_cou
          >> hit_points >> right_bracket;
     Brick brick(brick_x, brick_y, brick_width, hit_points, type);
 
-    if (circle_square_intersection(paddle.get_circle(), brick.get_square()))
+    if (circle_square_intersection(paddle_ptr->get_circle(), brick.get_square()))
         error(message::collision_paddle_brick(brick_counter));
 
     for (size_t i(0); i < brick_list.size(); i++)
     {
-        if (square_square_intersection(brick_list[i].get_square(),
+        if (square_square_intersection(brick_list[i]->get_square(),
                                          brick.get_square()))
             error(message::collision_bricks(i, brick_counter));
     }
@@ -205,20 +207,29 @@ void Game::read_and_check_ball_data(istringstream &data, unsigned int ball_count
     data >> ball_x >> ball_y >> ball_radius >> ball_dx >> ball_dy;
     Ball ball(ball_x, ball_y, ball_radius, ball_dx, ball_dy);
 
-    if (circle_circle_intersection(ball.get_circle(), paddle.get_circle()))
+    if (circle_circle_intersection(ball.get_circle(), paddle_ptr->get_circle()))
         error(message::collision_paddle_ball(ball_counter));
 
     for (size_t i(0); i < ball_list.size(); i++)
     {
-        if (circle_circle_intersection(ball_list[i].get_circle(), ball.get_circle()))
+        if (circle_circle_intersection(ball_list[i]->get_circle(), ball.get_circle()))
             error(message::collision_balls(i, ball_counter));
     }
 
     for (size_t i(0); i < brick_list.size(); i++)
     {
-        if (circle_square_intersection(ball.get_circle(), brick_list[i].get_square()))
+        if (circle_square_intersection(ball.get_circle(), brick_list[i]->get_square()))
             error(message::collision_ball_brick(ball_counter, i));
     }
 
     add_ball(ball);
+}
+
+
+// CLEARING FUNCTIONS
+
+void Game::empty_lists()
+{
+    brick_list.clear();
+    ball_list.clear();
 }
