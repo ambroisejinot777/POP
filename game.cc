@@ -197,7 +197,7 @@ void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_cou
     // char left_bracket, right_bracket;
     data >> type >> brick_x >> brick_y >> brick_width >> hit_points;
 
-    if (type == 1)
+    if (type == 1 or type == 2)
     {
         hit_points = 1;
     }
