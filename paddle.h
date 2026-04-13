@@ -8,7 +8,7 @@
 class Paddle
 {
 public:
-    Paddle(double x = 50.0, double y = -10.0, double r = 15.0);
+    Paddle(bool& error_occured, double x = 50.0, double y = -10.0, double r = 15.0);
     Paddle(Paddle const &old_paddle);
     Circle get_circle() const;
     double get_x() const;
@@ -23,7 +23,7 @@ typedef unique_ptr<Paddle> Paddle_ptr;
 
 // CHECKING FUNCTIONS
 
-void check_paddle_y_axis(double x, double y, double r);
-void check_paddle_x_axis(double x, double y, double r);
+void check_paddle_y_axis(double x, double y, double r, bool& error_occured);
+void check_paddle_x_axis(double x, double y, double r, bool& error_occured);
 
 #endif

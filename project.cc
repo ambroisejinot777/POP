@@ -1,4 +1,6 @@
 #include "game.h"
+#include <gtkmm/application.h>
+#include "gui.h"
 
 using namespace std;
 
@@ -15,6 +17,9 @@ int main(int argc, char *argv[])
 
     if(!file_name.empty())
         game.init(file_name);
+
+    auto app = Gtk::Application::create();
+    return app->make_window_and_run<My_window>(1, argv, file_name);
 
     return 0;
 }

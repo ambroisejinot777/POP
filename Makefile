@@ -1,40 +1,36 @@
-# Definitions de macros
+OUT      := project
+CXX      := g++
+CXXFLAGS := -Wall -std=c++17
+PKGS     := gtkmm-4.0
+LINKING  := $(shell pkg-config --cflags $(PKGS))
+LDLIBS   := $(shell pkg-config --libs $(PKGS))
 
-CXX      = g++
-CXXFLAGS = -g -Wall -std=c++17
-CXXFILES = project.cc game.cc brick.cc ball.cc paddle.cc message.cc tools.cc
-OFILES   = $(CXXFILES:.cc=.o)
+BUILD_DIR := build
 
-# Definition de la premiere regle
+CXXFILES := tools.cc message.cc paddle.cc brick.cc ball.cc graphic.cc gui.cc game.cc project.cc
+OFILES   := $(addprefix $(BUILD_DIR)/, $(CXXFILES:.cc=.o))
 
-all: project
+.PHONY: all clean tests
 
-project.o : project.cc game.h
-	$(CXX) $(CXXFLAGS) -c project.cc -o project.o
+all: $(OUT)
 
-game.o : game.cc game.h message.h brick.h ball.h paddle.h
-	$(CXX) $(CXXFLAGS) -c game.cc -o game.o
+$(BUILD_DIR)/%.o: %.cc
+	@mkdir -p $(dir $@)
+	@echo "Compiling $<..."
+	@$(CXX) $(CXXFLAGS) $(LINKING) -c $< -o $@
 
-brick.o : brick.cc brick.h message.h
-	$(CXX) $(CXXFLAGS) -c brick.cc -o brick.o
+$(OUT): $(OFILES)
+	@$(CXX) $(CXXFLAGS) $(LINKING) $^ -o $@ $(LDLIBS)
 
-ball.o : ball.cc ball.h message.h
-	$(CXX) $(CXXFLAGS) -c ball.cc -o ball.o
+clean:
+	@echo "Cleaning project..."
+	@rm -rf $(BUILD_DIR) $(OUT)
 
-paddle.o : paddle.cc paddle.h message.h
-	$(CXX) $(CXXFLAGS) -c paddle.cc -o paddle.o
-
-message.o : message.cc message.h
-	$(CXX) $(CXXFLAGS) -c message.cc -o message.o
-
-tools.o : tools.cc tools.h
-	$(CXX) $(CXXFLAGS) -c tools.cc -o tools.o
-
-project : $(OFILES)
-	$(CXX) $(OFILES) -o projet
-
-
-# Definitions de cibles particulieres
+tests: $(OUT)
+	@for test in $$(ls tests); do \
+		echo "Running $$test..."; \
+		./$(OUT) tests/$$test; \
+	done
 
 depend:
 	@echo " *** MISE A JOUR DES DEPENDANCES ***"
@@ -43,17 +39,3 @@ depend:
 	  egrep -v "/usr/include" \
 	 ) >Makefile.new
 	@mv Makefile.new Makefile
-
-clean:
-	@echo " *** EFFACE MODULES OBJET ET EXECUTABLE ***"
-	@/bin/rm -f *.o *.x *.cc~ *.h~ projet
-
-
-# DO NOT DELETE THIS LINE -- make depend depends on it.
-project.o: project.cc game.h message.h brick.h tools.h ball.h constants.h
-game.o: game.cc game.h message.h brick.h tools.h ball.h constants.h
-brick.o: brick.cc brick.h tools.h message.h
-ball.o: ball.cc ball.h constants.h tools.h message.h
-paddle.o: paddle.cc paddle.h tools.h message.h
-message.o: message.cc message.h
-tools.o: tools.cc tools.h

@@ -78,6 +78,8 @@ void Game::init(string file_name)
     unsigned int nb_ball;
     unsigned int ball_counter(0);
 
+    bool error_occured(false);
+
     while (getline(file >> ws, line))
     {
 
@@ -93,21 +95,21 @@ void Game::init(string file_name)
 
         case SCORE:
         {
-            read_and_check_score(data);
+            read_and_check_score(data, error_occured);
             reading_state = LIVES;
             break;
         }
 
         case LIVES:
         {
-            read_and_check_lives(data);
+            read_and_check_lives(data, error_occured);
             reading_state = PADDLE;
             break;
         }
 
         case PADDLE:
         {
-            read_and_check_paddle_data(data);
+            read_and_check_paddle_data(data, error_occured);
             reading_state = NB_BRICK;
             break;
         }
@@ -121,7 +123,7 @@ void Game::init(string file_name)
 
         case BRICKS:
         {
-            read_and_check_brick_data(data, brick_counter);
+            read_and_check_brick_data(data, brick_counter, error_occured);
 
             if (++brick_counter >= nb_brick)
             {
@@ -139,7 +141,7 @@ void Game::init(string file_name)
 
         case BALLS:
         {
-            read_and_check_ball_data(data, ball_counter);
+            read_and_check_ball_data(data, ball_counter, error_occured);
 
             if (++ball_counter >= nb_ball)
             {
@@ -153,61 +155,84 @@ void Game::init(string file_name)
             break;
         }
         }
+    if (error_occured == true)
+        return;
     }
     file.close();
     cout << message::success();
 }
 
-void Game::read_and_check_score(istringstream &data)
+void Game::read_and_check_score(istringstream &data, bool& error_occured)
 {
     data >> score;
     if (score < 0)
+    {
         display_error(message::invalid_score(score));
+        error_occured=true;
+    }
+    
 }
 
-void Game::read_and_check_lives(istringstream &data)
+void Game::read_and_check_lives(istringstream &data, bool& error_occured)
 {
     data >> lives;
     if (lives < 0)
+    {
         display_error(message::invalid_lives(lives));
+        error_occured = true;
+    }
 }
 
-void Game::read_and_check_paddle_data(istringstream &data)
+void Game::read_and_check_paddle_data(istringstream &data, bool& error_occured)
 {
     double paddle_x, paddle_y, paddle_radius;
     data >> paddle_x >> paddle_y >> paddle_radius;
-    paddle_ptr = make_unique<Paddle>(Paddle(paddle_x, paddle_y, paddle_radius));
+    paddle_ptr = make_unique<Paddle>(Paddle(error_occured, paddle_x, paddle_y, paddle_radius));
 }
 
-void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_counter)
+void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_counter, bool& error_occured)
 {
     int type, hit_points;
     double brick_x, brick_y, brick_width;
     // char left_bracket, right_bracket;
     data >> type >> brick_x >> brick_y >> brick_width >> hit_points;
-    Brick brick(brick_x, brick_y, brick_width, hit_points, type);
+
+    if (type == 1)
+    {
+        hit_points = 1;
+    }
+
+    Brick brick(error_occured, brick_x, brick_y, brick_width, hit_points, type);
 
     if (circle_square_intersection(paddle_ptr->get_circle(), brick.get_square()))
+    {
         display_error(message::collision_paddle_brick(brick_counter));
-
+        error_occured=true;
+    }
     for (size_t i(0); i < brick_list.size(); i++)
     {
         if (square_square_intersection(brick_list[i]->get_square(),
                                          brick.get_square()))
+        {
             display_error(message::collision_bricks(i, brick_counter));
+            error_occured=true;
+        }
     }
 
     add_brick(brick);
 }
 
-void Game::read_and_check_ball_data(istringstream &data, unsigned int ball_counter)
+void Game::read_and_check_ball_data(istringstream &data, unsigned int ball_counter, bool& error_occured)
 {
     double ball_x, ball_y, ball_radius, ball_dx, ball_dy;
     data >> ball_x >> ball_y >> ball_radius >> ball_dx >> ball_dy;
-    Ball ball(ball_x, ball_y, ball_radius, ball_dx, ball_dy);
+    Ball ball(error_occured, ball_x, ball_y, ball_radius, ball_dx, ball_dy);
 
     if (circle_circle_intersection(ball.get_circle(), paddle_ptr->get_circle()))
+    {
         display_error(message::collision_paddle_ball(ball_counter));
+        error_occured=true;
+    }
 
     for (size_t i(0); i < ball_list.size(); i++)
     {
@@ -218,19 +243,11 @@ void Game::read_and_check_ball_data(istringstream &data, unsigned int ball_count
     for (size_t i(0); i < brick_list.size(); i++)
     {
         if (circle_square_intersection(ball.get_circle(), brick_list[i]->get_square()))
+        {
             display_error(message::collision_ball_brick(ball_counter, i));
+            error_occured=true;
+        }
     }
 
     add_ball(ball);
-}
-
-
-// CLEARING FUNCTIONS
-
-void Game::error_and_empty_canvas(string message)
-{
-    display_error(message);
-    brick_list.clear();
-    ball_list.clear();
-    paddle_ptr.reset();
 }

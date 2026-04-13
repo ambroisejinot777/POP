@@ -6,11 +6,11 @@ using namespace message;
 
 // CONSTRUCTEURS DE PADDLE
 
-Paddle::Paddle(double x, double y, double r)
+Paddle::Paddle(bool& error_occured, double x, double y, double r)
     : circle(x, y, r)
 {
-    check_paddle_y_axis(x, y, r);
-    check_paddle_x_axis(x, y, r);
+    check_paddle_y_axis(x, y, r, error_occured);
+    check_paddle_x_axis(x, y, r, error_occured);
 }
 
 Paddle::Paddle(Paddle const &old_paddle)
@@ -42,19 +42,21 @@ void Paddle::set_y(double y)
 
 // FONCTIONS DE VERIFICATION DE SAISIE POUR PADDLE
 
-void check_paddle_y_axis(double x, double y, double r)
+void check_paddle_y_axis(double x, double y, double r, bool& error_occured)
 {
         if ((y > 0) or ((y + r) <= 0))
         {
             display_error(paddle_outside(x, y));
+            error_occured=true;
         }
 }
 
-void check_paddle_x_axis(double x, double y, double r)
+void check_paddle_x_axis(double x, double y, double r, bool& error_occured)
 {
         if (((x - sqrt(r * r - y * y)) < 0) or
             ((x + sqrt(r * r - y * y)) > arena_size))
         {
             display_error(paddle_outside(x, y));
+            error_occured=true;
         }
 }

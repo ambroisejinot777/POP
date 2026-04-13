@@ -4,12 +4,12 @@ using namespace std;
 
 // CONSTRUCTEURS DE BALL
 
-Ball::Ball(double x, double y, double r, double dx, double dy)
+Ball::Ball(bool& error_occured, double x, double y, double r, double dx, double dy)
     : circle(x, y, r), delta(dx, dy)
 {
-    check_ball_x_axis(x, y, r);
-    check_ball_y_axis(x, y, r);
-    check_ball_delta(dx, dy);
+    check_ball_x_axis(x, y, r, error_occured);
+    check_ball_y_axis(x, y, r, error_occured);
+    check_ball_delta(dx, dy, error_occured);
 }
 
 Ball::Ball(Ball const &old_ball)
@@ -47,26 +47,29 @@ Circle Ball::get_circle() const
 }
 
 // FONCTIONS D'ACTIONS DE BALL
-void check_ball_x_axis(double x, double y, double r)
+void check_ball_x_axis(double x, double y, double r, bool& error_occured)
 {
     if ((x < r) or (x > (arena_size - r)))
     {
         display_error(message::ball_outside(x, y));
+        error_occured=true;
     }
 }
 
-void check_ball_y_axis(double x, double y, double r)
+void check_ball_y_axis(double x, double y, double r, bool& error_occured)
 {
     if ((y < 0) or (y > (arena_size - r)))
     {
         display_error(message::ball_outside(x, y));
+        error_occured=true;
     }
 }
 
-void check_ball_delta(double dx, double dy)
+void check_ball_delta(double dx, double dy, bool& error_occured)
 {
     if ((dx * dx + dy * dy) > (delta_norm_max * delta_norm_max))
     {
         display_error(message::invalid_delta(dx, dy));
+        error_occured=true;
     }
 }

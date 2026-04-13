@@ -11,7 +11,7 @@ using namespace std;
 class Ball
 {
 public:
-    Ball(double x = 0.0, double y = 0.0, double r = 0.0,
+    Ball(bool& error_occured, double x = 0.0, double y = 0.0, double r = 0.0,
          double dx = 0.0, double dy = 0.0);
     Ball(Ball const &old_ball);
     double get_x() const;
@@ -31,9 +31,9 @@ typedef vector<unique_ptr<Ball>> Ball_list;
 
 // CHECKING FUNCTIONS
 
-void check_ball_x_axis(double x, double y, double r);
-void check_ball_y_axis(double x, double y, double r);
-void check_ball_delta(double dx, double dy);
+void check_ball_x_axis(double x, double y, double r, bool& error_occured);
+void check_ball_y_axis(double x, double y, double r, bool& error_occured);
+void check_ball_delta(double dx, double dy, bool& error_occured);
 
 
 
