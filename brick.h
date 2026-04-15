@@ -5,7 +5,7 @@
 #include "tools.h"
 #include "graphic.h"
 
-BRICK CLASS
+// BRICK CLASS
 
 class Brick
 {
