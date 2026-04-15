@@ -168,8 +168,7 @@ void Game::read_and_check_score(istringstream &data, bool& error_occured)
     data >> score;
     if (score < 0)
     {
-        display_error(message::invalid_score(score));
-        error_occured=true;
+        display_error(message::invalid_score(score), error_occured);
     }
     
 }
@@ -179,8 +178,7 @@ void Game::read_and_check_lives(istringstream &data, bool& error_occured)
     data >> lives;
     if (lives < 0)
     {
-        display_error(message::invalid_lives(lives));
-        error_occured = true;
+        display_error(message::invalid_lives(lives), error_occured);
     }
 }
 
@@ -207,16 +205,14 @@ void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_cou
 
     if (circle_square_intersection(paddle_ptr->get_circle(), brick.get_square()))
     {
-        display_error(message::collision_paddle_brick(brick_counter));
-        error_occured=true;
+        display_error(message::collision_paddle_brick(brick_counter), error_occured);
     }
     for (size_t i(0); i < brick_list.size(); i++)
     {
         if (square_square_intersection(brick_list[i]->get_square(),
                                          brick.get_square()))
         {
-            display_error(message::collision_bricks(i, brick_counter));
-            error_occured=true;
+            display_error(message::collision_bricks(i, brick_counter), error_occured);
         }
     }
 

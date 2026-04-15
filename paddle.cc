@@ -46,8 +46,7 @@ void check_paddle_y_axis(double x, double y, double r, bool& error_occured)
 {
         if ((y > 0) or ((y + r) <= 0))
         {
-            display_error(paddle_outside(x, y));
-            error_occured=true;
+            display_error(paddle_outside(x, y), error_occured);
         }
 }
 
@@ -56,7 +55,6 @@ void check_paddle_x_axis(double x, double y, double r, bool& error_occured)
         if (((x - sqrt(r * r - y * y)) < 0) or
             ((x + sqrt(r * r - y * y)) > arena_size))
         {
-            display_error(paddle_outside(x, y));
-            error_occured=true;
+            display_error(paddle_outside(x, y), error_occured);
         }
 }

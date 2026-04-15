@@ -111,7 +111,7 @@ void Circle::set_radius(double r)
 void display_error(string message, bool& error_occured)
 {
     cout << message;
-    error_occured=false;
+    error_occured=true;
 }
 
 // INTERSECTION FUNCTIONS

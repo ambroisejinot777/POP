@@ -39,8 +39,7 @@ void check_brick_position(double x, double y, double width, bool& error_occured)
         (y + width / 2 > arena_size) or
         (y - width / 2 < 0))
     {
-        display_error(message::brick_outside(x, y));
-        error_occured=true;
+        display_error(message::brick_outside(x, y), error_occured);
     }
 }
 
@@ -48,8 +47,7 @@ void check_brick_size(double width, bool& error_occured)
 {
     if (width < brick_size_min)
     {
-        display_error(message::invalid_brick_size(width));
-        error_occured=true;
+        display_error(message::invalid_brick_size(width), error_occured);
     }
 }
 
@@ -57,8 +55,7 @@ void check_brick_hit_points(int hit_points, bool& error_occured)
 {
     if (hit_points < 1 or hit_points > 7)
     {
-        display_error(message::invalid_hit_points(hit_points));
-        error_occured=true;
+        display_error(message::invalid_hit_points(hit_points), error_occured);
     }
 }
 
@@ -66,7 +63,6 @@ void check_brick_type(int type, bool& error_occured)
 {
     if (type < 0 or type > 2)
     {
-        display_error(message::invalid_brick_type(type));
-        error_occured=true;
+        display_error(message::invalid_brick_type(type), error_occured);
     }
 }
