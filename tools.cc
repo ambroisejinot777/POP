@@ -108,9 +108,10 @@ void Circle::set_radius(double r)
 
 // UTILITY FUNCTIONS
 
-void display_error(string message)
+void display_error(string message, bool& error_occured)
 {
     cout << message;
+    error_occured=false;
 }
 
 // INTERSECTION FUNCTIONS

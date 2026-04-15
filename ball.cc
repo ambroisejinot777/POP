@@ -51,8 +51,7 @@ void check_ball_x_axis(double x, double y, double r, bool& error_occured)
 {
     if ((x < r) or (x > (arena_size - r)))
     {
-        display_error(message::ball_outside(x, y));
-        error_occured=true;
+        display_error(message::ball_outside(x, y), error_occured);
     }
 }
 
@@ -60,8 +59,7 @@ void check_ball_y_axis(double x, double y, double r, bool& error_occured)
 {
     if ((y < 0) or (y > (arena_size - r)))
     {
-        display_error(message::ball_outside(x, y));
-        error_occured=true;
+        display_error(message::ball_outside(x, y), error_occured);
     }
 }
 
@@ -69,7 +67,6 @@ void check_ball_delta(double dx, double dy, bool& error_occured)
 {
     if ((dx * dx + dy * dy) > (delta_norm_max * delta_norm_max))
     {
-        display_error(message::invalid_delta(dx, dy));
-        error_occured=true;
+        display_error(message::invalid_delta(dx, dy), error_occured);
     }
 }

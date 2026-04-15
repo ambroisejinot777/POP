@@ -155,11 +155,12 @@ void Game::init(string file_name)
             break;
         }
         }
-    if (error_occured == true)
+    if (error_occured)
         return;
     }
     file.close();
     cout << message::success();
+
 }
 
 void Game::read_and_check_score(istringstream &data, bool& error_occured)
@@ -230,22 +231,22 @@ void Game::read_and_check_ball_data(istringstream &data, unsigned int ball_count
 
     if (circle_circle_intersection(ball.get_circle(), paddle_ptr->get_circle()))
     {
-        display_error(message::collision_paddle_ball(ball_counter));
-        error_occured=true;
+        display_error(message::collision_paddle_ball(ball_counter), error_occured);
     }
 
     for (size_t i(0); i < ball_list.size(); i++)
     {
         if (circle_circle_intersection(ball_list[i]->get_circle(), ball.get_circle()))
-            display_error(message::collision_balls(i, ball_counter));
+        {
+            display_error(message::collision_balls(i, ball_counter), error_occured);
+        }
     }
 
     for (size_t i(0); i < brick_list.size(); i++)
     {
         if (circle_square_intersection(ball.get_circle(), brick_list[i]->get_square()))
         {
-            display_error(message::collision_ball_brick(ball_counter, i));
-            error_occured=true;
+            display_error(message::collision_ball_brick(ball_counter, i), error_occured);
         }
     }
 

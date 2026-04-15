@@ -70,7 +70,7 @@ private:
 
 // ERROR FUNCTION 
 
-void display_error(string message);
+void display_error(string message, bool& error_occured);
 
 // CHECKING FUNCTIONS
 
