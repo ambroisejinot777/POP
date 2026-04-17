@@ -43,7 +43,6 @@ public:
     void update_balls_data();   
     void update_paddle_position(double x, Brick_list const &bricks);
 
-
     // void error_and_empty_canvas(string message);
 
 private:

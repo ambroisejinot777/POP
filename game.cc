@@ -325,3 +325,63 @@ void Game::reset()
     ball_list.clear();
 }
 
+void Game::save(const string &file_name) const
+{
+    ofstream file(file_name);
+    if (!file.is_open())
+    {
+        cout << "Could not open file: " << file_name << endl;
+        return;
+    }
+
+    // Score
+    file << "# saved game\n\n";
+    file << "# score\n";
+    file << score << "\n\n";
+
+    // Lives
+    file << "# lives\n";
+    file << lives << "\n\n";
+
+    // Paddle
+    file << "# paddle\n";
+    if (paddle_ptr)
+    {
+        file << paddle_ptr->get_x() << " "
+             << paddle_ptr->get_y() << " "
+             << paddle_ptr->get_radius() << "\n\n";
+    }
+
+    // Bricks
+    file << "# bricks\n";
+    file << brick_list.size() << "\n";
+    for (const auto &brick : brick_list)
+    {
+        file << "\t" << brick->get_type() << " "
+             << brick->get_x() << " "
+             << brick->get_y() << " "
+             << brick->get_width();
+        // hit_points uniquement pour RainbowBrick (type 0)
+        if (brick->get_type() == 0)
+        {
+            file << " " << brick->get_hitpoints();
+        }
+        file << "\n";
+    }
+    file << "\n";
+
+    // Balls
+    file << "# balls\n";
+    file << ball_list.size() << "\n";
+    for (const auto &ball : ball_list)
+    {
+        file << "\t" << ball->get_x() << " "
+             << ball->get_y() << " "
+             << ball->get_radius() << " "
+             << ball->get_dx() << " "
+             << ball->get_dy() << "\n";
+    }
+
+    file.close();
+    cout << "Game saved to " << file_name << endl;
+}
