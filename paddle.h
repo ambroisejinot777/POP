@@ -18,7 +18,7 @@ public:
     void set_x(double x);
     void set_y(double y);
     void update_position(double x);
-    void draw(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r);
+    void draw(const Cairo::RefPtr<Cairo::Context> &cr);
     
     private : Circle circle;
 };

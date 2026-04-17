@@ -55,7 +55,7 @@ void Ball::update_position()
 
 void Ball::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 {
-    draw_circle(cr, get_x(, get_y(), get_radius()));
+    draw_circle(cr, get_x(), get_y(), get_radius());
 }
 
 

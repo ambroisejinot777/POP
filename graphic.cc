@@ -7,11 +7,6 @@ using namespace std;
 
 void set_color(Color color);
 
-enum WorB
-{
-    BLACK,
-    WHITE,
-}
 
 static const Cairo::RefPtr<Cairo::Context> *ptcr(nullptr);
 
@@ -21,20 +16,24 @@ void graphic_set_context(const Cairo::RefPtr<Cairo::Context> &cr)
     ptcr = &cr;
 }
 
-void draw_square(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double w, Color color, int type_brick)
+void draw_square(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double w, Color color)
 {
-    cr->rectangle(x - w/2, y - w/2, w, w);
     graphic_set_context(cr);
+    cr->rectangle(x - w/2, y - w/2, w, w);
     set_color(color);
     cr->fill();
 }
 
-void draw_circle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r, WorB color=BLACK)
+void draw_circle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r, Color color)
 {
     cr->arc(x, y, r, 0, 2 * M_PI);
-    if (color = BLACK)
+    if (color == BLACK)
     {
-        cr->set_source_rgb(0.0, 0.0, 0.0)
+        cr->set_source_rgb(0.0, 0.0, 0.0);
+    }
+    else 
+    {
+        cr->set_source_rgb(1.0, 1.0, 1.0);
     }
     cr->fill();
 }

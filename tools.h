@@ -6,6 +6,7 @@
 #include <cmath>
 #include <vector>
 #include <memory>
+#include "graphic_gui.h"
 
 #include "constants.h"
 

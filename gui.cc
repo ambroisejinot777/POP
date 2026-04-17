@@ -274,10 +274,7 @@ void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int 
     draw_all_balls(cr);
     if (game.get_paddle()!=nullptr)
     {
-        double paddle_x((game.get_paddle())->get_x());
-        double paddle_y((game.get_paddle())->get_y());
-        double paddle_r(((game.get_paddle())->get_circle()).get_radius());
-        draw_paddle(cr, paddle_x, paddle_y, paddle_r);
+        (game.get_paddle())->draw(cr);
     }
     // TODO: draw the game
 }
@@ -317,14 +314,7 @@ void My_window::draw_all_bricks(const Cairo::RefPtr<Cairo::Context> &cr)
 {
     for (const auto& brick: game.get_brick_list())
     {
-        double x = brick->get_x();
-        double y = brick->get_y();
-        double w = (brick->get_square()).get_width();
-        int t = brick->get_type();
-        Color color = brick->get_color();
-
-
-        draw_brick(cr, x, y, w, color, t);
+        brick->draw(cr);
     }
 }
 
@@ -332,10 +322,6 @@ void My_window::draw_all_balls(const Cairo::RefPtr<Cairo::Context> &cr)
 {
     for (const auto& ball: game.get_ball_list())
     {
-        double x = ball->get_x();
-        double y = ball->get_y();
-        double r = ball->get_radius();
-
-        draw_ball(cr, x, y, r);
+        ball->draw(cr);
     }
 }

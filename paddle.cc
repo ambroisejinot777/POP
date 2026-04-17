@@ -32,7 +32,7 @@ double Paddle::get_y() const
     return circle.get_y();
 }
 
-double get_radius() const
+double Paddle::get_radius() const
 {
     return circle.get_radius();
 }
@@ -51,10 +51,10 @@ void Paddle::update_position(double x)
     set_x(x);
 }
 
-void Paddle::draw(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r)
+void Paddle::draw(const Cairo::RefPtr<Cairo::Context> &cr)
 {
-    draw_circle(cr, x, y, get_radius());
-    draw_circle(cr, x, y, get_radius()-paddle_thickness, WHITE);
+    draw_circle(cr, get_x(), get_y(), get_radius());
+    draw_circle(cr, get_x(), get_y(), get_radius()-paddle_thickness, WHITE);
 }
 
 // FONCTIONS DE VERIFICATION DE SAISIE POUR PADDLE
