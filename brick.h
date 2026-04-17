@@ -22,30 +22,29 @@ public:
     Square get_square() const;
 
     int get_hitpoints() const;
-    bool is_destroyed();
+    bool is_destroyed() const;
+    Color get_color() const;
 
-    virtual void hit_reaction() =0;
-    virtual Color get_color() const =0;
+    virtual void hit_reaction() = 0;
 
 private:
     Square square;
     int hit_points;
     int type;
+    Color color;
 };
 
 class RainbowBrick : public Brick
 {
 public:
-    RainbowBrick(double x, double y, double width, int hit_points);
+    RainbowBrick(bool& error_occured, double x, double y, double width, int hit_points, Color color_brick);
     void hit_reaction() override;
-    Color get_color() const override;
 };
 
 class BallBrick : public Brick
 {
     BallBrick(double x, double y, double width, double new_ball_radius);
     void hit_reaction() override;
-    Color get_color() const override;
     double get_new_ball_radius() const;
 
 private:
@@ -56,7 +55,6 @@ class SplitBrick : public Brick
 {
     SplitBrick(double x, double y, double width, int hit_points);
     void hit_reaction() override;
-    Color get_color() const override;
 };
 
 

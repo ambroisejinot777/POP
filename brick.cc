@@ -30,20 +30,17 @@ Square Brick::get_square() const
     return square;
 }
 
-//
-
-RainbowBrick::RainbowBrick(bool& error_occured, double x, double y, double width, int hit_points, int type)
-    : Brick(error_occured, x, y, width, hit_points, type)
+int Brick::get_hitpoints() const
 {
-    check_brick_hit_points(hit_points);
+    return hit_points;
 }
 
-void RainbowBrick::hit_reaction()
+bool Brick::is_destroyed() const
 {
-    
+    return hit_points <= 0;
 }
 
-Color RainbowBrick::get_color(hit_points) const
+Color Brick::get_color() const
 {
     switch (hit_points)
     {
@@ -60,9 +57,29 @@ Color RainbowBrick::get_color(hit_points) const
     case 2:
         return ORANGE;
     default:
-        return RED; // case 1, et sécurité si 0
+        return RED;
     }
 }
+
+// RAINBOWBRICK
+
+RainbowBrick::RainbowBrick(bool& error_occured, double x, double y, double width, int hit_points, Color color_brick)
+    : Brick(error_occured, x, y, width, hit_points,)
+{
+    check_brick_hit_points(hit_points);
+}
+
+void RainbowBrick::hit_reaction()
+{
+    
+}
+
+// BALLBRICK
+
+BallBrick::BallBrick()
+
+// SPLITBRICK
+
 
 // CHECKING FUNCTIONS
 
