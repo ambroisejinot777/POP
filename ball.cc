@@ -53,6 +53,12 @@ void Ball::update_position()
     cout << delta.get_x() << delta.get_y() << endl;
 }
 
+void Ball::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
+{
+    draw_circle(cr, get_x(, get_y(), get_radius()));
+}
+
+
 // FONCTIONS D'ACTIONS DE BALL
 void check_ball_x_axis(double x, double y, double r, bool& error_occured)
 {

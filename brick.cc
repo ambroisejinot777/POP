@@ -25,6 +25,11 @@ double Brick::get_y() const
     return square.get_y();
 }
 
+double Brick::get_width() const
+{
+    return square.get_width();
+}
+
 Square Brick::get_square() const
 {
     return square;
@@ -66,6 +71,11 @@ Color Brick::get_color() const
     }
 }
 
+
+void Brick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
+{
+    draw_square(cr, get_x(), get_y(), get_width(), color);
+}
 // RAINBOWBRICK
 
 RainbowBrick::RainbowBrick(bool& error_occured, double x, double y, double width, int hit_points, int type, Color color_brick)

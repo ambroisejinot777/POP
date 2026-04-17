@@ -19,11 +19,13 @@ public:
 
     double get_x() const;
     double get_y() const;
+    double get_width() const;
     Square get_square() const;
     int get_type() const;
     int get_hitpoints() const;
     bool is_destroyed() const;
     Color get_color() const;
+    void draw(const Cairo::RefPtr<Cairo::Context> &cr) const;
 
     // virtual void hit_reaction() = 0;
 
