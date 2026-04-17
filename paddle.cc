@@ -46,27 +46,6 @@ void Paddle::set_y(double y)
     circle.set_y(y);
 }
 
-void Paddle::update_position(double new_x, Brick_list const &bricks)
-{
-    double min_x = half_paddle_width(get_x(), get_y(), get_radius());
-    double max_x = arena_size - half_paddle_width(get_x(), get_y(), get_radius());
-    
-    if(new_x<min_x) set_x(min_x);
-    else if (new_x > max_x) set_x(max_x);
-
-    Circle temp_circle;
-    temp_circle.set_x(new_x);
-    temp_circle.set_y(get_y());
-    temp_circle.set_radius(get_radius());
-
-    for (const auto& brick: bricks)
-    {
-        if (circle_square_intersection(temp_circle, brick->get_square())) return;
-    }
-
-
-    et_x(new_x);
-}
 
 void Paddle::draw(const Cairo::RefPtr<Cairo::Context> &cr)
 {

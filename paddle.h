@@ -16,7 +16,6 @@ public:
     double get_radius() const;
     void set_x(double x);
     void set_y(double y);
-    void update_position(double x, Brick_list const &bricks);
     void draw(const Cairo::RefPtr<Cairo::Context> &cr);
     
 private : 

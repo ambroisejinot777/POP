@@ -2,13 +2,15 @@
 #include "constants.h"
 // CONSTRUCTORS
 
-Brick::Brick(bool& error_occured, double x, double y, double width, int hit_points, int type, Color color_brick)
-    : square(x, y, width), hit_points(hit_points), type(type), color(color_brick)
+Brick::Brick(bool& error_occured, double x, double y, double width, int hit_points, int type)
+    : square(x, y, width), hit_points(hit_points), type(type)
 {
     check_brick_position(x, y, width, error_occured);
     check_brick_size(width, error_occured);
     check_brick_hit_points(hit_points, error_occured);
     check_brick_type(type, error_occured);
+
+    color = get_color();
 }
 
  Brick::Brick(Brick const &old_brick)
@@ -78,8 +80,8 @@ void Brick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 }
 // RAINBOWBRICK
 
-RainbowBrick::RainbowBrick(bool& error_occured, double x, double y, double width, int hit_points, int type, Color color_brick)
-    : Brick(error_occured, x, y, width, hit_points, type, color_brick)
+RainbowBrick::RainbowBrick(bool& error_occured, double x, double y, double width, int hit_points, int type)
+    : Brick(error_occured, x, y, width, hit_points, type)
 {
     check_brick_hit_points(hit_points, error_occured);
 }
@@ -96,8 +98,8 @@ void RainbowBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 
 // BALLBRICK
 
-BallBrick::BallBrick(bool &error_occured, double x, double y, double width, int hit_points, int type, Color color_brick, double new_ball_radius)
-    : Brick(error_occured, x, y, width, type ,hit_points), new_ball_radius(new_ball_radius)
+BallBrick::BallBrick(bool &error_occured, double x, double y, double width, int hit_points, int type)
+    : Brick(error_occured, x, y, width, type ,hit_points)
 {
     hit_points = 1;
 }
@@ -105,7 +107,7 @@ BallBrick::BallBrick(bool &error_occured, double x, double y, double width, int 
 void BallBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 {
     draw_square(cr, get_x(), get_y(), get_width(), get_color());
-    draw_circle(cr, get_x(), get_y(), new_ball_radius)
+    draw_circle(cr, get_x(), get_y(), new_ball_radius);
 }
 
 // void BallBrick::hit_reaction()
@@ -115,7 +117,7 @@ void BallBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 
 // SPLITBRICK
 
-SplitBrick::SplitBrick(bool &error_occured, double x, double y, double width, int hit_points, int type, Color color_brick)
+SplitBrick::SplitBrick(bool &error_occured, double x, double y, double width, int hit_points, int type)
     : Brick(error_occured, x, y, width, type, hit_points)
 {
 

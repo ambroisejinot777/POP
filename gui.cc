@@ -306,7 +306,7 @@ void My_window::on_drawing_move(double x, double y)
 
     double game_x = (x - (width - side) / 2.0) * arena_size / side;
 
-    (game.get_paddle())->update_position(game_x, game.get_brick_list());
+    game.update_paddle_position(game_x, game.get_brick_list());
 }
 
 

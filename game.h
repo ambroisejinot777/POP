@@ -38,9 +38,11 @@ public:
     void set_score(int new_score);
     void set_lives(int new_lives);
     void set_paddle(Paddle_ptr new_paddle_ptr);
-    void add_brick(Brick& new_brick);
+    void add_brick(unique_ptr<Brick> ptr);
     void add_ball(Ball& new_ball);
-    void update_balls_data();
+    void update_balls_data();   
+    void update_paddle_position(double x, Brick_list const &bricks);
+
 
     // void error_and_empty_canvas(string message);
 

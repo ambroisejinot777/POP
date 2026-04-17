@@ -46,9 +46,8 @@ void Game::set_paddle(Paddle_ptr new_paddle_ptr)
     paddle_ptr = move(new_paddle_ptr);
 }
 
-void Game::add_brick(Brick& new_brick)
+void Game::add_brick(unique_ptr<Brick> ptr)
 {
-    unique_ptr<Brick> ptr (new Brick(new_brick));
     brick_list.push_back(move(ptr));
 }
 
@@ -197,36 +196,39 @@ void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_cou
     int type, hit_points;
     double brick_x, brick_y, brick_width;
     data >> type >> brick_x >> brick_y >> brick_width;
+    unique_ptr<Brick> brick_ptr(nullptr);
 
     if (type == 1)
     {
         hit_points = 1;
+        brick_ptr = make_unique<BallBrick>(error_occured, brick_x, brick_y, brick_width, hit_points, type);
+
     }
     else if (type ==2)
     {
         hit_points=resolve_hit_points_split_brick(brick_width);
+        brick_ptr = make_unique<SplitBrick>(error_occured, brick_x, brick_y, brick_width, hit_points, type);
     }
     else
     {
         data >> hit_points;
+        brick_ptr = make_unique<RainbowBrick>(error_occured, brick_x, brick_y, brick_width, hit_points, type);
     }
 
-    Brick brick(error_occured, brick_x, brick_y, brick_width, hit_points, type);
-
-    if (circle_square_intersection(paddle_ptr->get_circle(), brick.get_square()))
+    if (circle_square_intersection(paddle_ptr->get_circle(), brick_ptr->get_square()))
     {
         display_error(message::collision_paddle_brick(brick_counter), error_occured);
     }
     for (size_t i(0); i < brick_list.size(); i++)
     {
         if (square_square_intersection(brick_list[i]->get_square(),
-                                         brick.get_square()))
+                                         brick_ptr->get_square()))
         {
             display_error(message::collision_bricks(i, brick_counter), error_occured);
         }
     }
 
-    add_brick(brick);
+    add_brick(move(brick_ptr));
 }
 
 void Game::read_and_check_ball_data(istringstream &data, unsigned int ball_counter, bool& error_occured)
@@ -265,6 +267,37 @@ void Game::update_balls_data()
     {
         ball->update_position();
     }
+}
+
+void Game::update_paddle_position(double new_x, Brick_list const &bricks)
+{
+    if(paddle_ptr == nullptr) return;
+    double min_x = half_paddle_width(paddle_ptr->get_x(), paddle_ptr->get_y(), paddle_ptr->get_radius());
+    double max_x = arena_size - half_paddle_width(paddle_ptr->get_x(), paddle_ptr->get_y(), paddle_ptr->get_radius());
+    
+    if(new_x<min_x) 
+    {
+        paddle_ptr->set_x(min_x);
+        return;
+    }
+    else if (new_x > max_x)
+    {
+        paddle_ptr->set_x(max_x);
+        return;
+    }
+
+    Circle temp_circle;
+    temp_circle.set_x(new_x);
+    temp_circle.set_y(paddle_ptr->get_y());
+    temp_circle.set_radius(paddle_ptr->get_radius());
+
+    for (const auto& brick: bricks)
+    {
+        if (circle_square_intersection(temp_circle, brick->get_square())) return;
+    }
+
+
+    paddle_ptr->set_x(new_x);
 }
 
 int Game::resolve_hit_points_split_brick(double w)
