@@ -6,6 +6,8 @@
 #include "graphic.h"
 
 // BRICK CLASS
+class Brick;
+typedef vector<unique_ptr<Brick>> Brick_list;
 
 class Brick
 {
@@ -13,10 +15,17 @@ class Brick
 public:
     Brick(bool& error_occured, double x = 0.0, double y = 0.0, double width = 0.0,
          int hit_points = 0, int type = 0);
-    // Brick(Brick const &old_brick);
+    Brick(Brick const &old_brick);
+
     double get_x() const;
     double get_y() const;
     Square get_square() const;
+
+    int get_hitpoints() const;
+    bool is_destroyed();
+
+    virtual void hit_reaction() =0;
+    virtual Color get_color() const =0;
 
 private:
     Square square;
@@ -24,7 +33,31 @@ private:
     int type;
 };
 
-typedef vector<unique_ptr<Brick>>  Brick_list;
+class RainbowBrick : public Brick
+{
+public:
+    RainbowBrick(double x, double y, double width, int hit_points);
+    void hit_reaction() override;
+    Color get_color() const override;
+};
+
+class BallBrick : public Brick
+{
+    BallBrick(double x, double y, double width, double new_ball_radius);
+    void hit_reaction() override;
+    Color get_color() const override;
+    double get_new_ball_radius() const;
+
+private:
+    double new_ball_radius;
+};
+
+class SplitBrick : public Brick
+{
+    SplitBrick(double x, double y, double width, int hit_points);
+    void hit_reaction() override;
+    Color get_color() const override;
+};
 
 
 // CHECKING FUNCTIONS
