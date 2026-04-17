@@ -1,5 +1,7 @@
 #include "tools.h"
 
+// TYPES
+
 // UTILITY CLASSES
 
 // POINT

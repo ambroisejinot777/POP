@@ -46,9 +46,26 @@ void Paddle::set_y(double y)
     circle.set_y(y);
 }
 
-void Paddle::update_position(double x)
+void Paddle::update_position(double new_x, Brick_list const &bricks)
 {
-    set_x(x);
+    double min_x = half_paddle_width(get_x(), get_y(), get_radius());
+    double max_x = arena_size - half_paddle_width(get_x(), get_y(), get_radius());
+    
+    if(new_x<min_x) set_x(min_x);
+    else if (new_x > max_x) set_x(max_x);
+
+    Circle temp_circle;
+    temp_circle.set_x(new_x);
+    temp_circle.set_y(get_y());
+    temp_circle.set_radius(get_radius());
+
+    for (const auto& brick: bricks)
+    {
+        if (circle_square_intersection(temp_circle, brick->get_square())) return;
+    }
+
+
+    et_x(new_x);
 }
 
 void Paddle::draw(const Cairo::RefPtr<Cairo::Context> &cr)
@@ -57,9 +74,15 @@ void Paddle::draw(const Cairo::RefPtr<Cairo::Context> &cr)
     draw_circle(cr, get_x(), get_y(), get_radius()-paddle_thickness, WHITE);
 }
 
+
 // FONCTIONS DE VERIFICATION DE SAISIE POUR PADDLE
 
-    void check_paddle_y_axis(double x, double y, double r, bool &error_occured)
+double half_paddle_width(double x, double y, double r)
+{
+    return sqrt(r * r - y * y);
+}
+
+void check_paddle_y_axis(double x, double y, double r, bool &error_occured)
 {
         if ((y > 0) or ((y + r) <= 0))
         {
@@ -69,8 +92,8 @@ void Paddle::draw(const Cairo::RefPtr<Cairo::Context> &cr)
 
 void check_paddle_x_axis(double x, double y, double r, bool& error_occured)
 {
-        if (((x - sqrt(r * r - y * y)) < 0) or
-            ((x + sqrt(r * r - y * y)) > arena_size))
+        if ((x-half_paddle_width(x, y, r) < 0) or
+            ((x + half_paddle_width(x, y, r)) > arena_size))
         {
             display_error(paddle_outside(x, y), error_occured);
         }
