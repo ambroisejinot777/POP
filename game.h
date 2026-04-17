@@ -26,9 +26,9 @@ enum Reading_state
 class Game
 {
 public:
-    Game();
+    Game() = delete;
+    Game(string filename);
     // Game(Game const &old_game);
-    void init(string file_name);
 
     int get_score() const;
     int get_lives() const;
@@ -48,6 +48,9 @@ private:
     Paddle_ptr paddle_ptr;
     Brick_list brick_list;
     Ball_list ball_list;
+
+    void init(string file_name);
+
 
     void read_and_check_score(istringstream &data, bool& error_occured);
     void read_and_check_lives(istringstream &data, bool& error_occured);

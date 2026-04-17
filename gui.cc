@@ -24,13 +24,14 @@ enum Buttons
 
 constexpr unsigned drawing_size(500);
 
-My_window::My_window(string file_name)
+My_window::My_window(std::string file_name)
     : main_box(Gtk::Orientation::HORIZONTAL), panel_box(Gtk::Orientation::VERTICAL),
       command_box(Gtk::Orientation::VERTICAL), loop_activated(false),
       buttons({Gtk::Button("exit"), Gtk::Button("open"), Gtk::Button("save"),
                Gtk::Button("restart"), Gtk::Button("start"), Gtk::Button("step")}),
       info_frame("Infos :"), info_text({Gtk::Label("score:"), Gtk::Label("lives:"),
-                                        Gtk::Label("bricks:"), Gtk::Label("balls:")})
+                                        Gtk::Label("bricks:"), Gtk::Label("balls:")}),
+      game(file_name)
 {
     set_title("Brick Breaker");
     set_child(main_box);
@@ -44,7 +45,7 @@ My_window::My_window(string file_name)
     set_mouse_controller();
     set_infos();
     set_drawing();
-    // TODO: set the game
+    // TODO: set the game : DONE
 }
 void My_window::set_commands()
 {
@@ -198,7 +199,8 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
     case OPEN_FILE:
         if (file_name != "")
         {
-            cout << "open file " << file_name << endl; // TODO: set game from a file
+            cout << "open file " << file_name << endl; // TODO: set game from a file : Done
+            game = Game(file_name);
             dialog->hide();
         }
         break;
@@ -219,6 +221,7 @@ bool My_window::loop()
     if (loop_activated)
     {
         // TODO: update the game and the interface
+        update_infos();
         return true;
     }
     return false;
@@ -242,10 +245,10 @@ void My_window::set_infos()
 void My_window::update_infos()
 // TODO: update the different counters
 {
-    for (auto &value : info_value)
-    {
-        value.set_text("0");
-    }
+    info_value[0].set_text(to_string(game.get_score()));
+    info_value[1].set_text(to_string(game.get_lives()));
+    info_value[2].set_text(to_string(game.get_brick_list().size()));
+    info_value[3].set_text(to_string(game.get_ball_list().size()));
 }
 
 void My_window::set_drawing()

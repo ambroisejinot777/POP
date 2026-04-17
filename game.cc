@@ -1,9 +1,9 @@
 #include "game.h"
 
-Game::Game() : score(0), lives(0), paddle_ptr(nullptr)
+Game::Game(string filename): score(0), lives(0), paddle_ptr(nullptr)
 {
+    init(filename);
 }
-
 // GETTER AND SETTER
 
 int Game::get_score() const
@@ -48,13 +48,13 @@ void Game::set_paddle(Paddle_ptr new_paddle_ptr)
 
 void Game::add_brick(Brick new_brick)
 {
-    unique_ptr<Brick> ptr = make_unique<Brick>(move(new_brick));
+    unique_ptr<Brick> ptr (new Brick(new_brick));
     brick_list.push_back(move(ptr));
 }
 
 void Game::add_ball(Ball new_ball)
 {
-    unique_ptr<Ball> ptr = make_unique<Ball>(move(new_ball));
+    unique_ptr<Ball> ptr (new Ball(new_ball));
     ball_list.push_back(move(ptr));
 }
 
