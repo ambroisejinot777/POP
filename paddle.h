@@ -4,6 +4,7 @@
 #include "message.h"
 #include "tools.h"
 #include "constants.h"
+#include <gtkmm/drawingarea.h>
 
 class Paddle
 {
@@ -13,11 +14,13 @@ public:
     Circle get_circle() const;
     double get_x() const;
     double get_y() const;
+    double get_radius() const;
     void set_x(double x);
     void set_y(double y);
     void update_position(double x);
-private:
-    Circle circle;
+    void draw(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r);
+    
+    private : Circle circle;
 };
 
 typedef unique_ptr<Paddle> Paddle_ptr; 

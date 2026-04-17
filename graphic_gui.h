@@ -5,8 +5,8 @@
 #include "graphic.h"
 
 void graphic_set_context(const Cairo::RefPtr<Cairo::Context> &cr);
-void draw_brick(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double w, Color color, int type_brick);
-void draw_ball(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r);
+void draw_square(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double w, Color color, int type_brick);
+void draw_circle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r);
 void draw_paddle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r);
 
 

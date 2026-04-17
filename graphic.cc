@@ -7,6 +7,12 @@ using namespace std;
 
 void set_color(Color color);
 
+enum WorB
+{
+    BLACK,
+    WHITE,
+}
+
 static const Cairo::RefPtr<Cairo::Context> *ptcr(nullptr);
 
 // graphic_gui.h
@@ -15,34 +21,21 @@ void graphic_set_context(const Cairo::RefPtr<Cairo::Context> &cr)
     ptcr = &cr;
 }
 
-void draw_brick(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double w, Color color, int type_brick)
+void draw_square(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double w, Color color, int type_brick)
 {
-    graphic_set_context(cr);
-
     cr->rectangle(x - w/2, y - w/2, w, w);
+    graphic_set_context(cr);
     set_color(color);
     cr->fill();
-
-    if ( type_brick == 1 )
-        {
-            draw_ball(cr, x, y, new_ball_radius);
-        }
 }
 
-void draw_ball(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r)
+void draw_circle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r, WorB color=BLACK)
 {
     cr->arc(x, y, r, 0, 2 * M_PI);
-    cr->set_source_rgb(0.0, 0.0, 0.0);
-    cr->fill();
-}
-
-void draw_paddle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r)
-{
-    cr->arc(x, y, r, 0, 2 * M_PI);
-    cr->set_source_rgb(0.0, 0.0, 0.0);
-    cr->fill();
-    cr->arc(x, y, 0.95 * r, 0, 2 * M_PI);
-    cr->set_source_rgb(1.0, 1.0, 1.0);
+    if (color = BLACK)
+    {
+        cr->set_source_rgb(0.0, 0.0, 0.0)
+    }
     cr->fill();
 }
 
@@ -92,4 +85,21 @@ void set_color(Color color)
         break;
     }
     (*ptcr)->set_source_rgb(r, g, b);
+}
+
+void draw_ball(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r)
+{
+    cr->arc(x, y, r, 0, 2 * M_PI);
+    cr->set_source_rgb(0.0, 0.0, 0.0);
+    cr->fill();
+}
+
+void draw_paddle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r)
+{
+    cr->arc(x, y, r, 0, 2 * M_PI);
+    cr->set_source_rgb(0.0, 0.0, 0.0);
+    cr->fill();
+    cr->arc(x, y, 0.95 * r, 0, 2 * M_PI);
+    cr->set_source_rgb(1.0, 1.0, 1.0);
+    cr->fill();
 }
