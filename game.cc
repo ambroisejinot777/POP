@@ -3,7 +3,6 @@
 Game::Game(string filename): score(0), lives(0), paddle_ptr(nullptr)
 {
     init(filename);
-    cout << "error"<< endl;
 }
 // GETTER AND SETTER
 

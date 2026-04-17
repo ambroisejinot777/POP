@@ -25,7 +25,7 @@ void draw_brick(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, dou
 
     if ( type_brick == 1 )
         {
-            draw_ball(cr, x, y, new_ball_radius)
+            draw_ball(cr, x, y, new_ball_radius);
         }
 }
 

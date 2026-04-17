@@ -272,10 +272,13 @@ void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int 
     cr->scale(side / (arena_size), -side / (arena_size));
     draw_all_bricks(cr);
     draw_all_balls(cr);
-    double paddle_x((game.get_paddle())->get_x());
-    double paddle_y((game.get_paddle())->get_y());
-    double paddle_r(((game.get_paddle())->get_circle()).get_radius());
-    draw_paddle(cr, paddle_x, paddle_y, paddle_r);
+    if (game.get_paddle()!=nullptr)
+    {
+        double paddle_x((game.get_paddle())->get_x());
+        double paddle_y((game.get_paddle())->get_y());
+        double paddle_r(((game.get_paddle())->get_circle()).get_radius());
+        draw_paddle(cr, paddle_x, paddle_y, paddle_r);
+    }
     // TODO: draw the game
 }
 
