@@ -3,6 +3,7 @@
 Game::Game(string filename): score(0), lives(0), paddle_ptr(nullptr)
 {
     init(filename);
+    cout << "error"<< endl;
 }
 // GETTER AND SETTER
 
@@ -82,6 +83,8 @@ void Game::init(string file_name)
 
     while (getline(file >> ws, line))
     {
+        if (error_occured)
+            return;
 
         istringstream data(line);
 
@@ -104,6 +107,7 @@ void Game::init(string file_name)
         {
             read_and_check_lives(data, error_occured);
             reading_state = PADDLE;
+
             break;
         }
 
@@ -155,8 +159,7 @@ void Game::init(string file_name)
             break;
         }
         }
-    if (error_occured)
-        return;
+    
     }
     file.close();
     cout << message::success();
@@ -166,6 +169,7 @@ void Game::init(string file_name)
 void Game::read_and_check_score(istringstream &data, bool& error_occured)
 {
     data >> score;
+    
     if (score < 0)
     {
         display_error(message::invalid_score(score), error_occured);
@@ -193,12 +197,19 @@ void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_cou
 {
     int type, hit_points;
     double brick_x, brick_y, brick_width;
-    // char left_bracket, right_bracket;
-    data >> type >> brick_x >> brick_y >> brick_width >> hit_points;
+    data >> type >> brick_x >> brick_y >> brick_width;
 
-    if (type == 1 or type == 2)
+    if (type == 1)
     {
         hit_points = 1;
+    }
+    else if (type ==2)
+    {
+        hit_points=resolve_hit_points_split_brick(brick_width);
+    }
+    else
+    {
+        data >> hit_points;
     }
 
     Brick brick(error_occured, brick_x, brick_y, brick_width, hit_points, type);
@@ -255,5 +266,18 @@ void Game::update_balls_data()
     {
         ball->update_position();
     }
+}
+
+int Game::resolve_hit_points_split_brick(double w)
+{
+    int brick_width(w);
+    int hit_points(1);
+
+    while (brick_width >= brick_size_min)
+    {
+        brick_width = (brick_width - split_brick_gap)/2;
+        ++hit_points;
+    }
+    return hit_points;
 }
 

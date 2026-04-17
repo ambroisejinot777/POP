@@ -59,6 +59,8 @@ private:
     void read_and_check_brick_data(istringstream &data, unsigned int brick_counter, bool& error_occured);
     void read_and_check_ball_data(istringstream &data, unsigned int ball_counter, bool& error_occured);
 
+    int resolve_hit_points_split_brick(double w);
+
 
 };
 
