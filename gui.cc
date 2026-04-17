@@ -317,10 +317,11 @@ void My_window::draw_all_bricks(const Cairo::RefPtr<Cairo::Context> &cr)
         double x = brick->get_x();
         double y = brick->get_y();
         double w = (brick->get_square()).get_width();
+        int t = brick->get_type();
         Color color = brick->get_color();
 
 
-        draw_brick(cr, x, y, w, color);
+        draw_brick(cr, x, y, w, color, t);
     }
 }
 

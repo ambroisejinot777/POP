@@ -1,5 +1,6 @@
 #include "graphic.h"
 #include "graphic_gui.h"
+#include "constants.h"
 #include <cmath>
 
 using namespace std;
@@ -14,13 +15,18 @@ void graphic_set_context(const Cairo::RefPtr<Cairo::Context> &cr)
     ptcr = &cr;
 }
 
-void draw_brick(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double w, Color color)
+void draw_brick(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double w, Color color, int type_brick)
 {
     graphic_set_context(cr);
 
     cr->rectangle(x - w/2, y - w/2, w, w);
     set_color(color);
     cr->fill();
+
+    if ( type_brick == 1 )
+        {
+            draw_ball(cr, x, y, new_ball_radius)
+        }
 }
 
 void draw_ball(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r)

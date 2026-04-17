@@ -20,7 +20,7 @@ public:
     double get_x() const;
     double get_y() const;
     Square get_square() const;
-
+    int get_type() const;
     int get_hitpoints() const;
     bool is_destroyed() const;
     Color get_color() const;
@@ -45,7 +45,7 @@ class BallBrick : public Brick
 {
     BallBrick(bool& error_occured, double x, double y, double width, int hitpoints, int type, Color color_brick, double new_ball_radius);
     // void hit_reaction() override;
-    double get_new_ball_radius() const;
+    // double get_new_ball_radius() const;
 
 private:
     double new_ball_radius;

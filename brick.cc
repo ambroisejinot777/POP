@@ -30,6 +30,11 @@ Square Brick::get_square() const
     return square;
 }
 
+int Brick::get_type() const
+{
+    return type;
+}
+
 int Brick::get_hitpoints() const
 {
     return hit_points;
@@ -69,10 +74,10 @@ RainbowBrick::RainbowBrick(bool& error_occured, double x, double y, double width
     check_brick_hit_points(hit_points, error_occured);
 }
 
-void RainbowBrick::hit_reaction()
-{
+// void RainbowBrick::hit_reaction()
+// {
     
-}
+// }
 
 // BALLBRICK
 
@@ -82,10 +87,10 @@ BallBrick::BallBrick(bool &error_occured, double x, double y, double width, int 
     hit_points = 1;
 }
 
-void BallBrick::hit_reaction()
-{
+// void BallBrick::hit_reaction()
+// {
     
-}
+// }
 
 // SPLITBRICK
 
@@ -95,10 +100,10 @@ SplitBrick::SplitBrick(bool &error_occured, double x, double y, double width, in
 
 }
 
-void SplitBrick::hit_reaction()
-{
+// void SplitBrick::hit_reaction()
+// {
     
-}
+// }
 
 // CHECKING FUNCTIONS
 
