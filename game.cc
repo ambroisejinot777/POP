@@ -272,7 +272,7 @@ void Game::update_balls_data()
     }
 }
 
-void Game::update_paddle_position(double new_x, Brick_list const &bricks)
+void Game::update_paddle_position(double new_x)
 {
     if(paddle_ptr == nullptr) return;
     double min_x = half_paddle_width(paddle_ptr->get_x(), paddle_ptr->get_y(), paddle_ptr->get_radius());
@@ -294,7 +294,7 @@ void Game::update_paddle_position(double new_x, Brick_list const &bricks)
     temp_circle.set_y(paddle_ptr->get_y());
     temp_circle.set_radius(paddle_ptr->get_radius());
 
-    for (const auto& brick: bricks)
+    for (const auto& brick: brick_list)
     {
         if (circle_square_intersection(temp_circle, brick->get_square())) return;
     }

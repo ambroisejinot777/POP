@@ -1,0 +1,17 @@
+# saved game
+
+# score
+0
+
+# lives
+3
+
+# paddle
+12 -16 20
+
+# bricks
+1
+	2 50 50 70
+
+# balls
+0

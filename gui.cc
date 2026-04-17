@@ -47,7 +47,7 @@ My_window::My_window(std::string file_name)
     set_mouse_controller();
     set_infos();
     set_drawing();
-    // TODO: set the game : DONE
+    // DONE: set the game 
 }
 void My_window::set_commands()
 {
@@ -106,7 +106,7 @@ void My_window::start_clicked()
         buttons[START].set_label("start");
         buttons[STEP].set_sensitive(true);
     }
-    else // TODO: only if the game is not finished
+    else if(!loop_activated and game.get_lives()>0)// DONE: only if the game is not finished
     {
         loop_conn =
             Glib::signal_timeout().connect(sigc::mem_fun(*this, &My_window::loop), dt);
@@ -121,7 +121,8 @@ void My_window::start_clicked()
 }
 void My_window::step_clicked()
 {
-    cout << __func__ << endl; // TODO: make a single update
+    cout << __func__ << endl; // DONE: make a single update
+    update_frame();
 }
 void My_window::set_key_controller()
 {
@@ -135,10 +136,22 @@ bool My_window::key_pressed(guint keyval, guint keycode, Gdk::ModifierType state
     switch (keyval)
     {
     case '1':
-        // TODO: make a single update
+        // DONE: make a single update
+        update_frame();
         return true;
     case 's':
-        // TODO: pause or unpause the game
+        // DONE: pause or unpause the game
+        if(loop_activated) {
+            loop_conn.disconnect();
+            loop_activated = false;
+            buttons[START].set_label("start");
+        }
+        else
+        {
+            loop_conn = Glib::signal_timeout().connect(sigc::mem_fun(*this, &My_window::loop), dt);
+            loop_activated = true;
+            buttons[START].set_label("stop");
+        }
         return true;
     case 'r':
         // TODO: reset the game from the last read file
@@ -211,7 +224,7 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
     case SAVE_FILE:
         if (file_name != "")
         {
-            cout << "save file " << file_name << endl; // TODO: save the game
+            cout << "save file " << file_name << endl; // DONE: save the game
             game.save(file_name);
             dialog->hide();
         }
@@ -225,10 +238,8 @@ bool My_window::loop()
 {
     if (loop_activated)
     {
-        // TODO: update the game and the interface
-        update_infos();
-        game.update_balls_data();
-        drawing.queue_draw();
+        // DONE: update the game and the interface
+        update_frame();
         return true;
     }
     return false;
@@ -250,7 +261,7 @@ void My_window::set_infos()
 }
 
 void My_window::update_infos()
-// TODO: update the different counters
+// DONE: update the different counters
 {
     info_value[0].set_text(to_string(game.get_score()));
     info_value[1].set_text(to_string(game.get_lives()));
@@ -277,7 +288,7 @@ void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int 
     {
         (game.get_paddle())->draw(cr);
     }
-    // TODO: draw the game
+    // DONE: draw the game
 }
 
 void My_window::set_mouse_controller()
@@ -300,14 +311,14 @@ void My_window::on_drawing_left_click(int n_press, double x, double y)
 }
 void My_window::on_drawing_move(double x, double y)
 {
-    // cout << __func__ << endl; // TODO
+    // cout << __func__ << endl; // DONE
     int width  = drawing.get_width();
     int height = drawing.get_height();
     double side = min(width, height);
 
     double game_x = (x - (width - side) / 2.0) * arena_size / side;
 
-    game.update_paddle_position(game_x, game.get_brick_list());
+    game.update_paddle_position(game_x);
 }
 
 
@@ -325,4 +336,11 @@ void My_window::draw_all_balls(const Cairo::RefPtr<Cairo::Context> &cr)
     {
         ball->draw(cr);
     }
+}
+
+void My_window::update_frame()
+{
+    update_infos();
+    game.update_balls_data();
+    drawing.queue_draw();
 }

@@ -54,6 +54,12 @@ private:
 
     void draw_all_bricks(const Cairo::RefPtr<Cairo::Context> &cr);
     void draw_all_balls(const Cairo::RefPtr<Cairo::Context> &cr);
+
+    void update_frame();
+
+    // void update_frame();
+
+    // void reset_game_to_last_state();
 };
 
 #endif

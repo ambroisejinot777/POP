@@ -41,7 +41,8 @@ public:
     void add_brick(unique_ptr<Brick> ptr);
     void add_ball(Ball& new_ball);
     void update_balls_data();   
-    void update_paddle_position(double x, Brick_list const &bricks);
+    void update_paddle_position(double x);
+    void save(const string &file_name) const;
 
     // void error_and_empty_canvas(string message);
 
