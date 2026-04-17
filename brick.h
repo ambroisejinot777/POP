@@ -25,7 +25,7 @@ public:
     int get_hitpoints() const;
     bool is_destroyed() const;
     Color get_color() const;
-    void draw(const Cairo::RefPtr<Cairo::Context> &cr) const;
+    virtual void draw(const Cairo::RefPtr<Cairo::Context> &cr) const = 0;
 
     // virtual void hit_reaction() = 0;
 
@@ -40,12 +40,15 @@ class RainbowBrick : public Brick
 {
 public:
     RainbowBrick(bool& error_occured, double x, double y, double width, int hit_points, int type, Color color_brick);
+    void draw(const Cairo::RefPtr<Cairo::Context> &cr) const override;
     // void hit_reaction() override;
 };
+
 
 class BallBrick : public Brick
 {
     BallBrick(bool& error_occured, double x, double y, double width, int hitpoints, int type, Color color_brick, double new_ball_radius);
+    void draw(const Cairo::RefPtr<Cairo::Context> &cr) const override;
     // void hit_reaction() override;
     // double get_new_ball_radius() const;
 
@@ -53,9 +56,11 @@ private:
     double new_ball_radius;
 };
 
+
 class SplitBrick : public Brick
 {
     SplitBrick(bool &error_occured, double x, double y, double width, int hit_points, int type, Color color_brick);
+    void draw(const Cairo::RefPtr<Cairo::Context> &cr) const override;
     // void hit_reaction() override;
 };
 

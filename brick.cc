@@ -1,5 +1,5 @@
 #include "brick.h"
-
+#include "constants.h"
 // CONSTRUCTORS
 
 Brick::Brick(bool& error_occured, double x, double y, double width, int hit_points, int type, Color color_brick)
@@ -84,6 +84,11 @@ RainbowBrick::RainbowBrick(bool& error_occured, double x, double y, double width
     check_brick_hit_points(hit_points, error_occured);
 }
 
+void RainbowBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
+{
+    draw_square(cr, get_x(), get_y(), get_width(), get_color());
+}
+
 // void RainbowBrick::hit_reaction()
 // {
     
@@ -97,6 +102,12 @@ BallBrick::BallBrick(bool &error_occured, double x, double y, double width, int 
     hit_points = 1;
 }
 
+void BallBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
+{
+    draw_square(cr, get_x(), get_y(), get_width(), get_color());
+    draw_circle(cr, get_x(), get_y(), new_ball_radius)
+}
+
 // void BallBrick::hit_reaction()
 // {
     
@@ -108,6 +119,11 @@ SplitBrick::SplitBrick(bool &error_occured, double x, double y, double width, in
     : Brick(error_occured, x, y, width, type, hit_points)
 {
 
+}
+
+void SplitBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
+{
+    draw_square(cr, get_x(), get_y(), get_width(), get_color());
 }
 
 // void SplitBrick::hit_reaction()
