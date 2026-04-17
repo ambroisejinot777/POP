@@ -3,14 +3,14 @@
 
 // CONSTRUCTORS
 
-static void draw_cross_recursive(const Cairo::RefPtr<Cairo::Context> &cr,
+static void draw_brick_recursive(const Cairo::RefPtr<Cairo::Context> &cr,
                                     double x, double y, double w,
                                     int level, Color color)
 {
     if (level <= 0)
         return;
 
-    draw_cross(cr, x, y, w, color);
+    draw_brick(cr, x, y, w, color);
 
     double new_w = (w-split_brick_gap)/2.0;
     double offset = (w+split_brick_gap)/4.0;
