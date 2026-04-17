@@ -5,6 +5,7 @@
 #include <gtkmm.h>
 #include <string>
 #include "game.h"
+#include <string>
 
 
 class My_window : public Gtk::Window
@@ -21,6 +22,7 @@ private:
     Gtk::Frame info_frame;
     std::array<Gtk::Label, 4> info_text, info_value;
     Gtk::DrawingArea drawing;
+    std::string filename;
 
     Game game;
 
@@ -59,7 +61,7 @@ private:
 
     // void update_frame();
 
-    // void reset_game_to_last_state();
+    void reset_game_to_last_state();
 };
 
 #endif

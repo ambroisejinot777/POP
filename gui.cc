@@ -31,7 +31,8 @@ My_window::My_window(std::string file_name)
                Gtk::Button("restart"), Gtk::Button("start"), Gtk::Button("step")}),
       info_frame("Infos :"), info_text({Gtk::Label("score:"), Gtk::Label("lives:"),
                                         Gtk::Label("bricks:"), Gtk::Label("balls:")}),
-      game(file_name)
+      game(file_name), 
+      filename(file_name)
 {
     set_title("Brick Breaker");
     set_child(main_box);
@@ -90,7 +91,8 @@ void My_window::save_clicked()
 }
 void My_window::restart_clicked()
 {
-    cout << __func__ << endl; // TODO: reset the game from the last read file
+    // cout << __func__ << endl; // DONE: reset the game from the last read file
+    reset_game_to_last_state();
 }
 void My_window::start_clicked()
 {
@@ -154,7 +156,8 @@ bool My_window::key_pressed(guint keyval, guint keycode, Gdk::ModifierType state
         }
         return true;
     case 'r':
-        // TODO: reset the game from the last read file
+        // DONE: reset the game from the last read file
+        reset_game_to_last_state();
         return true;
     default:
         break;
@@ -216,6 +219,7 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
         {
             cout << "open file " << file_name << endl; // DONE: set game from a file
             game = Game(file_name);
+            filename=file_name;
             update_infos();
             drawing.queue_draw();
             dialog->hide();
@@ -342,5 +346,11 @@ void My_window::update_frame()
 {
     update_infos();
     game.update_balls_data();
+    drawing.queue_draw();
+}
+
+void My_window::reset_game_to_last_state()
+{
+    game = Game(filename);
     drawing.queue_draw();
 }
