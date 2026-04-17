@@ -43,7 +43,7 @@ public:
 
 class BallBrick : public Brick
 {
-    BallBrick(bool& error_occured, double x, double y, double width, int hitpoints, Color color_brick, double new_ball_radius);
+    BallBrick(bool& error_occured, double x, double y, double width, int hitpoints, int type, Color color_brick, double new_ball_radius);
     void hit_reaction() override;
     double get_new_ball_radius() const;
 

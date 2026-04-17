@@ -76,10 +76,10 @@ void RainbowBrick::hit_reaction()
 
 // BALLBRICK
 
-BallBrick::BallBrick(bool &error_occured, double x, double y, double width, int hit_points, Color color_brick, double new_ball_radius)
-    : Brick(error_occured, x, y, width, hit_points), new_ball_radius(new_ball_radius)
+BallBrick::BallBrick(bool &error_occured, double x, double y, double width, int hit_points, int type, Color color_brick, double new_ball_radius)
+    : Brick(error_occured, x, y, width, type hit_points), new_ball_radius(new_ball_radius)
 {
-    
+
 }
 
 // SPLITBRICK
