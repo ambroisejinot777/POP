@@ -2,8 +2,8 @@
 
 // CONSTRUCTORS
 
-Brick::Brick(bool& error_occured, double x, double y, double width, int hit_points, int type)
-    : square(x, y, width), hit_points(hit_points), type(type)
+Brick::Brick(bool& error_occured, double x, double y, double width, int hit_points, int type, Color color_brick)
+    : square(x, y, width), hit_points(hit_points), type(type), color(color_brick)
 {
     check_brick_position(x, y, width, error_occured);
     check_brick_size(width, error_occured);
@@ -63,10 +63,10 @@ Color Brick::get_color() const
 
 // RAINBOWBRICK
 
-RainbowBrick::RainbowBrick(bool& error_occured, double x, double y, double width, int hit_points, Color color_brick)
-    : Brick(error_occured, x, y, width, hit_points,)
+RainbowBrick::RainbowBrick(bool& error_occured, double x, double y, double width, int hit_points, int type, Color color_brick)
+    : Brick(error_occured, x, y, width, hit_points, type, color_brick)
 {
-    check_brick_hit_points(hit_points);
+    check_brick_hit_points(hit_points, error_occured);
 }
 
 void RainbowBrick::hit_reaction()
@@ -76,14 +76,17 @@ void RainbowBrick::hit_reaction()
 
 // BALLBRICK
 
-BallBrick::BallBrick()
+BallBrick::BallBrick(bool &error_occured, double x, double y, double width, int hit_points, Color color_brick, double new_ball_radius)
+    : Brick(error_occured, x, y, width, hit_points), new_ball_radius(new_ball_radius)
+{
+    
+}
 
 // SPLITBRICK
 
-
 // CHECKING FUNCTIONS
 
-void check_brick_position(double x, double y, double width, bool& error_occured)
+void check_brick_position(double x, double y, double width, bool &error_occured)
 {
     if ((x + width/2 > arena_size) or
         (x - width / 2 < 0) or

@@ -14,7 +14,7 @@ class Brick
 
 public:
     Brick(bool& error_occured, double x = 0.0, double y = 0.0, double width = 0.0,
-         int hit_points = 0, int type = 0);
+         int hit_points = 0, int type = 0, Color color_brick);
     Brick(Brick const &old_brick);
 
     double get_x() const;
@@ -37,13 +37,13 @@ private:
 class RainbowBrick : public Brick
 {
 public:
-    RainbowBrick(bool& error_occured, double x, double y, double width, int hit_points, Color color_brick);
+    RainbowBrick(bool& error_occured, double x, double y, double width, int hit_points, int type, Color color_brick);
     void hit_reaction() override;
 };
 
 class BallBrick : public Brick
 {
-    BallBrick(double x, double y, double width, double new_ball_radius);
+    BallBrick(bool& error_occured, double x, double y, double width, int hitpoints, Color color_brick, double new_ball_radius);
     void hit_reaction() override;
     double get_new_ball_radius() const;
 
