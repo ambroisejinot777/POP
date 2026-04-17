@@ -272,6 +272,10 @@ void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int 
     cr->scale(side / (arena_size), -side / (arena_size));
     draw_all_bricks(cr);
     draw_all_balls(cr);
+    double paddle_x((game.get_paddle())->get_x());
+    double paddle_y((game.get_paddle())->get_y());
+    double paddle_r(((game.get_paddle())->get_circle()).get_radius());
+    draw_paddle(cr, paddle_x, paddle_y, paddle_r);
     // TODO: draw the game
 }
 
@@ -295,7 +299,14 @@ void My_window::on_drawing_left_click(int n_press, double x, double y)
 }
 void My_window::on_drawing_move(double x, double y)
 {
-    cout << __func__ << endl; // TODO
+    // cout << __func__ << endl; // TODO
+    int width  = drawing.get_width();
+    int height = drawing.get_height();
+    double side = min(width, height);
+
+    double game_x = (x - (width - side) / 2.0) * arena_size / side;
+
+    (game.get_paddle())->update_position(game_x);
 }
 
 

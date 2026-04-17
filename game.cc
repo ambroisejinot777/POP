@@ -46,13 +46,13 @@ void Game::set_paddle(Paddle_ptr new_paddle_ptr)
     paddle_ptr = move(new_paddle_ptr);
 }
 
-void Game::add_brick(Brick new_brick)
+void Game::add_brick(Brick& new_brick)
 {
     unique_ptr<Brick> ptr (new Brick(new_brick));
     brick_list.push_back(move(ptr));
 }
 
-void Game::add_ball(Ball new_ball)
+void Game::add_ball(Ball& new_ball)
 {
     unique_ptr<Ball> ptr (new Ball(new_ball));
     ball_list.push_back(move(ptr));

@@ -15,6 +15,7 @@ public:
     double get_y() const;
     void set_x(double x);
     void set_y(double y);
+    void update_position(double x);
 private:
     Circle circle;
 };

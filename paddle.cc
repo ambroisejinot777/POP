@@ -40,6 +40,11 @@ void Paddle::set_y(double y)
     circle.set_y(y);
 }
 
+void Paddle::update_position(double x)
+{
+    set_x(x);
+}
+
 // FONCTIONS DE VERIFICATION DE SAISIE POUR PADDLE
 
 void check_paddle_y_axis(double x, double y, double r, bool& error_occured)

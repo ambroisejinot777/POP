@@ -30,6 +30,16 @@ void draw_ball(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, doub
     cr->fill();
 }
 
+void draw_paddle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r)
+{
+    cr->arc(x, y, r, 0, 2 * M_PI);
+    cr->set_source_rgb(0.0, 0.0, 0.0);
+    cr->fill();
+    cr->arc(x, y, 0.95 * r, 0, 2 * M_PI);
+    cr->set_source_rgb(1.0, 1.0, 1.0);
+    cr->fill();
+}
+
 
 // local functions
 void set_color(Color color)
