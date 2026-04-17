@@ -40,6 +40,8 @@ My_window::My_window(std::string file_name)
     panel_box.append(command_box);
     panel_box.append(info_frame);
 
+    update_infos();
+
     set_commands();
     set_key_controller();
     set_mouse_controller();
@@ -201,6 +203,7 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
         {
             cout << "open file " << file_name << endl; // TODO: set game from a file : Done
             game = Game(file_name);
+            update_infos();
             dialog->hide();
         }
         break;
@@ -264,6 +267,7 @@ void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int 
     double side(min(width, height));
     cr->translate((width - side) / 2, (height + side) / 2);
     cr->scale(side / (arena_size), -side / (arena_size));
+    draw_all_bricks(cr);
     // TODO: draw the game
 }
 
@@ -288,4 +292,24 @@ void My_window::on_drawing_left_click(int n_press, double x, double y)
 void My_window::on_drawing_move(double x, double y)
 {
     cout << __func__ << endl; // TODO
+}
+
+void My_window::draw_brick(const Cairo::RefPtr<Cairo::Context> &cr, Brick& brick)
+{
+    Square sq = brick.get_square();
+    double x = sq.get_x();
+    double y = sq.get_y();
+    double w = sq.get_width();
+
+    cr->rectangle(x - w/2, y - w/2, w, w);
+    cr->set_source_rgb(0, 0, 0);
+    cr->fill();
+}
+
+void My_window::draw_all_bricks(const Cairo::RefPtr<Cairo::Context> &cr)
+{
+    for (const auto& brick: game.get_brick_list())
+    {
+        draw_brick(cr, *brick);
+    }
 }
