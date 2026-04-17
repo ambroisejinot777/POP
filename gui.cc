@@ -294,22 +294,17 @@ void My_window::on_drawing_move(double x, double y)
     cout << __func__ << endl; // TODO
 }
 
-void My_window::draw_brick(const Cairo::RefPtr<Cairo::Context> &cr, Brick& brick)
-{
-    Square sq = brick.get_square();
-    double x = sq.get_x();
-    double y = sq.get_y();
-    double w = sq.get_width();
-
-    cr->rectangle(x - w/2, y - w/2, w, w);
-    cr->set_source_rgb(0, 0, 0);
-    cr->fill();
-}
 
 void My_window::draw_all_bricks(const Cairo::RefPtr<Cairo::Context> &cr)
 {
     for (const auto& brick: game.get_brick_list())
     {
-        draw_brick(cr, *brick);
+        double x = brick->get_x();
+        double y = brick->get_y();
+        double w = (brick->get_square()).get_width();
+        Color color = brick->get_color();
+
+
+        draw_brick(cr, x, y, w, color);
     }
 }

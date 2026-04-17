@@ -3,6 +3,8 @@
 
 using namespace std;
 
+void set_color(Color color);
+
 static const Cairo::RefPtr<Cairo::Context> *ptcr(nullptr);
 
 // graphic_gui.h
@@ -10,6 +12,17 @@ void graphic_set_context(const Cairo::RefPtr<Cairo::Context> &cr)
 {
     ptcr = &cr;
 }
+
+void draw_brick(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double w, Color color)
+{
+    graphic_set_context(cr);
+
+    cr->rectangle(x - w/2, y - w/2, w, w);
+    set_color(color);
+    cr->fill();
+}
+
+
 // local functions
 void set_color(Color color)
 {
