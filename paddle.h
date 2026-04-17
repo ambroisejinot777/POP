@@ -4,7 +4,6 @@
 #include "message.h"
 #include "tools.h"
 #include "constants.h"
-#include <gtkmm/drawingarea.h>
 
 class Paddle
 {
