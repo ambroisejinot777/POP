@@ -60,10 +60,15 @@ class SplitBrick : public Brick
 public:
     SplitBrick(bool &error_occured, double x, double y, double width, int hit_points, int type);
     void draw(const Cairo::RefPtr<Cairo::Context> &cr) const override;
+
+
     // void hit_reaction() override;
 
 
 };
+
+void draw_cross_recursive(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double w, int level, Color color);
+
 
 
 // CHECKING FUNCTIONS
