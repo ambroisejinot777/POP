@@ -248,3 +248,12 @@ void Game::read_and_check_ball_data(istringstream &data, unsigned int ball_count
 
     add_ball(ball);
 }
+
+void Game::update_balls_data()
+{
+    for (const auto& ball: ball_list)
+    {
+        ball->update_position();
+    }
+}
+

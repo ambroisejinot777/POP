@@ -201,9 +201,10 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
     case OPEN_FILE:
         if (file_name != "")
         {
-            cout << "open file " << file_name << endl; // TODO: set game from a file : Done
+            cout << "open file " << file_name << endl; // DONE: set game from a file
             game = Game(file_name);
             update_infos();
+            drawing.queue_draw();
             dialog->hide();
         }
         break;
@@ -225,6 +226,8 @@ bool My_window::loop()
     {
         // TODO: update the game and the interface
         update_infos();
+        game.update_balls_data();
+        drawing.queue_draw();
         return true;
     }
     return false;
@@ -268,6 +271,7 @@ void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int 
     cr->translate((width - side) / 2, (height + side) / 2);
     cr->scale(side / (arena_size), -side / (arena_size));
     draw_all_bricks(cr);
+    draw_all_balls(cr);
     // TODO: draw the game
 }
 
@@ -306,5 +310,17 @@ void My_window::draw_all_bricks(const Cairo::RefPtr<Cairo::Context> &cr)
 
 
         draw_brick(cr, x, y, w, color);
+    }
+}
+
+void My_window::draw_all_balls(const Cairo::RefPtr<Cairo::Context> &cr)
+{
+    for (const auto& ball: game.get_ball_list())
+    {
+        double x = ball->get_x();
+        double y = ball->get_y();
+        double r = ball->get_radius();
+
+        draw_ball(cr, x, y, r);
     }
 }

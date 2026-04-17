@@ -40,6 +40,8 @@ public:
     void set_paddle(Paddle_ptr new_paddle_ptr);
     void add_brick(Brick new_brick);
     void add_ball(Ball new_ball);
+    void update_balls_data();
+
     // void error_and_empty_canvas(string message);
 
 private:
@@ -51,12 +53,13 @@ private:
 
     void init(string file_name);
 
-
     void read_and_check_score(istringstream &data, bool& error_occured);
     void read_and_check_lives(istringstream &data, bool& error_occured);
     void read_and_check_paddle_data(istringstream &data, bool& error_occured);
     void read_and_check_brick_data(istringstream &data, unsigned int brick_counter, bool& error_occured);
     void read_and_check_ball_data(istringstream &data, unsigned int ball_counter, bool& error_occured);
+
+
 };
 
 #endif

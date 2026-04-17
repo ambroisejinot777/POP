@@ -22,12 +22,12 @@ double Point::get_y() const
 
 void Point::set_x(double x)
 {
-    x = x;
+    this->x = x;
 }
 
 void Point::set_y(double y)
 {
-    y = y;
+    this->y = y;
 }
 
 // SQUARE

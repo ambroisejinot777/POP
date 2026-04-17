@@ -20,6 +20,7 @@ public:
     double get_dy() const;
     double get_radius() const;
     Circle get_circle() const;
+    void update_position();
 
 private:
     Circle circle;

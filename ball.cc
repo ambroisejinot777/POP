@@ -46,6 +46,13 @@ Circle Ball::get_circle() const
     return circle;
 }
 
+void Ball::update_position()
+{    
+    circle.set_x(circle.get_x() + delta.get_x());
+    circle.set_y(circle.get_y() + delta.get_y());
+    cout << delta.get_x() << delta.get_y() << endl;
+}
+
 // FONCTIONS D'ACTIONS DE BALL
 void check_ball_x_axis(double x, double y, double r, bool& error_occured)
 {

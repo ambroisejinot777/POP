@@ -1,5 +1,6 @@
 #include "graphic.h"
 #include "graphic_gui.h"
+#include <cmath>
 
 using namespace std;
 
@@ -19,6 +20,13 @@ void draw_brick(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, dou
 
     cr->rectangle(x - w/2, y - w/2, w, w);
     set_color(color);
+    cr->fill();
+}
+
+void draw_ball(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r)
+{
+    cr->arc(x, y, r, 0, 2 * M_PI);
+    cr->set_source_rgb(0.0, 0.0, 0.0);
     cr->fill();
 }
 

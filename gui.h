@@ -51,7 +51,9 @@ private:
     void on_drawing_left_click(int n_press, double x, double y);
     void on_drawing_move(double x, double y);
 
+
     void draw_all_bricks(const Cairo::RefPtr<Cairo::Context> &cr);
+    void draw_all_balls(const Cairo::RefPtr<Cairo::Context> &cr);
 };
 
 #endif
