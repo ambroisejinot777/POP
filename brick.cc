@@ -74,7 +74,7 @@ Color Brick::get_color() const
 
 void Brick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 {
-    draw_square(cr, get_x(), get_y(), get_width(), color);
+    draw_square(cr, get_x(), get_y(), get_width(), get_color());
 }
 // RAINBOWBRICK
 
