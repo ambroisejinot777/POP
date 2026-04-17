@@ -81,8 +81,6 @@ void Game::init(string file_name)
 
     while (getline(file >> ws, line))
     {
-        if (error_occured)
-            return;
 
         istringstream data(line);
 
@@ -157,6 +155,8 @@ void Game::init(string file_name)
             break;
         }
         }
+        if (error_occured)
+            return;
     
     }
     file.close();

@@ -99,7 +99,7 @@ void RainbowBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 // BALLBRICK
 
 BallBrick::BallBrick(bool &error_occured, double x, double y, double width, int hit_points, int type)
-    : Brick(error_occured, x, y, width, type ,hit_points)
+    : Brick(error_occured, x, y, width, hit_points, type)
 {
     hit_points = 1;
 }
@@ -118,7 +118,7 @@ void BallBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 // SPLITBRICK
 
 SplitBrick::SplitBrick(bool &error_occured, double x, double y, double width, int hit_points, int type)
-    : Brick(error_occured, x, y, width, type, hit_points)
+    : Brick(error_occured, x, y, width, hit_points, type)
 {
 
 }
