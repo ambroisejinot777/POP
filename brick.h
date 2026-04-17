@@ -14,7 +14,7 @@ class Brick
 
 public:
     Brick(bool& error_occured, double x = 0.0, double y = 0.0, double width = 0.0,
-         int hit_points = 0, int type = 0, Color color_brick);
+         int hit_points = 0, int type = 0, Color color_brick = RED);
     Brick(Brick const &old_brick);
 
     double get_x() const;
@@ -53,7 +53,7 @@ private:
 
 class SplitBrick : public Brick
 {
-    SplitBrick(double x, double y, double width, int hit_points);
+    SplitBrick(bool &error_occured, double x, double y, double width, int hit_points, int type, Color color_brick);
     void hit_reaction() override;
 };
 

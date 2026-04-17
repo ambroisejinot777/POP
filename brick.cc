@@ -77,12 +77,28 @@ void RainbowBrick::hit_reaction()
 // BALLBRICK
 
 BallBrick::BallBrick(bool &error_occured, double x, double y, double width, int hit_points, int type, Color color_brick, double new_ball_radius)
-    : Brick(error_occured, x, y, width, type hit_points), new_ball_radius(new_ball_radius)
+    : Brick(error_occured, x, y, width, type ,hit_points), new_ball_radius(new_ball_radius)
+{
+    hit_points = 1;
+}
+
+void BallBrick::hit_reaction()
+{
+    
+}
+
+// SPLITBRICK
+
+SplitBrick::SplitBrick(bool &error_occured, double x, double y, double width, int hit_points, int type, Color color_brick)
+    : Brick(error_occured, x, y, width, type, hit_points)
 {
 
 }
 
-// SPLITBRICK
+void SplitBrick::hit_reaction()
+{
+    
+}
 
 // CHECKING FUNCTIONS
 
