@@ -156,7 +156,10 @@ void Game::init(string file_name)
         }
         }
         if (error_occured)
+        {
+            reset();
             return;
+        }
     
     }
     file.close();
@@ -188,7 +191,7 @@ void Game::read_and_check_paddle_data(istringstream &data, bool& error_occured)
 {
     double paddle_x, paddle_y, paddle_radius;
     data >> paddle_x >> paddle_y >> paddle_radius;
-    paddle_ptr = make_unique<Paddle>(Paddle(error_occured, paddle_x, paddle_y, paddle_radius));
+    paddle_ptr = unique_ptr<Paddle>(new Paddle(error_occured, paddle_x, paddle_y, paddle_radius));
 }
 
 void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_counter, bool& error_occured)
@@ -201,13 +204,13 @@ void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_cou
     if (type == 1)
     {
         hit_points = 1;
-        brick_ptr = make_unique<BallBrick>(error_occured, brick_x, brick_y, brick_width, hit_points, type);
+        brick_ptr = unique_ptr<Brick>(new BallBrick(error_occured, brick_x, brick_y, brick_width, hit_points, type));
 
     }
     else if (type ==2)
     {
         hit_points=resolve_hit_points_split_brick(brick_width);
-        brick_ptr = make_unique<SplitBrick>(error_occured, brick_x, brick_y, brick_width, hit_points, type);
+        brick_ptr = unique_ptr<Brick>(new SplitBrick(error_occured, brick_x, brick_y, brick_width, hit_points, type));
     }
     else
     {
@@ -311,5 +314,14 @@ int Game::resolve_hit_points_split_brick(double w)
         ++hit_points;
     }
     return hit_points;
+}
+
+void Game::reset()
+{
+    score = 0;
+    lives = 0;
+    paddle_ptr = nullptr;
+    brick_list.clear();
+    ball_list.clear();
 }
 

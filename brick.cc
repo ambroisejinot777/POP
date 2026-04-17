@@ -125,7 +125,19 @@ SplitBrick::SplitBrick(bool &error_occured, double x, double y, double width, in
 
 void SplitBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 {
+    double x = get_x();
+    double y = get_y();
+    double w = get_width();
+
     draw_square(cr, get_x(), get_y(), get_width(), get_color());
+    int temporary_hit_points = get_hitpoints()-1;
+    while (temporary_hit_points > 0)
+    {
+        
+        draw_cross(cr, x, y, w, RED);
+    
+        --temporary_hit_points;
+    }
 }
 
 // void SplitBrick::hit_reaction()

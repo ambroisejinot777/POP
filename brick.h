@@ -61,6 +61,8 @@ public:
     SplitBrick(bool &error_occured, double x, double y, double width, int hit_points, int type);
     void draw(const Cairo::RefPtr<Cairo::Context> &cr) const override;
     // void hit_reaction() override;
+
+
 };
 
 

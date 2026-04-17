@@ -38,6 +38,18 @@ void draw_circle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, do
     cr->fill();
 }
 
+void draw_cross(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double length, Color color)
+{
+    graphic_set_context(cr);
+    cr->move_to(x-length/2, y);
+    cr->line_to(x+length/2, y);
+    cr->move_to(x, y-length/2);
+    cr->line_to(x, y+length/2);
+    cr->stroke();
+    set_color(RED);
+}
+
+
 
 // local functions
 void set_color(Color color)
