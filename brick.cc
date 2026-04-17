@@ -123,21 +123,34 @@ SplitBrick::SplitBrick(bool &error_occured, double x, double y, double width, in
 
 }
 
+void draw_cross_recursive(const Cairo::RefPtr<Cairo::Context> &cr,
+                          double x, double y, double w,
+                          int level, Color color)
+{
+    if (level <= 0)
+        return;
+
+    draw_cross(cr, x, y, w, color);
+
+    double new_w = (w-split_brick_gap) / 2.0;
+
+    draw_cross_recursive(cr, x - w/2, y +w/2, new_w, level - 1, color);
+    draw_cross_recursive(cr, x + w/2, y +w/2, new_w, level - 1, color); 
+    draw_cross_recursive(cr, x - w/2, y -w/2, new_w, level - 1, color);
+    draw_cross_recursive(cr, x + w/2, y-w/2, new_w, level - 1, color); 
+}
+
 void SplitBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 {
     double x = get_x();
     double y = get_y();
     double w = get_width();
 
-    draw_square(cr, get_x(), get_y(), get_width(), get_color());
-    int temporary_hit_points = get_hitpoints()-1;
-    while (temporary_hit_points > 0)
-    {
-        
-        draw_cross(cr, x, y, w, RED);
-    
-        --temporary_hit_points;
-    }
+    // Dessiner le carré principal
+    draw_square(cr, x, y, w, get_color());
+
+    int levels = get_hitpoints() - 1; // nombre de niveaux de fractale
+    draw_cross_recursive(cr, x, y, w, levels, RED);
 }
 
 // void SplitBrick::hit_reaction()
