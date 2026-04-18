@@ -53,14 +53,16 @@ void Game::create_new_ball(double x, double y)
 {
     if (!paddle_ptr) return;
     double ball_x(get_paddle()->get_x());
-    double ball_y(get_paddle()->get_y() + get_paddle()->get_radius() +  new_ball_radius + epsil_zero);
+    double ball_y(get_paddle()->get_y() + get_paddle()->get_radius() +  
+                                            new_ball_radius + epsil_zero);
 
     double dir_x = x - ball_x;
     double dir_y = y - ball_y;
     double norm = sqrt(dir_x * dir_x + dir_y * dir_y);
 
     double dx = (abs(norm) >= epsil_zero) ? (dir_x / norm) * new_ball_delta_norm : 0;
-    double dy = (abs(norm) >= epsil_zero) ? (dir_y / norm) * new_ball_delta_norm : new_ball_delta_norm;
+    double dy = (abs(norm) >= epsil_zero) ? (dir_y / norm) * new_ball_delta_norm : 
+                                                                new_ball_delta_norm;
     
     Ball new_ball(ball_x, ball_y, new_ball_radius, dx, dy);
     add_ball(new_ball);
@@ -223,10 +225,12 @@ void Game::read_and_check_paddle_data(istringstream &data, bool& error_occured)
 {
     double paddle_x, paddle_y, paddle_radius;
     data >> paddle_x >> paddle_y >> paddle_radius;
-    paddle_ptr = unique_ptr<Paddle>(new Paddle(error_occured, paddle_x, paddle_y, paddle_radius));
+    paddle_ptr = unique_ptr<Paddle>(new Paddle(error_occured, paddle_x, paddle_y, 
+                                                                    paddle_radius));
 }
 
-void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_counter, bool& error_occured)
+void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_counter,
+                                                                 bool& error_occured)
 {
     int type, hit_points;
     double brick_x, brick_y, brick_width;
@@ -236,18 +240,21 @@ void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_cou
     if (type == 1)
     {
         hit_points = 1;
-        brick_ptr = unique_ptr<Brick>(new BallBrick(error_occured, brick_x, brick_y, brick_width, hit_points, type));
+        brick_ptr = unique_ptr<Brick>(new BallBrick(error_occured, brick_x, brick_y, 
+                                                    brick_width, hit_points, type));
 
     }
     else if (type ==2)
     {
         hit_points=resolve_hit_points_split_brick(brick_width);
-        brick_ptr = unique_ptr<Brick>(new SplitBrick(error_occured, brick_x, brick_y, brick_width, hit_points, type));
+        brick_ptr = unique_ptr<Brick>(new SplitBrick(error_occured, brick_x, brick_y, 
+                                                    brick_width, hit_points, type));
     }
     else
     {
         data >> hit_points;
-        brick_ptr = unique_ptr<Brick>(new RainbowBrick(error_occured, brick_x, brick_y, brick_width, hit_points, type));
+        brick_ptr = unique_ptr<Brick>(new RainbowBrick(error_occured, brick_x, 
+                                        brick_y, brick_width, hit_points, type));
     }
 
     if (circle_square_intersection(paddle_ptr->get_circle(), brick_ptr->get_square()))
@@ -266,7 +273,8 @@ void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_cou
     add_brick(move(brick_ptr));
 }
 
-void Game::read_and_check_ball_data(istringstream &data, unsigned int ball_counter, bool& error_occured)
+void Game::read_and_check_ball_data(istringstream &data, unsigned int ball_counter, 
+                                                                bool& error_occured)
 {
     double ball_x, ball_y, ball_radius, ball_dx, ball_dy;
     data >> ball_x >> ball_y >> ball_radius >> ball_dx >> ball_dy;
@@ -287,9 +295,11 @@ void Game::read_and_check_ball_data(istringstream &data, unsigned int ball_count
 
     for (size_t i(0); i < brick_list.size(); i++)
     {
-        if (circle_square_intersection(ball.get_circle(), brick_list[i]->get_square()))
+        if (circle_square_intersection(ball.get_circle(), 
+                            brick_list[i]->get_square()))
         {
-            display_error(message::collision_ball_brick(ball_counter, i), error_occured);
+            display_error(message::collision_ball_brick(ball_counter, i), 
+                                                            error_occured);
         }
     }
 
@@ -313,8 +323,10 @@ void Game::update_paddle_position(double new_x)
     if (delta > delta_norm_max)  new_x = current_x + delta_norm_max;
     if (delta < -delta_norm_max) new_x = current_x - delta_norm_max;
 
-    double min_x = half_paddle_width(paddle_ptr->get_x(), paddle_ptr->get_y(), paddle_ptr->get_radius());
-    double max_x = arena_size - half_paddle_width(paddle_ptr->get_x(), paddle_ptr->get_y(), paddle_ptr->get_radius());
+    double min_x = half_paddle_width(paddle_ptr->get_x(), paddle_ptr->get_y(), 
+                                                            paddle_ptr->get_radius());
+    double max_x = arena_size - half_paddle_width(paddle_ptr->get_x(), 
+                                    paddle_ptr->get_y(), paddle_ptr->get_radius());
     
     if(new_x<min_x) 
     {

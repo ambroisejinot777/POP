@@ -15,7 +15,7 @@ class Brick
 
 public:
     Brick(bool& error_occured, double x = 0.0, double y = 0.0, double width = 0.0,
-         int hit_points = 0, int type = 0);
+                                                int hit_points = 0, int type = 0);
     Brick(Brick const &old_brick);
 
     double get_x() const;
@@ -40,7 +40,8 @@ private:
 class RainbowBrick : public Brick
 {
 public:
-    RainbowBrick(bool& error_occured, double x, double y, double width, int hit_points, int type);
+    RainbowBrick(bool& error_occured, double x, double y, double width, 
+                                            int hit_points, int type);
     void draw(const Cairo::RefPtr<Cairo::Context> &cr) const override;
     // void hit_reaction() override;
 };
@@ -49,7 +50,8 @@ public:
 class BallBrick : public Brick
 {
 public:
-    BallBrick(bool& error_occured, double x, double y, double width, int hitpoints, int type);
+    BallBrick(bool& error_occured, double x, double y, double width, int hitpoints
+                                                                        , int type);
     void draw(const Cairo::RefPtr<Cairo::Context> &cr) const override;
     // void hit_reaction() override;
     // double get_new_ball_radius() const;
@@ -59,7 +61,8 @@ public:
 class SplitBrick : public Brick
 {
 public:
-    SplitBrick(bool &error_occured, double x, double y, double width, int hit_points, int type);
+    SplitBrick(bool &error_occured, double x, double y, double width, int hit_points,
+                                                                         int type);
     void draw(const Cairo::RefPtr<Cairo::Context> &cr) const override;
     // void hit_reaction() override;
 

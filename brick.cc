@@ -26,7 +26,8 @@ static void draw_brick_recursive(const Cairo::RefPtr<Cairo::Context> &cr,
     draw_cross_recursive(cr, x + offset, y-offset, new_w, level - 1, color); 
 }
 
-Brick::Brick(bool& error_occured, double x, double y, double width, int hit_points, int type)
+Brick::Brick(bool& error_occured, double x, double y, double width, int hit_points,
+                                                                     int type)
     : square(x, y, width), hit_points(hit_points), type(type)
 {
     check_brick_position(x, y, width, error_occured);
@@ -38,7 +39,8 @@ Brick::Brick(bool& error_occured, double x, double y, double width, int hit_poin
 }
 
  Brick::Brick(Brick const &old_brick)
-     : square(old_brick.square), hit_points(old_brick.hit_points), type(old_brick.type)
+     : square(old_brick.square), hit_points(old_brick.hit_points), 
+                                            type(old_brick.type)
      {}
 
 double Brick::get_x() const 
@@ -99,7 +101,8 @@ Color Brick::get_color() const
 
 // RAINBOWBRICK
 
-RainbowBrick::RainbowBrick(bool& error_occured, double x, double y, double width, int hit_points, int type)
+RainbowBrick::RainbowBrick(bool& error_occured, double x, double y, double width,
+                                                         int hit_points, int type)
     : Brick(error_occured, x, y, width, hit_points, type)
 {
     check_brick_hit_points(hit_points, error_occured);
@@ -117,7 +120,8 @@ void RainbowBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 
 // BALLBRICK
 
-BallBrick::BallBrick(bool &error_occured, double x, double y, double width, int hit_points, int type)
+BallBrick::BallBrick(bool &error_occured, double x, double y, double width, 
+                                                    int hit_points, int type)
     : Brick(error_occured, x, y, width, hit_points, type)
 {
     hit_points = 1;
@@ -136,7 +140,8 @@ void BallBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 
 // SPLITBRICK
 
-SplitBrick::SplitBrick(bool &error_occured, double x, double y, double width, int hit_points, int type)
+SplitBrick::SplitBrick(bool &error_occured, double x, double y, double width, 
+                                                    int hit_points, int type)
     : Brick(error_occured, x, y, width, hit_points, type)
 {}
 
