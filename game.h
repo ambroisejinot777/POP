@@ -36,12 +36,9 @@ public:
     const Brick_list& get_brick_list() const;
     const Ball_list& get_ball_list() const;
     string get_file() const;
-    void set_score(int new_score);
-    void set_lives(int new_lives);
-    void set_paddle(Paddle_ptr new_paddle_ptr);
+
     void add_brick(unique_ptr<Brick> ptr);
     void add_ball(Ball& new_ball);
-    void set_file(string file_name);
     void update_balls_data();   
     void update_paddle_position(double x);
     void save(const string &file_name) const;
@@ -56,6 +53,12 @@ private:
     Brick_list brick_list;
     Ball_list ball_list;
     string filename;
+
+    void set_score(int new_score);
+    void set_lives(int new_lives);
+    void set_file(string file_name);
+    void set_paddle(Paddle_ptr new_paddle_ptr);
+
 
 
     void init(string file_name);

@@ -53,8 +53,8 @@ private:
     void on_drawing_left_click(int n_press, double x, double y);
     void on_drawing_move(double x, double y);
 
-    double to_game_x(double px);
-    double to_game_y(double py);
+    double to_game_x(double px) const;
+    double to_game_y(double py) const;
 
     void draw_all_bricks(const Cairo::RefPtr<Cairo::Context> &cr);
     void draw_all_balls(const Cairo::RefPtr<Cairo::Context> &cr);

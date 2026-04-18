@@ -318,16 +318,18 @@ void My_window::on_drawing_left_click(int n_press, double x, double y)
 void My_window::on_drawing_move(double x, double y)
 {
     // cout << __func__ << endl; // DONE
-    mouse_x = to_game_x(x);
+    double new_x(to_game_x(x));
+    if (new_x > 0) mouse_x = new_x;
+    else if (game.get_paddle()) mouse_x = (game.get_paddle())->get_x();
 }
 
-double My_window::to_game_x(double px)
+double My_window::to_game_x(double px) const
 {
     double side = min(drawing.get_width(), drawing.get_height());
     return (px - (drawing.get_width() - side) / 2.0) * arena_size / side;
 }
 
-double My_window::to_game_y(double py)
+double My_window::to_game_y(double py) const
 {
     double side = min(drawing.get_width(), drawing.get_height());
     return ((drawing.get_height() + side) / 2.0 - py) * arena_size / side;

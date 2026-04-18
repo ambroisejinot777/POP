@@ -1,6 +1,30 @@
 #include "brick.h"
 #include "constants.h"
+
 // CONSTRUCTORS
+
+static void draw_cross_recursive(const Cairo::RefPtr<Cairo::Context> &cr,
+                                    double x, double y, double w,
+                                    int level, Color color)
+{
+    if (level <= 0)
+        return;
+
+    draw_cross(cr, x, y, w, color);
+
+    double new_w = (w-split_brick_gap)/2.0;
+    double offset = (w+split_brick_gap)/4.0;
+
+    // switch(level)
+    // {
+    //     case()
+    // }
+
+    draw_cross_recursive(cr, x - offset, y +offset, new_w, level - 1, color);
+    draw_cross_recursive(cr, x + offset, y +offset, new_w, level - 1, color); 
+    draw_cross_recursive(cr, x - offset, y -offset, new_w, level - 1, color);
+    draw_cross_recursive(cr, x + offset, y-offset, new_w, level - 1, color); 
+}
 
 Brick::Brick(bool& error_occured, double x, double y, double width, int hit_points, int type)
     : square(x, y, width), hit_points(hit_points), type(type)
@@ -73,11 +97,6 @@ Color Brick::get_color() const
     }
 }
 
-
-void Brick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
-{
-    draw_square(cr, get_x(), get_y(), get_width(), get_color());
-}
 // RAINBOWBRICK
 
 RainbowBrick::RainbowBrick(bool& error_occured, double x, double y, double width, int hit_points, int type)
@@ -119,32 +138,9 @@ void BallBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 
 SplitBrick::SplitBrick(bool &error_occured, double x, double y, double width, int hit_points, int type)
     : Brick(error_occured, x, y, width, hit_points, type)
-{
+{}
 
-}
 
-void draw_cross_recursive(const Cairo::RefPtr<Cairo::Context> &cr,
-                          double x, double y, double w,
-                          int level, Color color)
-{
-    if (level <= 0)
-        return;
-
-    draw_cross(cr, x, y, w, color);
-
-    double new_w = (w-split_brick_gap)/2.0;
-    double offset = (w+split_brick_gap)/4.0;
-
-    // switch(level)
-    // {
-    //     case()
-    // }
-
-    draw_cross_recursive(cr, x - offset, y +offset, new_w, level - 1, color);
-    draw_cross_recursive(cr, x + offset, y +offset, new_w, level - 1, color); 
-    draw_cross_recursive(cr, x - offset, y -offset, new_w, level - 1, color);
-    draw_cross_recursive(cr, x + offset, y-offset, new_w, level - 1, color); 
-}
 
 void SplitBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 {
@@ -153,7 +149,7 @@ void SplitBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
     double w = get_width();
 
     draw_square(cr, x, y, w, get_color());
-    // draw_cross(cr, x, y, w, get_color());
+    draw_cross(cr, x, y, w, get_color());
 
     int levels = get_hitpoints()-1;
     draw_cross_recursive(cr, x, y, w, levels, RED);
@@ -163,6 +159,7 @@ void SplitBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 // {
     
 // }
+
 
 // CHECKING FUNCTIONS
 

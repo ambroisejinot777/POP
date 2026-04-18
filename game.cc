@@ -69,6 +69,7 @@ void Game::set_file(string file_name)
 
 void Game::create_new_ball(double x, double y)
 {
+    if (!paddle_ptr) return;
     double ball_x(get_paddle()->get_x());
     double ball_y(get_paddle()->get_y() + get_paddle()->get_radius() +  new_ball_radius + epsil_zero);
 
@@ -76,8 +77,8 @@ void Game::create_new_ball(double x, double y)
     double dir_y = y - ball_y;
     double norm = sqrt(dir_x * dir_x + dir_y * dir_y);
 
-    double dx = (norm > 0) ? (dir_x / norm) * new_ball_delta_norm : 0;
-    double dy = (norm > 0) ? (dir_y / norm) * new_ball_delta_norm : new_ball_delta_norm;
+    double dx = (abs(norm) >= epsil_zero) ? (dir_x / norm) * new_ball_delta_norm : 0;
+    double dy = (abs(norm) >= epsil_zero) ? (dir_y / norm) * new_ball_delta_norm : new_ball_delta_norm;
     
     Ball new_ball(ball_x, ball_y, new_ball_radius, dx, dy);
     add_ball(new_ball);
@@ -185,7 +186,7 @@ void Game::init(string file_name)
         }
         if (error_occured)
         {
-            // reset();
+            reset();
             return;
         }
     

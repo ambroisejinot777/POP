@@ -81,7 +81,8 @@ void check_ball_y_axis(double x, double y, double r, bool& error_occured)
 
 void check_ball_delta(double dx, double dy, bool& error_occured)
 {
-    if ((dx * dx + dy * dy) > (delta_norm_max * delta_norm_max))
+    double diff = (dx*dx + dy*dy) - (delta_norm_max * delta_norm_max);
+    if (diff > epsil_zero)  
     {
         display_error(message::invalid_delta(dx, dy), error_occured);
     }
