@@ -92,6 +92,7 @@ void My_window::restart_clicked()
 {
     // cout << __func__ << endl; // DONE: reset the game from the last read file
     reset_game_to_last_state();
+    
 }
 void My_window::start_clicked()
 {
@@ -312,6 +313,7 @@ void My_window::on_drawing_left_click(int n_press, double x, double y)
     if(game.get_lives() > 0)
     {
     game.create_new_ball(to_game_x(x), to_game_y(y));
+    update_infos();
     drawing.queue_draw();
     }
 }
@@ -363,5 +365,6 @@ void My_window::reset_game_to_last_state()
 {
     std::string file_name(game.get_file());
     game = Game(file_name);
+    update_infos();
     drawing.queue_draw();
 }
