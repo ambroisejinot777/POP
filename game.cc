@@ -185,7 +185,7 @@ void Game::init(string file_name)
         }
         if (error_occured)
         {
-            reset();
+            // reset();
             return;
         }
     
@@ -303,6 +303,12 @@ void Game::update_balls_data()
 void Game::update_paddle_position(double new_x)
 {
     if(paddle_ptr == nullptr) return;
+
+    double current_x = paddle_ptr->get_x();
+    double delta = new_x - current_x;
+    if (delta > delta_norm_max)  new_x = current_x + delta_norm_max;
+    if (delta < -delta_norm_max) new_x = current_x - delta_norm_max;
+
     double min_x = half_paddle_width(paddle_ptr->get_x(), paddle_ptr->get_y(), paddle_ptr->get_radius());
     double max_x = arena_size - half_paddle_width(paddle_ptr->get_x(), paddle_ptr->get_y(), paddle_ptr->get_radius());
     

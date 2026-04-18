@@ -95,7 +95,7 @@ void My_window::restart_clicked()
 }
 void My_window::start_clicked()
 {
-    cout << __func__ << endl;
+    // cout << __func__ << endl;
     if (loop_activated)
     {
         loop_conn.disconnect();
@@ -122,7 +122,7 @@ void My_window::start_clicked()
 }
 void My_window::step_clicked()
 {
-    cout << __func__ << endl; // DONE: make a single update
+    // cout << __func__ << endl; // DONE: make a single update
     update_frame();
 }
 void My_window::set_key_controller()
@@ -318,9 +318,7 @@ void My_window::on_drawing_left_click(int n_press, double x, double y)
 void My_window::on_drawing_move(double x, double y)
 {
     // cout << __func__ << endl; // DONE
-    double game_x = to_game_x(x);
-    if(loop_activated)
-    game.update_paddle_position(game_x);
+    mouse_x = to_game_x(x);
 }
 
 double My_window::to_game_x(double px)
@@ -355,6 +353,7 @@ void My_window::update_frame()
 {
     update_infos();
     game.update_balls_data();
+    game.update_paddle_position(mouse_x);
     drawing.queue_draw();
 }
 
