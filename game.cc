@@ -1,10 +1,12 @@
 #include "game.h"
 
+
+// PUBLIC FUNCTIONS
+
 Game::Game(string filename): score(0), lives(0), paddle_ptr(nullptr)
 {
     init(filename);
 }
-// GETTER AND SETTER
 
 int Game::get_score() const
 {
@@ -36,21 +38,6 @@ string Game::get_file() const
     return filename;
 }
 
-void Game::set_score(int new_score)
-{
-    score = new_score;
-}
-
-void Game::set_lives(int new_lives)
-{
-    lives = new_lives;
-}
-
-void Game::set_paddle(Paddle_ptr new_paddle_ptr)
-{
-    paddle_ptr = move(new_paddle_ptr);
-}
-
 void Game::add_brick(unique_ptr<Brick> ptr)
 {
     brick_list.push_back(move(ptr));
@@ -60,11 +47,6 @@ void Game::add_ball(Ball& new_ball)
 {
     unique_ptr<Ball> ptr (new Ball(new_ball));
     ball_list.push_back(move(ptr));
-}
-
-void Game::set_file(string file_name) 
-{
-    filename = file_name;
 }
 
 void Game::create_new_ball(double x, double y)
@@ -84,7 +66,28 @@ void Game::create_new_ball(double x, double y)
     add_ball(new_ball);
 }
 
-// INIT AND CHECKING FUNCTIONS
+// PRIVATE AND CHECKING FUNCTIONS
+
+
+void Game::set_score(int new_score)
+{
+    score = new_score;
+}
+
+void Game::set_lives(int new_lives)
+{
+    lives = new_lives;
+}
+
+void Game::set_file(string file_name) 
+{
+    filename = file_name;
+}
+
+void Game::set_paddle(Paddle_ptr new_paddle_ptr)
+{
+    paddle_ptr = move(new_paddle_ptr);
+}
 
 void Game::init(string file_name)
 {
@@ -244,7 +247,7 @@ void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_cou
     else
     {
         data >> hit_points;
-        brick_ptr = make_unique<RainbowBrick>(error_occured, brick_x, brick_y, brick_width, hit_points, type);
+        brick_ptr = unique_ptr<Brick>(new RainbowBrick(error_occured, brick_x, brick_y, brick_width, hit_points, type));
     }
 
     if (circle_square_intersection(paddle_ptr->get_circle(), brick_ptr->get_square()))
@@ -340,7 +343,7 @@ void Game::update_paddle_position(double new_x)
 
 int Game::resolve_hit_points_split_brick(double w)
 {
-    int brick_width(w);
+    double brick_width(w);
     int hit_points(1);
 
     while (brick_width >= brick_size_min)

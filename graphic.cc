@@ -41,12 +41,12 @@ void draw_circle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, do
 void draw_cross(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double length, Color color)
 {
     graphic_set_context(cr);
-    cr->move_to(x-length/2, y);
-    cr->line_to(x+length/2, y);
-    cr->move_to(x, y-length/2);
-    cr->line_to(x, y+length/2);
-    cr->stroke();
-    set_color(RED);
+
+    cr->rectangle(x - length/2, y - split_brick_gap/2, length, split_brick_gap);
+
+    cr->rectangle(x - split_brick_gap/2, y - length/2, split_brick_gap, length);
+    cr->fill();
+    set_color(color);
 }
 
 
