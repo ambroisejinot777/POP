@@ -16,7 +16,8 @@ void graphic_set_context(const Cairo::RefPtr<Cairo::Context> &cr)
     ptcr = &cr;
 }
 
-void draw_square(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double w, Color color)
+void draw_square(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, 
+                                                        double w, Color color)
 {
     graphic_set_context(cr);
     cr->rectangle(x - w/2, y - w/2, w, w);
@@ -24,7 +25,8 @@ void draw_square(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, do
     cr->fill();
 }
 
-void draw_circle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r, Color color)
+void draw_circle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, 
+                                                        double r, Color color)
 {
     cr->arc(x, y, r, 0, 2 * M_PI);
     if (color == BLACK)
@@ -38,7 +40,8 @@ void draw_circle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, do
     cr->fill();
 }
 
-void draw_cross(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double length, Color color)
+void draw_cross(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, 
+                                                    double length, Color color)
 {
     graphic_set_context(cr);
 
@@ -105,7 +108,8 @@ void draw_ball(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, doub
     cr->fill();
 }
 
-void draw_paddle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r)
+void draw_paddle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, 
+                                                                    double r)
 {
     cr->arc(x, y, r, 0, 2 * M_PI);
     cr->set_source_rgb(0.0, 0.0, 0.0);

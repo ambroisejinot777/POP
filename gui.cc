@@ -278,7 +278,8 @@ void My_window::set_drawing()
     drawing.set_expand();
     drawing.set_draw_func(sigc::mem_fun(*this, &My_window::on_draw));
 }
-void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, int height)
+void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width, 
+                                                                int height)
 {
     graphic_set_context(cr);
     double side(min(width, height));
