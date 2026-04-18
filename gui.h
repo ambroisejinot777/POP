@@ -22,7 +22,6 @@ private:
     Gtk::Frame info_frame;
     std::array<Gtk::Label, 4> info_text, info_value;
     Gtk::DrawingArea drawing;
-    std::string filename;
 
     Game game;
 
@@ -53,13 +52,13 @@ private:
     void on_drawing_left_click(int n_press, double x, double y);
     void on_drawing_move(double x, double y);
 
+    double to_game_x(double px);
+    double to_game_y(double py);
 
     void draw_all_bricks(const Cairo::RefPtr<Cairo::Context> &cr);
     void draw_all_balls(const Cairo::RefPtr<Cairo::Context> &cr);
 
     void update_frame();
-
-    // void update_frame();
 
     void reset_game_to_last_state();
 };

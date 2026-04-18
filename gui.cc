@@ -31,8 +31,7 @@ My_window::My_window(std::string file_name)
                Gtk::Button("restart"), Gtk::Button("start"), Gtk::Button("step")}),
       info_frame("Infos :"), info_text({Gtk::Label("score:"), Gtk::Label("lives:"),
                                         Gtk::Label("bricks:"), Gtk::Label("balls:")}),
-      game(file_name), 
-      filename(file_name)
+      game(file_name)
 {
     set_title("Brick Breaker");
     set_child(main_box);
@@ -146,7 +145,6 @@ bool My_window::key_pressed(guint keyval, guint keycode, Gdk::ModifierType state
         if(loop_activated) {
             loop_conn.disconnect();
             loop_activated = false;
-            buttons[START].set_label("start");
         }
         else
         {
@@ -219,8 +217,7 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
         {
             cout << "open file " << file_name << endl; // DONE: set game from a file
             game = Game(file_name);
-            filename=file_name;
-            update_infos();
+            update_frame();
             drawing.queue_draw();
             dialog->hide();
         }
@@ -311,20 +308,32 @@ void My_window::set_mouse_controller()
 }
 void My_window::on_drawing_left_click(int n_press, double x, double y)
 {
-    cout << __func__ << endl; // TODO
+    // cout << __func__ << endl; // DONE
+    if(game.get_lives() > 0)
+    {
+    game.create_new_ball(to_game_x(x), to_game_y(y));
+    drawing.queue_draw();
+    }
 }
 void My_window::on_drawing_move(double x, double y)
 {
     // cout << __func__ << endl; // DONE
-    int width  = drawing.get_width();
-    int height = drawing.get_height();
-    double side = min(width, height);
-
-    double game_x = (x - (width - side) / 2.0) * arena_size / side;
-
+    double game_x = to_game_x(x);
+    if(loop_activated)
     game.update_paddle_position(game_x);
 }
 
+double My_window::to_game_x(double px)
+{
+    double side = min(drawing.get_width(), drawing.get_height());
+    return (px - (drawing.get_width() - side) / 2.0) * arena_size / side;
+}
+
+double My_window::to_game_y(double py)
+{
+    double side = min(drawing.get_width(), drawing.get_height());
+    return ((drawing.get_height() + side) / 2.0 - py) * arena_size / side;
+}
 
 void My_window::draw_all_bricks(const Cairo::RefPtr<Cairo::Context> &cr)
 {
@@ -351,6 +360,7 @@ void My_window::update_frame()
 
 void My_window::reset_game_to_last_state()
 {
-    game = Game(filename);
+    std::string file_name(game.get_file());
+    game = Game(file_name);
     drawing.queue_draw();
 }

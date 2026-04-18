@@ -12,6 +12,10 @@ Ball::Ball(bool& error_occured, double x, double y, double r, double dx, double 
     check_ball_delta(dx, dy, error_occured);
 }
 
+Ball::Ball(double x, double y, double r, double dx, double dy)
+    : circle(x, y, r), delta(dx, dy)
+    {}
+
 Ball::Ball(Ball const &old_ball)
     : circle(old_ball.circle), delta(old_ball.delta)
 {}
@@ -50,7 +54,6 @@ void Ball::update_position()
 {    
     circle.set_x(circle.get_x() + delta.get_x());
     circle.set_y(circle.get_y() + delta.get_y());
-    cout << delta.get_x() << delta.get_y() << endl;
 }
 
 void Ball::draw(const Cairo::RefPtr<Cairo::Context> &cr) const

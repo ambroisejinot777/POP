@@ -31,6 +31,11 @@ const Ball_list& Game::get_ball_list() const
     return ball_list;
 }
 
+string Game::get_file() const
+{
+    return filename;
+}
+
 void Game::set_score(int new_score)
 {
     score = new_score;
@@ -57,6 +62,27 @@ void Game::add_ball(Ball& new_ball)
     ball_list.push_back(move(ptr));
 }
 
+void Game::set_file(string file_name) 
+{
+    filename = file_name;
+}
+
+void Game::create_new_ball(double x, double y)
+{
+    double ball_x(get_paddle()->get_x());
+    double ball_y(get_paddle()->get_y() + get_paddle()->get_radius() +  new_ball_radius + epsil_zero);
+
+    double dir_x = x - ball_x;
+    double dir_y = y - ball_y;
+    double norm = sqrt(dir_x * dir_x + dir_y * dir_y);
+
+    double dx = (norm > 0) ? (dir_x / norm) * new_ball_delta_norm : 0;
+    double dy = (norm > 0) ? (dir_y / norm) * new_ball_delta_norm : new_ball_delta_norm;
+    
+    Ball new_ball(ball_x, ball_y, new_ball_radius, dx, dy);
+    add_ball(new_ball);
+}
+
 // INIT AND CHECKING FUNCTIONS
 
 void Game::init(string file_name)
@@ -69,6 +95,8 @@ void Game::init(string file_name)
         cout << "Didn't find the file: " << file_name << endl;
         return;
     }
+
+    set_file(file_name);
 
     string line;
     Reading_state reading_state(SCORE);
