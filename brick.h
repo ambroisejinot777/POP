@@ -69,14 +69,17 @@ public:
 
 };
 
+static void draw_brick_recursive(const Cairo::RefPtr<Cairo::Context> &cr,
+                                 double x, double y, double w,
+                                 int level, Color color);
 
 
-// CHECKING FUNCTIONS
+    // CHECKING FUNCTIONS
 
-void check_brick_position(double x, double y, double width, bool& error_occured);
-void check_brick_size(double width, bool& error_occured);
-void check_brick_hit_points(int hit_points, bool& error_occured);
-void check_brick_type(int type, bool& error_occured);
+    void check_brick_position(double x, double y, double width, bool &error_occured);
+    void check_brick_size(double width, bool &error_occured);
+    void check_brick_hit_points(int hit_points, bool &error_occured);
+    void check_brick_type(int type, bool &error_occured);
 
 #endif
 
