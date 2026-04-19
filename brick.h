@@ -16,6 +16,8 @@ class Brick
 public:
     Brick(bool& error_occured, double x = 0.0, double y = 0.0, double width = 0.0,
                                                 int hit_points = 0, int type = 0);
+    Brick(double x = 0.0, double y = 0.0, double width = 0.0, int hit_points = 0,
+                                                                    int type = 0);
     Brick(Brick const &old_brick);
 
     double get_x() const;
@@ -34,7 +36,10 @@ private:
     Square square;
     int hit_points;
     int type;
+
+protected:
     Color color;
+
 };
 
 class RainbowBrick : public Brick
@@ -42,6 +47,7 @@ class RainbowBrick : public Brick
 public:
     RainbowBrick(bool& error_occured, double x, double y, double width, 
                                             int hit_points, int type);
+    RainbowBrick(double x, double y, double width, int hit_points, int type);
     void draw(const Cairo::RefPtr<Cairo::Context> &cr) const override;
     // void hit_reaction() override;
 };
@@ -63,15 +69,12 @@ class SplitBrick : public Brick
 public:
     SplitBrick(bool &error_occured, double x, double y, double width, int hit_points,
                                                                          int type);
+    SplitBrick(double x, double y, double width, int hit_points, int type);
     void draw(const Cairo::RefPtr<Cairo::Context> &cr) const override;
     // void hit_reaction() override;
 
 
 };
-
-static void draw_brick_recursive(const Cairo::RefPtr<Cairo::Context> &cr,
-                                 double x, double y, double w, int level, Color color,
-                                 vector<unique_ptr<Brick>> SplitBrick_list);
 
 // CHECKING FUNCTIONS
 

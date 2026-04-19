@@ -5,45 +5,45 @@
 
 static void draw_brick_recursive(const Cairo::RefPtr<Cairo::Context> &cr,
                                  double x, double y, double w, int level, Color color,
-                                 vector<unique_ptr<Brick>> SplitBrick_list)
+                                 Brick_list& SplitBrick_list)
 {
     if (level <= 0)
         return;
 
+    switch (level)
+    { 
+    case 7:
+        color = PURPLE; break;
+    case 6:
+        color = BLUE; break;
+    case 5:
+        color = CYAN; break;
+    case 4:
+        color = GREEN; break;
+    case 3:
+        color = YELLOW; break;
+    case 2:
+        color = ORANGE; break;
+    default:
+        color = RED; break;
+    }
+
     if (w >= brick_size_min)
     {
-        SplitBrick_list.push_back(std::make_unique<RainbowBrick>(error_occured, x, y,
-                                                                    width, level, 0));
-        draw(cr, x, y, w, color);
+        unique_ptr<Brick> ptr(new RainbowBrick(x, y, w, level, 0));
+        SplitBrick_list.push_back(move(ptr));
+        draw_square(cr, x, y, w, color);
     }
 
     double next_w = (w-split_brick_gap)/2.0;
     double offset = (w+split_brick_gap)/4.0;
 
-    switch (level)
-    { 
-    case 7:
-        color = PURPLE;
-    case 6:
-        color = BLUE;
-    case 5:
-        color = CYAN;
-    case 4:
-        color = GREEN;
-    case 3:
-        color = YELLOW;
-    case 2:
-        color = ORANGE;
-    default:
-        color = RED;
-    }
-
     if (next_w >= brick_size_min)
     {
-    draw_brick_recursive(cr, x - offset, y +offset, new_w, level + 1, color);
-    draw_brick_recursive(cr, x + offset, y +offset, new_w, level + 1, color); 
-    draw_brick_recursive(cr, x - offset, y -offset, new_w, level + 1, color);
-    draw_brick_recursive(cr, x + offset, y-offset, new_w, level + 1, color); 
+    draw_brick_recursive(cr, x - offset, y + offset, next_w, level + 1, color, SplitBrick_list);
+    draw_brick_recursive(cr, x + offset, y + offset, next_w, level + 1, color, SplitBrick_list); 
+    draw_brick_recursive(cr, x - offset, y - offset, next_w, level + 1, color, SplitBrick_list);
+    draw_brick_recursive(cr, x + offset, y - offset, next_w, level + 1, color, SplitBrick_list); 
     }
 }
 
@@ -58,6 +58,10 @@ Brick::Brick(bool& error_occured, double x, double y, double width, int hit_poin
 
     color = get_color();
 }
+
+Brick::Brick(double x, double y, double width, int hit_points, int type)
+    : square(x, y, width), hit_points(hit_points), type(type)
+{}
 
  Brick::Brick(Brick const &old_brick)
      : square(old_brick.square), hit_points(old_brick.hit_points), 
@@ -129,6 +133,9 @@ RainbowBrick::RainbowBrick(bool& error_occured, double x, double y, double width
     check_brick_hit_points(hit_points, error_occured);
 }
 
+RainbowBrick::RainbowBrick(double x, double y, double width, int hit_points, int type)
+    : Brick(x, y, width, hit_points, type) {}
+
 void RainbowBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 {
     draw_square(cr, get_x(), get_y(), get_width(), get_color());
@@ -166,16 +173,20 @@ SplitBrick::SplitBrick(bool &error_occured, double x, double y, double width,
     : Brick(error_occured, x, y, width, hit_points, type)
 {}
 
+SplitBrick::SplitBrick(double x, double y, double width, int hit_points, int type)
+    : Brick(x, y, width, hit_points, type)
+{}
+
 
 
 void SplitBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 {
-    vector<unique_ptr<RainbowBrick>> SplitBrick_list;
+    Brick_list SplitBrick_list;
     double x = get_x();
     double y = get_y();
     double w = get_width();
     int level = 1;
-    draw_brick_recursive(cr, x, y, w, level, color, SplitBrick_list)
+    draw_brick_recursive(cr, x, y, w, level, color, SplitBrick_list);
 }
 
 // void SplitBrick::hit_reaction()
