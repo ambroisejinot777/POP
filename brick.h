@@ -58,6 +58,7 @@ class BallBrick : public Brick
 public:
     BallBrick(bool& error_occured, double x, double y, double width, int hitpoints
                                                                         , int type);
+    BallBrick(double x, double y, double width, int hitpoints, int type);
     void draw(const Cairo::RefPtr<Cairo::Context> &cr) const override;
     // void hit_reaction() override;
     // double get_new_ball_radius() const;

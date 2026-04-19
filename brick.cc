@@ -155,6 +155,12 @@ BallBrick::BallBrick(bool &error_occured, double x, double y, double width,
     hit_points = 1;
 }
 
+BallBrick::BallBrick(double x, double y, double width, int hit_points, int type)
+    : Brick(x, y, width, hit_points, type)
+{
+    hit_points = 1;
+}
+
 void BallBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 {
     draw_square(cr, get_x(), get_y(), get_width(), get_color());
