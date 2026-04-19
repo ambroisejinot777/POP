@@ -12,7 +12,8 @@ static void draw_brick_recursive(const Cairo::RefPtr<Cairo::Context> &cr,
 
     if (w >= brick_size_min)
     {
-        SplitBrick_list.push_back(std::make_unique<RainbowBrick>(error_occured, x, y, width, level, 0));
+        SplitBrick_list.push_back(std::make_unique<RainbowBrick>(error_occured, x, y,
+                                                                    width, level, 0));
         draw(cr, x, y, w, color);
     }
 
