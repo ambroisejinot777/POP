@@ -4,12 +4,9 @@
 #include <fstream>
 #include <sstream>
 
-#include "message.h"
 #include "brick.h"
 #include "ball.h"
 #include "paddle.h"
-
-using namespace std;
 
 enum Reading_state
 {

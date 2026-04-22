@@ -1,7 +1,5 @@
 #include "paddle.h"
 
-using namespace std;
-
 using namespace message;
 
 // CONSTRUCTEURS DE PADDLE

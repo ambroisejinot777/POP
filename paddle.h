@@ -5,6 +5,7 @@
 #include "tools.h"
 #include "constants.h"
 
+
 class Paddle
 {
 public:

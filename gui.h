@@ -1,11 +1,11 @@
 #ifndef GUI_H
 #define GUI_H
 
-#include <array>
 #include <gtkmm.h>
-#include <string>
+
+#include "graphic_gui.h"
 #include "game.h"
-#include <string>
+
 
 
 class My_window : public Gtk::Window

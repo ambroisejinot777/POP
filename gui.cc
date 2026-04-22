@@ -1,7 +1,4 @@
 #include <filesystem>
-#include <iostream>
-#include "constants.h"
-#include "graphic_gui.h"
 #include "gui.h"
 
 using namespace std;

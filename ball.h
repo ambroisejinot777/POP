@@ -1,12 +1,11 @@
 #ifndef BALL_H
 #define BALL_H
 
-#include <iostream>
-#include <iostream>
 #include "message.h"
 #include "tools.h"
+#include "constants.h"
 
-using namespace std;
+
 
 class Ball
 {

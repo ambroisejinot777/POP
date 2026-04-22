@@ -1,7 +1,5 @@
 #include "ball.h"
 
-using namespace std;
-
 // CONSTRUCTEURS DE BALL
 
 Ball::Ball(bool& error_occured, double x, double y, double r, double dx, double dy)

@@ -3,12 +3,11 @@
 
 #include "message.h"
 #include "tools.h"
-#include "graphic.h"
+#include "constants.h"
+
 
 
 // BRICK CLASS
-class Brick;
-typedef vector<unique_ptr<Brick>> Brick_list;
 
 class Brick
 {
@@ -41,6 +40,9 @@ protected:
     Color color;
 
 };
+
+typedef vector<unique_ptr<Brick>> Brick_list;
+
 
 class RainbowBrick : public Brick
 {

@@ -1,5 +1,4 @@
 #include "brick.h"
-#include "constants.h"
 
 // CONSTRUCTORS
 

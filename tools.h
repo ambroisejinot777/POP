@@ -6,13 +6,12 @@
 #include <cmath>
 #include <vector>
 #include <memory>
+
 #include "graphic_gui.h"
 
-#include "constants.h"
+using namespace std;
 
 constexpr double epsil_zero(0.0);
-
-using namespace std;
 
 // POINT
 
