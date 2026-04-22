@@ -18,6 +18,7 @@ public:
     Brick(double x = 0.0, double y = 0.0, double width = 0.0, int hit_points = 0,
                                                                     int type = 0);
     Brick(Brick const &old_brick);
+    virtual ~Brick();
 
     double get_x() const;
     double get_y() const;
@@ -28,8 +29,6 @@ public:
     bool is_destroyed() const;
     Color get_color() const;
     virtual void draw(const Cairo::RefPtr<Cairo::Context> &cr) const = 0;
-
-    // virtual void hit_reaction() = 0;
 
 private:
     Square square;
@@ -51,7 +50,6 @@ public:
                                             int hit_points, int type);
     RainbowBrick(double x, double y, double width, int hit_points, int type);
     void draw(const Cairo::RefPtr<Cairo::Context> &cr) const override;
-    // void hit_reaction() override;
 };
 
 
@@ -62,8 +60,6 @@ public:
                                                                         , int type);
     BallBrick(double x, double y, double width, int hitpoints, int type);
     void draw(const Cairo::RefPtr<Cairo::Context> &cr) const override;
-    // void hit_reaction() override;
-    // double get_new_ball_radius() const;
 };
 
 
@@ -74,7 +70,6 @@ public:
                                                                          int type);
     SplitBrick(double x, double y, double width, int hit_points, int type);
     void draw(const Cairo::RefPtr<Cairo::Context> &cr) const override;
-    // void hit_reaction() override;
 
 
 };

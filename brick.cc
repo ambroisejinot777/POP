@@ -140,10 +140,6 @@ void RainbowBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
     draw_square(cr, get_x(), get_y(), get_width(), get_color());
 }
 
-// void RainbowBrick::hit_reaction()
-// {
-    
-// }
 
 // BALLBRICK
 
@@ -166,10 +162,6 @@ void BallBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
     draw_circle(cr, get_x(), get_y(), new_ball_radius);
 }
 
-// void BallBrick::hit_reaction()
-// {
-    
-// }
 
 // SPLITBRICK
 
@@ -182,8 +174,6 @@ SplitBrick::SplitBrick(double x, double y, double width, int hit_points, int typ
     : Brick(x, y, width, hit_points, type)
 {}
 
-
-
 void SplitBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 {
     Brick_list SplitBrick_list;
@@ -193,11 +183,6 @@ void SplitBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
     int level = 1;
     draw_brick_recursive(cr, x, y, w, level, color, SplitBrick_list);
 }
-
-// void SplitBrick::hit_reaction()
-// {
-    
-// }
 
 
 // CHECKING FUNCTIONS
