@@ -272,6 +272,7 @@ void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width,
     double side(min(width, height));
     cr->translate((width - side) / 2, (height + side) / 2);
     cr->scale(side / (arena_size), -side / (arena_size));
+    draw_arena(cr);
     draw_all_bricks(cr);
     draw_all_balls(cr);
     if (game.get_paddle()!=nullptr)
@@ -355,4 +356,9 @@ void My_window::reset_game_to_last_state()
     game = Game(file_name);
     update_infos();
     drawing.queue_draw();
+}
+void My_window::draw_arena(const Cairo::RefPtr<Cairo::Context> &cr) const
+{
+    cr->set_line_width(0.7);
+    draw_square(cr, arena_size/2, arena_size/2, arena_size, GREY, false);
 }

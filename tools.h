@@ -7,7 +7,7 @@
 #include <vector>
 #include <memory>
 
-#include "graphic_gui.h"
+#include "graphic.h"
 
 using namespace std;
 
@@ -44,6 +44,8 @@ public:
     void set_y(double y);
     void set_width(double w);
 
+    void draw(const Cairo::RefPtr<Cairo::Context> &cr, Color color);
+
 private:
     Point center;
     double width;
@@ -62,6 +64,7 @@ public:
     void set_x(double x);
     void set_y(double y);
     void set_radius(double r);
+    void draw(const Cairo::RefPtr<Cairo::Context> &cr, Color color);
 
 private:
     Point center;

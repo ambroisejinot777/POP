@@ -62,6 +62,8 @@ private:
     void update_frame();
 
     void reset_game_to_last_state();
+
+    void draw_arena(const Cairo::RefPtr<Cairo::Context> &cr) const;
 };
 
 #endif

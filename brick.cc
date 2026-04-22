@@ -137,7 +137,7 @@ RainbowBrick::RainbowBrick(double x, double y, double width, int hit_points, int
 
 void RainbowBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 {
-    draw_square(cr, get_x(), get_y(), get_width(), get_color());
+    get_square().draw(cr, get_color());
 }
 
 
@@ -158,7 +158,7 @@ BallBrick::BallBrick(double x, double y, double width, int hit_points, int type)
 
 void BallBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 {
-    draw_square(cr, get_x(), get_y(), get_width(), get_color());
+    get_square().draw(cr, get_color());
     draw_circle(cr, get_x(), get_y(), new_ball_radius);
 }
 

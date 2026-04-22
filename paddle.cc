@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "paddle.h"
 
 using namespace message;
@@ -47,8 +49,11 @@ void Paddle::set_y(double y)
 
 void Paddle::draw(const Cairo::RefPtr<Cairo::Context> &cr)
 {
-    draw_circle(cr, get_x(), get_y(), get_radius());
-    draw_circle(cr, get_x(), get_y(), get_radius()-paddle_thickness, WHITE);
+    double teta = acos(abs(get_y())/get_radius());
+    double teta_min(M_PI/2-teta);
+    double teta_max(M_PI/2+teta);
+    cr->set_line_width(0.7);
+    draw_arc(cr, get_x(), get_y(), get_radius(), teta_min, teta_max);
 }
 
 

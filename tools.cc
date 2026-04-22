@@ -70,6 +70,11 @@ void Square::set_width(double w)
     width = w;
 }
 
+void Square::draw(const Cairo::RefPtr<Cairo::Context> &cr, Color color)
+{
+    draw_square(cr, get_x(), get_y(), width, color);
+}
+
 // CIRCLE
 
 Circle::Circle(double x, double y, double r)
@@ -108,6 +113,11 @@ void Circle::set_radius(double r)
     radius = r;
 }
 
+void Circle::draw(const Cairo::RefPtr<Cairo::Context> &cr, Color color)
+{
+    draw_circle(cr, get_x(), get_y(), radius, color);
+}
+
 // UTILITY FUNCTIONS
 
 void display_error(string message, bool& error_occured)
@@ -142,7 +152,7 @@ bool circle_square_intersection(Circle const &c, Square const &s)
     double distance_y = c.get_y() - closest_y;
 
     double distance_squared = (distance_x * distance_x) + (distance_y * distance_y);
-    bool check = (distance_squared - (c.get_radius() * c.get_radius())) < epsil_zero;
+    bool check = (distance_squared - (c.get_radius() * c.get_radius())) < epsil_zero * epsil_zero;
     return check;
 }
 

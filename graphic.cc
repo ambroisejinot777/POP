@@ -1,5 +1,4 @@
 #include "graphic.h"
-#include "graphic_gui.h"
 #include "constants.h"
 #include <cmath>
 
@@ -10,46 +9,45 @@ void set_color(Color color);
 
 static const Cairo::RefPtr<Cairo::Context> *ptcr(nullptr);
 
-// graphic_gui.h
+// graphic.h
 void graphic_set_context(const Cairo::RefPtr<Cairo::Context> &cr)
 {
     ptcr = &cr;
 }
 
 void draw_square(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, 
-                                                        double w, Color color)
+                                                        double w, Color color, bool fill)
 {
-    graphic_set_context(cr);
-    cr->rectangle(x - w/2, y - w/2, w, w);
     set_color(color);
-    cr->fill();
+    cr->rectangle(x - w/2, y - w/2, w, w);
+
+    if (fill) 
+    {
+        cr->fill();
+    }
+    else 
+    {
+        cr->stroke();
+    }
 }
 
 void draw_circle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, 
                                                         double r, Color color)
 {
+    set_color(color);
     cr->arc(x, y, r, 0, 2 * M_PI);
-    if (color == BLACK)
-    {
-        cr->set_source_rgb(0.0, 0.0, 0.0);
-    }
-    else 
-    {
-        cr->set_source_rgb(1.0, 1.0, 1.0);
-    }
     cr->fill();
+
 }
 
-void draw_cross(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, 
-                                                    double length, Color color)
+
+void draw_arc(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r,
+                                                       double teta_min, double teta_max,
+                                                        Color color)
 {
-    graphic_set_context(cr);
-
-    cr->rectangle(x - length/2, y - split_brick_gap/2, length, split_brick_gap);
-
-    cr->rectangle(x - split_brick_gap/2, y - length/2, split_brick_gap, length);
-    cr->fill();
     set_color(color);
+    cr->arc(x, y, r, teta_min, teta_max);
+    cr->stroke();
 }
 
 
