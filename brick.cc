@@ -4,45 +4,42 @@
 
 static void draw_brick_recursive(const Cairo::RefPtr<Cairo::Context> &cr,
                                  double x, double y, double w, int level, Color color,
-                                 Brick_list& SplitBrick_list)
+                                 Brick_list& split_brick_list)
 {
-    if (level <= 0)
-        return;
-
+    if (level <= 0) return;
     switch (level)
     { 
-    case 7:
-        color = PURPLE; break;
-    case 6:
-        color = BLUE; break;
-    case 5:
-        color = CYAN; break;
-    case 4:
-        color = GREEN; break;
-    case 3:
-        color = YELLOW; break;
-    case 2:
-        color = ORANGE; break;
-    default:
-        color = RED; break;
+        case 7:
+            color = PURPLE; break;
+        case 6:
+            color = BLUE; break;
+        case 5:
+            color = CYAN; break;
+        case 4:
+            color = GREEN; break;
+        case 3:
+            color = YELLOW; break;
+        case 2:
+            color = ORANGE; break;
+        default:
+            color = RED; break;
     }
 
     if (w >= brick_size_min)
     {
         unique_ptr<Brick> ptr(new RainbowBrick(x, y, w, level, 0));
-        SplitBrick_list.push_back(move(ptr));
+        split_brick_list.push_back(move(ptr));
         draw_square(cr, x, y, w, color);
     }
-
     double next_w = (w-split_brick_gap)/2.0;
     double offset = (w+split_brick_gap)/4.0;
 
     if (next_w >= brick_size_min)
     {
-    draw_brick_recursive(cr, x - offset, y + offset, next_w, level + 1, color, SplitBrick_list);
-    draw_brick_recursive(cr, x + offset, y + offset, next_w, level + 1, color, SplitBrick_list); 
-    draw_brick_recursive(cr, x - offset, y - offset, next_w, level + 1, color, SplitBrick_list);
-    draw_brick_recursive(cr, x + offset, y - offset, next_w, level + 1, color, SplitBrick_list); 
+        draw_brick_recursive(cr, x - offset, y + offset, next_w, level + 1, color, split_brick_list);
+        draw_brick_recursive(cr, x + offset, y + offset, next_w, level + 1, color, split_brick_list); 
+        draw_brick_recursive(cr, x - offset, y - offset, next_w, level + 1, color, split_brick_list);
+        draw_brick_recursive(cr, x + offset, y - offset, next_w, level + 1, color, split_brick_list); 
     }
 }
 
@@ -106,20 +103,27 @@ Color Brick::get_color() const
 {
     switch (hit_points)
     {
-    case 7:
-        return PURPLE;
-    case 6:
-        return BLUE;
-    case 5:
-        return CYAN;
-    case 4:
-        return GREEN;
-    case 3:
-        return YELLOW;
-    case 2:
-        return ORANGE;
-    default:
-        return RED;
+        case 7:
+            return PURPLE;
+            break;
+        case 6:
+            return BLUE;
+            break;
+        case 5:
+            return CYAN;
+            break;
+        case 4:
+            return GREEN;
+            break;
+        case 3:
+            return YELLOW;
+            break;
+        case 2:
+            return ORANGE;
+            break;
+        default:
+            return RED;
+            break;
     }
 }
 
@@ -176,12 +180,12 @@ SplitBrick::SplitBrick(double x, double y, double width, int hit_points, int typ
 
 void SplitBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 {
-    Brick_list SplitBrick_list;
+    Brick_list split_brick_list;
     double x = get_x();
     double y = get_y();
     double w = get_width();
     int level = 1;
-    draw_brick_recursive(cr, x, y, w, level, color, SplitBrick_list);
+    draw_brick_recursive(cr, x, y, w, level, color, split_brick_list);
 }
 
 

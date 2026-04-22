@@ -7,7 +7,8 @@ LDLIBS   := $(shell pkg-config --libs $(PKGS))
 
 BUILD_DIR := build
 
-CXXFILES := tools.cc message.cc paddle.cc brick.cc ball.cc graphic.cc gui.cc game.cc project.cc
+CXXFILES := tools.cc message.cc paddle.cc brick.cc ball.cc graphic.cc \
+												gui.cc game.cc project.cc
 OFILES   := $(addprefix $(BUILD_DIR)/, $(CXXFILES:.cc=.o))
 
 .PHONY: all clean tests

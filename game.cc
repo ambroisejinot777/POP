@@ -70,7 +70,6 @@ void Game::create_new_ball(double x, double y)
 
 // PRIVATE AND CHECKING FUNCTIONS
 
-
 void Game::set_score(int new_score)
 {
     score = new_score;
@@ -93,15 +92,12 @@ void Game::set_paddle(Paddle_ptr new_paddle_ptr)
 
 void Game::init(string file_name)
 {
-
     ifstream file(file_name);
-
     if (file.fail())
     {
         cout << "Didn't find the file: " << file_name << endl;
         return;
     }
-
     set_file(file_name);
 
     string line;
@@ -110,95 +106,74 @@ void Game::init(string file_name)
     unsigned int brick_counter(0);
     unsigned int nb_ball;
     unsigned int ball_counter(0);
-
     bool error_occured(false);
 
     while (getline(file >> ws, line))
     {
-
         istringstream data(line);
-
         if (line.empty() or line[0] == '#')
-        {
             continue;
-        }
 
         switch (reading_state)
         {
-
-        case SCORE:
-        {
-            read_and_check_score(data, error_occured);
-            reading_state = LIVES;
-            break;
-        }
-
-        case LIVES:
-        {
-            read_and_check_lives(data, error_occured);
-            reading_state = PADDLE;
-
-            break;
-        }
-
-        case PADDLE:
-        {
-            read_and_check_paddle_data(data, error_occured);
-            reading_state = NB_BRICK;
-            break;
-        }
-
-        case NB_BRICK:
-        {
-            data >> nb_brick;
-            reading_state = BRICKS;
-            break;
-        }
-
-        case BRICKS:
-        {
-            read_and_check_brick_data(data, brick_counter, error_occured);
-
-            if (++brick_counter >= nb_brick)
+            case SCORE:
             {
-                reading_state = NB_BALL;
+                read_and_check_score(data, error_occured);
+                reading_state = LIVES;
+                break;
             }
-            break;
-        }
-
-        case NB_BALL:
-        {
-            data >> nb_ball;
-            reading_state = BALLS;
-            break;
-        }
-
-        case BALLS:
-        {
-            read_and_check_ball_data(data, ball_counter, error_occured);
-
-            if (++ball_counter >= nb_ball)
+            case LIVES:
             {
-                reading_state = FINISHED;
-            }
-            break;
-        }
+                read_and_check_lives(data, error_occured);
+                reading_state = PADDLE;
 
-        case FINISHED:
-        {
-            break;
-        }
+                break;
+            }
+            case PADDLE:
+            {
+                read_and_check_paddle_data(data, error_occured);
+                reading_state = NB_BRICK;
+                break;
+            }
+
+            case NB_BRICK:
+            {
+                data >> nb_brick;
+                reading_state = BRICKS;
+                break;
+            }
+            case BRICKS:
+            {
+                read_and_check_brick_data(data, brick_counter, error_occured);
+                if (++brick_counter >= nb_brick)
+                {
+                    reading_state = NB_BALL;
+                }
+                break;
+            }
+            case NB_BALL:
+            {
+                data >> nb_ball;
+                reading_state = BALLS;
+                break;
+            }
+            case BALLS:
+            {
+                read_and_check_ball_data(data, ball_counter, error_occured);
+                if (++ball_counter >= nb_ball) reading_state = FINISHED;
+                break;
+            }
+            case FINISHED:
+                break;
         }
         if (error_occured)
         {
             reset();
             return;
         }
-    
     }
     file.close();
     cout << message::success();
-
 }
 
 void Game::read_and_check_score(istringstream &data, bool& error_occured)
@@ -240,9 +215,8 @@ void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_cou
     if (type == 1)
     {
         hit_points = 1;
-        brick_ptr = unique_ptr<Brick>(new BallBrick(error_occured, brick_x, brick_y, 
+        brick_ptr = unique_ptr<Brick>(new BallBrick(error_occured, brick_x, brick_y,
                                                     brick_width, hit_points, type));
-
     }
     else if (type ==2)
     {
@@ -258,16 +232,13 @@ void Game::read_and_check_brick_data(istringstream &data, unsigned int brick_cou
     }
 
     if (circle_square_intersection(paddle_ptr->get_circle(), brick_ptr->get_square()))
-    {
         display_error(message::collision_paddle_brick(brick_counter), error_occured);
-    }
+    
     for (size_t i(0); i < brick_list.size(); i++)
     {
         if (square_square_intersection(brick_list[i]->get_square(),
                                          brick_ptr->get_square()))
-        {
             display_error(message::collision_bricks(i, brick_counter), error_occured);
-        }
     }
 
     add_brick(move(brick_ptr));
@@ -378,44 +349,27 @@ void Game::reset()
 void Game::save(const string &file_name) const
 {
     ofstream file(file_name);
-    if (!file.is_open())
-    {
-        cout << "Could not open file: " << file_name << endl;
-        return;
-    }
+    if (!file.is_open()) return;
 
     // Score
-    file << "# saved game\n\n";
-    file << "# score\n";
-    file << score << "\n\n";
+    file << "# score\n" << score << "\n\n";
 
     // Lives
-    file << "# lives\n";
-    file << lives << "\n\n";
+    file << "# lives\n" << lives << "\n\n";
 
     // Paddle
     file << "# paddle\n";
-    if (paddle_ptr)
-    {
-        file << paddle_ptr->get_x() << " "
-             << paddle_ptr->get_y() << " "
-             << paddle_ptr->get_radius() << "\n\n";
-    }
-
+    if (paddle_ptr) file << paddle_ptr->get_x() << " " << paddle_ptr->get_y() << " "
+                                                << paddle_ptr->get_radius() << "\n\n";
     // Bricks
-    file << "# bricks\n";
-    file << brick_list.size() << "\n";
+    file << "# bricks\n"<< brick_list.size() << "\n";
     for (const auto &brick : brick_list)
     {
-        file << "\t" << brick->get_type() << " "
-             << brick->get_x() << " "
-             << brick->get_y() << " "
-             << brick->get_width();
+        file << brick->get_type() << " " << brick->get_x() << " "
+             << brick->get_y() << " " << brick->get_width();
         // hit_points uniquement pour RainbowBrick (type 0)
-        if (brick->get_type() == 0)
-        {
-            file << " " << brick->get_hitpoints();
-        }
+        if (brick->get_type() == 0) file << " " << brick->get_hitpoints();
+        
         file << "\n";
     }
     file << "\n";
@@ -425,13 +379,9 @@ void Game::save(const string &file_name) const
     file << ball_list.size() << "\n";
     for (const auto &ball : ball_list)
     {
-        file << "\t" << ball->get_x() << " "
-             << ball->get_y() << " "
-             << ball->get_radius() << " "
-             << ball->get_dx() << " "
+        file << ball->get_x() << " " << ball->get_y() << " "
+             << ball->get_radius() << " " << ball->get_dx() << " " 
              << ball->get_dy() << "\n";
     }
-
     file.close();
-    cout << "Game saved to " << file_name << endl;
 }

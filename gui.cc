@@ -44,7 +44,6 @@ My_window::My_window(std::string file_name)
     set_mouse_controller();
     set_infos();
     set_drawing();
-    // DONE: set the game 
 }
 void My_window::set_commands()
 {
@@ -87,7 +86,7 @@ void My_window::save_clicked()
 }
 void My_window::restart_clicked()
 {
-    // cout << __func__ << endl; // DONE: reset the game from the last read file
+    // cout << __func__ << endl;
     reset_game_to_last_state();
     
 }
@@ -105,10 +104,11 @@ void My_window::start_clicked()
         buttons[START].set_label("start");
         buttons[STEP].set_sensitive(true);
     }
-    else if(!loop_activated and game.get_lives()>0)// DONE: only if the game is not finished
+    else if(!loop_activated and game.get_lives()>0)
     {
         loop_conn =
-            Glib::signal_timeout().connect(sigc::mem_fun(*this, &My_window::loop), dt);
+            Glib::signal_timeout().connect(sigc::mem_fun(*this, &My_window::loop),
+                                             dt);
         loop_activated = true;
         buttons[EXIT].set_sensitive(false);
         buttons[OPEN].set_sensitive(false);
@@ -120,7 +120,7 @@ void My_window::start_clicked()
 }
 void My_window::step_clicked()
 {
-    // cout << __func__ << endl; // DONE: make a single update
+    // cout << __func__ << endl;
     update_frame();
 }
 void My_window::set_key_controller()
@@ -134,20 +134,17 @@ bool My_window::key_pressed(guint keyval, guint keycode, Gdk::ModifierType state
 {
     switch (keyval)
     {
-    case '1':
-        // DONE: make a single update
-        if (!loop_activated) update_frame();
-        return true;
-    case 's':
-        // DONE: pause or unpause the game
-        start_clicked();
-        return true;
-    case 'r':
-        // DONE: reset the game from the last read file
-        if (!loop_activated) reset_game_to_last_state();
-        return true;
-    default:
-        break;
+        case '1':
+            if (!loop_activated) update_frame();
+            return true;
+        case 's':
+            start_clicked();
+            return true;
+        case 'r':
+            if (!loop_activated) reset_game_to_last_state();
+            return true;
+        default:
+            break;
     }
     return false;
 }
@@ -163,14 +160,14 @@ void My_window::set_dialog(Gtk::FileChooserDialog *dialog)
     dialog->add_button("_Cancel", CANCEL);
     switch (dialog->get_action())
     {
-    case Gtk::FileChooserDialog::Action::OPEN:
-        dialog->add_button("_Open", OPEN_FILE);
-        break;
-    case Gtk::FileChooserDialog::Action::SAVE:
-        dialog->add_button("_Save", SAVE_FILE);
-        break;
-    default:
-        break;
+        case Gtk::FileChooserDialog::Action::OPEN:
+            dialog->add_button("_Open", OPEN_FILE);
+            break;
+        case Gtk::FileChooserDialog::Action::SAVE:
+            dialog->add_button("_Save", SAVE_FILE);
+            break;
+        default:
+            break;
     }
 
     auto filter_text = Gtk::FileFilter::create();
@@ -198,28 +195,28 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
     }
     switch (response)
     {
-    case CANCEL:
-        dialog->hide();
-        break;
-    case OPEN_FILE:
-        if (file_name != "")
-        {
-            cout << "open file " << file_name << endl; // DONE: set game from a file
-            game = Game(file_name);
-            drawing.queue_draw();
+        case CANCEL:
             dialog->hide();
-        }
-        break;
-    case SAVE_FILE:
-        if (file_name != "")
-        {
-            cout << "save file " << file_name << endl; // DONE: save the game
-            game.save(file_name);
-            dialog->hide();
-        }
-        break;
-    default:
-        break;
+            break;
+        case OPEN_FILE:
+            if (file_name != "")
+            {
+                cout << "open file " << file_name << endl; 
+                game = Game(file_name);
+                drawing.queue_draw();
+                dialog->hide();
+            }
+            break;
+        case SAVE_FILE:
+            if (file_name != "")
+            {
+                cout << "save file " << file_name << endl; 
+                game.save(file_name);
+                dialog->hide();
+            }
+            break;
+        default:
+            break;
     }
 }
 
@@ -227,7 +224,6 @@ bool My_window::loop()
 {
     if (loop_activated)
     {
-        // DONE: update the game and the interface
         update_frame();
         return true;
     }
@@ -250,7 +246,6 @@ void My_window::set_infos()
 }
 
 void My_window::update_infos()
-// DONE: update the different counters
 {
     info_value[0].set_text(to_string(game.get_score()));
     info_value[1].set_text(to_string(game.get_lives()));
@@ -279,7 +274,6 @@ void My_window::on_draw(const Cairo::RefPtr<Cairo::Context> &cr, int width,
     {
         (game.get_paddle())->draw(cr);
     }
-    // DONE: draw the game
 }
 
 void My_window::set_mouse_controller()
@@ -298,7 +292,7 @@ void My_window::set_mouse_controller()
 }
 void My_window::on_drawing_left_click(int n_press, double x, double y)
 {
-    // cout << __func__ << endl; // DONE
+    // cout << __func__ << endl;
     if(game.get_lives() > 0)
     {
     game.create_new_ball(to_game_x(x), to_game_y(y));
@@ -308,7 +302,7 @@ void My_window::on_drawing_left_click(int n_press, double x, double y)
 }
 void My_window::on_drawing_move(double x, double y)
 {
-    // cout << __func__ << endl; // DONE
+    // cout << __func__ << endl;
     double new_x(to_game_x(x));
     if (new_x > 0) mouse_x = new_x;
     else if (game.get_paddle()) mouse_x = (game.get_paddle())->get_x();

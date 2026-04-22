@@ -16,7 +16,7 @@ void graphic_set_context(const Cairo::RefPtr<Cairo::Context> &cr)
 }
 
 void draw_square(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, 
-                                                        double w, Color color, bool fill)
+                                                    double w, Color color, bool fill)
 {
     set_color(color);
     cr->rectangle(x - w/2, y - w/2, w, w);
@@ -42,8 +42,7 @@ void draw_circle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y,
 
 
 void draw_arc(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r,
-                                                       double teta_min, double teta_max,
-                                                        Color color)
+                                    double teta_min, double teta_max, Color color)
 {
     set_color(color);
     cr->arc(x, y, r, teta_min, teta_max);
@@ -59,42 +58,42 @@ void set_color(Color color)
 
     switch (color)
     {
-    case RED:
-        r = 1.0;
-        break;
-    case ORANGE:
-        r = 1.0;
-        g = 0.5;
-        break;
-    case YELLOW:
-        r = 1.0;
-        g = 1.0;
-        break;
-    case GREEN:
-        g = 1.0;
-        break;
-    case CYAN:
-        g = 1.0;
-        b = 1.0;
-        break;
-    case BLUE:
-        b = 1.0;
-        break;
-    case PURPLE:
-        r = 0.5;
-        b = 1.0;
-        break;
-    case BLACK:
-        r = g = b = 0.0;
-        break;
-    case GREY:
-        r = g = b = 0.5;
-        break;
-    case WHITE:
-        r = g = b = 1.0;
-        break;
-    default:
-        break;
+        case RED:
+            r = 1.0;
+            break;
+        case ORANGE:
+            r = 1.0;
+            g = 0.5;
+            break;
+        case YELLOW:
+            r = 1.0;
+            g = 1.0;
+            break;
+        case GREEN:
+            g = 1.0;
+            break;
+        case CYAN:
+            g = 1.0;
+            b = 1.0;
+            break;
+        case BLUE:
+            b = 1.0;
+            break;
+        case PURPLE:
+            r = 0.5;
+            b = 1.0;
+            break;
+        case BLACK:
+            r = g = b = 0.0;
+            break;
+        case GREY:
+            r = g = b = 0.5;
+            break;
+        case WHITE:
+            r = g = b = 1.0;
+            break;
+        default:
+            break;
     }
     (*ptcr)->set_source_rgb(r, g, b);
 }

@@ -152,7 +152,8 @@ bool circle_square_intersection(Circle const &c, Square const &s)
     double distance_y = c.get_y() - closest_y;
 
     double distance_squared = (distance_x * distance_x) + (distance_y * distance_y);
-    bool check = (distance_squared - (c.get_radius() * c.get_radius())) < epsil_zero * epsil_zero;
+    bool check = (distance_squared - (c.get_radius() * c.get_radius())) 
+                                                    < epsil_zero * epsil_zero;
     return check;
 }
 
