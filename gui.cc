@@ -136,24 +136,15 @@ bool My_window::key_pressed(guint keyval, guint keycode, Gdk::ModifierType state
     {
     case '1':
         // DONE: make a single update
-        update_frame();
+        if (!loop_activated) update_frame();
         return true;
     case 's':
         // DONE: pause or unpause the game
-        if(loop_activated) {
-            loop_conn.disconnect();
-            loop_activated = false;
-        }
-        else
-        {
-            loop_conn = Glib::signal_timeout().connect(sigc::mem_fun(*this, &My_window::loop), dt);
-            loop_activated = true;
-            buttons[START].set_label("stop");
-        }
+        start_clicked();
         return true;
     case 'r':
         // DONE: reset the game from the last read file
-        reset_game_to_last_state();
+        if (!loop_activated) reset_game_to_last_state();
         return true;
     default:
         break;
