@@ -18,7 +18,7 @@ public:
     Brick(double x = 0.0, double y = 0.0, double width = 0.0, int hit_points = 0,
                                                                     int type = 0);
     Brick(Brick const &old_brick);
-    virtual ~Brick();
+    virtual ~Brick(){};
 
     double get_x() const;
     double get_y() const;

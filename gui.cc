@@ -206,7 +206,6 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
         {
             cout << "open file " << file_name << endl; // DONE: set game from a file
             game = Game(file_name);
-            update_frame();
             drawing.queue_draw();
             dialog->hide();
         }
