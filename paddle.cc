@@ -52,8 +52,8 @@ void Paddle::draw(const Cairo::RefPtr<Cairo::Context> &cr)
     double teta = acos(abs(get_y())/get_radius());
     double teta_min(M_PI/2-teta);
     double teta_max(M_PI/2+teta);
-    cr->set_line_width(0.7);
-    draw_arc(cr, get_x(), get_y(), get_radius(), teta_min, teta_max);
+    cr->set_line_width(paddle_thickness);
+    draw_arc(cr, get_x(), get_y(), get_radius()-paddle_thickness/2, teta_min, teta_max);
 }
 
 
@@ -74,8 +74,8 @@ void check_paddle_y_axis(double x, double y, double r, bool &error_occured)
 
 void check_paddle_x_axis(double x, double y, double r, bool& error_occured)
 {
-        if ((x-half_paddle_width(x, y, r) < 0) or
-            ((x + half_paddle_width(x, y, r)) > arena_size))
+        if ((x-half_paddle_width(x, y, r) < epsil_zero) or
+            ((x + half_paddle_width(x, y, r)) > arena_size-epsil_zero))
         {
             display_error(paddle_outside(x, y), error_occured);
         }
