@@ -1,8 +1,12 @@
+// paddle.h : class paddle avec des fnoction de verification des ses attributs
+//            version 1.0 
+
 #include <cmath>
 
 #include "paddle.h"
 
 using namespace message;
+using namespace std;
 
 // CONSTRUCTEURS DE PADDLE
 
@@ -47,7 +51,7 @@ void Paddle::set_y(double y)
 }
 
 
-void Paddle::draw(const Cairo::RefPtr<Cairo::Context> &cr)
+void Paddle::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 {
     double teta = acos(abs(get_y())/get_radius());
     double teta_min(M_PI/2-teta);

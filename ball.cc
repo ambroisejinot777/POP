@@ -1,4 +1,9 @@
+// ball.cc : class de Ball avec fonction de verification des attributs de ball
+//           version 1.0
+
 #include "ball.h"
+
+using namespace std;
 
 // CONSTRUCTEURS DE BALL
 

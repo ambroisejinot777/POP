@@ -1,5 +1,9 @@
+// brick.cc : class de Brick et des sous-class de RainbowBrick, BallBrick et SplitBrick
+//           version 1.0
+
 #include "brick.h"
 
+using namespace std;
 // CONSTRUCTORS
 
 static void draw_brick_recursive(const Cairo::RefPtr<Cairo::Context> &cr,

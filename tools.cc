@@ -1,6 +1,10 @@
+// tools.cc : module mathématiques avec des fonctions et des class
+//            utilitaires
+//            version 1.0 
+
 #include "tools.h"
 
-// TYPES
+using namespace std;
 
 // UTILITY CLASSES
 

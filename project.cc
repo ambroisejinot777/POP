@@ -1,3 +1,6 @@
+// project.cc : programme principale
+//            version 2.0 
+
 #include "game.h"
 #include <gtkmm/application.h>
 #include "gui.h"
@@ -15,6 +18,4 @@ int main(int argc, char *argv[])
 
     auto app = Gtk::Application::create();
     return app->make_window_and_run<My_window>(1, argv, file_name);
-
-    return 0;
 }

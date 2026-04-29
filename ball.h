@@ -1,6 +1,9 @@
 #ifndef BALL_H
 #define BALL_H
 
+// ball.h : class de Ball avec fonction de verification des attributs de ball
+//           version 1.0
+
 #include "message.h"
 #include "tools.h"
 #include "constants.h"
@@ -31,7 +34,7 @@ private:
 };
 
 
-typedef vector<unique_ptr<Ball>> Ball_list;
+typedef std::vector<std::unique_ptr<Ball>> Ball_list;
 
 // CHECKING FUNCTIONS
 

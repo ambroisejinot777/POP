@@ -1,6 +1,10 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
+// tools.h : module mathématiques avec des fonctions et des class
+//            utilitaires
+//            version 1.0 
+
 #include <string>
 #include <iostream>
 #include <cmath>
@@ -8,8 +12,6 @@
 #include <memory>
 
 #include "graphic.h"
-
-using namespace std;
 
 constexpr double epsil_zero(0.0);
 
@@ -73,7 +75,7 @@ private:
 
 // ERROR FUNCTION 
 
-void display_error(string message, bool& error_occured);
+void display_error(std::string message, bool& error_occured);
 
 // CHECKING FUNCTIONS
 

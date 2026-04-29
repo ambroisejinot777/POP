@@ -1,3 +1,6 @@
+// graphic.cc : fonctions de dessins des formes
+//               version 1.0 
+
 #include "graphic.h"
 #include "constants.h"
 #include <cmath>
@@ -96,22 +99,4 @@ void set_color(Color color)
             break;
     }
     (*ptcr)->set_source_rgb(r, g, b);
-}
-
-void draw_ball(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, double r)
-{
-    cr->arc(x, y, r, 0, 2 * M_PI);
-    cr->set_source_rgb(0.0, 0.0, 0.0);
-    cr->fill();
-}
-
-void draw_paddle(const Cairo::RefPtr<Cairo::Context> &cr, double x, double y, 
-                                                                    double r)
-{
-    cr->arc(x, y, r, 0, 2 * M_PI);
-    cr->set_source_rgb(0.0, 0.0, 0.0);
-    cr->fill();
-    cr->arc(x, y, 0.95 * r, 0, 2 * M_PI);
-    cr->set_source_rgb(1.0, 1.0, 1.0);
-    cr->fill();
 }

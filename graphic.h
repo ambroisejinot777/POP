@@ -1,6 +1,9 @@
 #ifndef GRAPHIC_H
 #define GRAPHIC_H
 
+// graphic.h : fonctions de dessins des formes avec enum de Color
+//               version 1.0 
+
 #include "graphic_gui.h"
 
 enum Color

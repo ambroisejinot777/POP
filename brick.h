@@ -1,6 +1,10 @@
 #ifndef BRICK_H
 #define BRICK_H
 
+// brick.h : class de Brick et des sous-class de RainbowBrick, BallBrick et SplitBrick
+//           avec des fonction de verification des attributs des bricks
+//           version 1.0
+
 #include "message.h"
 #include "tools.h"
 #include "constants.h"
@@ -40,7 +44,7 @@ protected:
 
 };
 
-typedef vector<unique_ptr<Brick>> Brick_list;
+typedef std::vector<std::unique_ptr<Brick>> Brick_list;
 
 
 class RainbowBrick : public Brick

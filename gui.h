@@ -1,6 +1,10 @@
 #ifndef GUI_H
 #define GUI_H
 
+// gui.h : fonction de manipulation gtkmm principale avec la class
+//          avec la class My_window heritant de Gtk::Window
+//               version 1.0 
+
 #include <gtkmm.h>
 
 #include "graphic_gui.h"

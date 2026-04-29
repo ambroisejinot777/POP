@@ -1,6 +1,9 @@
 #ifndef PADDLE_H
 #define PADDLE_H
 
+// paddle.h : class paddle avec des fnoction de verification des ses attributs
+//            version 1.0 
+
 #include "message.h"
 #include "tools.h"
 #include "constants.h"
@@ -17,7 +20,7 @@ public:
     double get_radius() const;
     void set_x(double x);
     void set_y(double y);
-    void draw(const Cairo::RefPtr<Cairo::Context> &cr);
+    void draw(const Cairo::RefPtr<Cairo::Context> &cr) const;
     
 private : 
     Circle circle;
@@ -25,7 +28,7 @@ private :
     
 };
 
-typedef unique_ptr<Paddle> Paddle_ptr; 
+typedef std::unique_ptr<Paddle> Paddle_ptr; 
 
 // CHECKING FUNCTIONS
 

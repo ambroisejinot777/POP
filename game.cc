@@ -1,5 +1,9 @@
+// game.cc : class de game
+//           version 1.0
+
 #include "game.h"
 
+using namespace std;
 
 // PUBLIC FUNCTIONS
 
