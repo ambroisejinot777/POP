@@ -132,9 +132,7 @@ Color Brick::get_color() const
 RainbowBrick::RainbowBrick(bool& error_occured, double x, double y, double width,
                                                          int hit_points, int type)
     : Brick(error_occured, x, y, width, hit_points, type)
-{
-    check_brick_hit_points(hit_points, error_occured);
-}
+{}
 
 RainbowBrick::RainbowBrick(double x, double y, double width, int hit_points, int type)
     : Brick(x, y, width, hit_points, type) {}
