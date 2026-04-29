@@ -98,10 +98,6 @@ int Brick::get_hitpoints() const
     return hit_points;
 }
 
-bool Brick::is_destroyed() const
-{
-    return hit_points <= 0;
-}
 
 Color Brick::get_color() const
 {

@@ -30,7 +30,6 @@ public:
     Square get_square() const;
     int get_type() const;
     int get_hitpoints() const;
-    bool is_destroyed() const;
     Color get_color() const;
     virtual void draw(const Cairo::RefPtr<Cairo::Context> &cr) const = 0;
 
