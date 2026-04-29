@@ -97,7 +97,7 @@ void Game::set_paddle(Paddle_ptr new_paddle_ptr)
 void Game::init(string file_name)
 {
     ifstream file(file_name);
-    if (file.fail())
+    if (file_name != "" and file.fail())
     {
         cout << "Didn't find the file: " << file_name << endl;
         return;
@@ -177,7 +177,7 @@ void Game::init(string file_name)
         }
     }
     file.close();
-    cout << message::success();
+    if (file_name != "") cout << message::success();
 }
 
 void Game::read_and_check_score(istringstream &data, bool& error_occured)
