@@ -68,6 +68,9 @@ private:
     void reset_game_to_last_state();
 
     void draw_arena(const Cairo::RefPtr<Cairo::Context> &cr) const;
+
+    void set_buttons_state_for_empty(bool state);
+    void set_buttons_state_for_error(bool state);
 };
 
 #endif

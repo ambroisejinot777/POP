@@ -72,6 +72,11 @@ void Game::create_new_ball(double x, double y)
     add_ball(new_ball);
 }
 
+bool Game::get_error() const
+{
+    return error_occured;
+}
+
 // PRIVATE AND CHECKING FUNCTIONS
 
 void Game::set_score(int new_score)
@@ -110,7 +115,7 @@ void Game::init(string file_name)
     unsigned int brick_counter(0);
     unsigned int nb_ball;
     unsigned int ball_counter(0);
-    bool error_occured(false);
+    error_occured=false;
 
     while (getline(file >> ws, line))
     {

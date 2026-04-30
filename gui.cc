@@ -48,6 +48,9 @@ My_window::My_window(std::string file_name)
     set_mouse_controller();
     set_infos();
     set_drawing();
+
+    set_buttons_state_for_error(!game.get_error());
+    if (game.get_file() == "") set_buttons_state_for_empty(false);
 }
 void My_window::set_commands()
 {
@@ -207,6 +210,8 @@ void My_window::dialog_response(int response, Gtk::FileChooserDialog *dialog)
             {
                 cout << "open file " << file_name << endl; 
                 game = Game(file_name);
+                set_buttons_state_for_empty(true);
+                set_buttons_state_for_error(!game.get_error());
                 drawing.queue_draw();
                 dialog->hide();
             }
@@ -359,4 +364,19 @@ void My_window::draw_arena(const Cairo::RefPtr<Cairo::Context> &cr) const
 {
     cr->set_line_width(0.7);
     draw_square(cr, arena_size/2, arena_size/2, arena_size, GREY, false);
+}
+
+void My_window::set_buttons_state_for_empty(bool state)
+{
+    buttons[SAVE].set_sensitive(state);
+    buttons[START].set_sensitive(state);
+    buttons[STEP].set_sensitive(state);
+    buttons[RESTART].set_sensitive(state);
+}
+
+void My_window::set_buttons_state_for_error(bool state)
+{
+    buttons[SAVE].set_sensitive(state);
+    buttons[START].set_sensitive(state);
+    buttons[STEP].set_sensitive(state);
 }

@@ -43,6 +43,8 @@ public:
     void update_paddle_position(double x);
     void save(const std::string &file_name) const;
     void create_new_ball(double x, double y);
+    bool get_error() const;
+
 
     // void error_and_empty_canvas(string message);
 
@@ -53,12 +55,14 @@ private:
     Brick_list brick_list;
     Ball_list ball_list;
     std::string filename;
+    bool error_occured;
+
+
 
     void set_score(int new_score);
     void set_lives(int new_lives);
     void set_file(std::string file_name);
     void set_paddle(Paddle_ptr new_paddle_ptr);
-
 
 
     void init(std::string file_name);
