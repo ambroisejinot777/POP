@@ -83,4 +83,15 @@ bool circle_circle_intersection(Circle const &c1, Circle const &c2);
 bool circle_square_intersection(Circle const &c, Square const &s);
 bool square_square_intersection(Square const &s1, Square const &s2);
 
+// BASIC ELEMENTS FUNCTION (avec le premier element correspondant a l'objet en 
+// mouvement (la balle))
+
+void circle_arena_segment_collision(); // with arena
+
+void circle_circle_collision(); // with paddle and other ball 
+
+void circle_brick_collision(); // with brick
+
+
+
 #endif

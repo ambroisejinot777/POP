@@ -44,6 +44,4 @@ void check_ball_delta(double dx, double dy, bool& error_occured);
 
 
 
-
-
 #endif
