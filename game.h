@@ -36,14 +36,23 @@ public:
     const Brick_list& get_brick_list() const;
     const Ball_list& get_ball_list() const;
     std::string get_file() const;
+    bool get_error() const;
+    double get_mouse_x() const;
+
+    void set_mouse_x(double new_x);
 
     void add_brick(std::unique_ptr<Brick> ptr);
     void add_ball(Ball& new_ball);
-    void update_balls_data();   
     void update_paddle_position(double x);
+
     void save(const std::string &file_name) const;
+
     void create_new_ball(double x, double y);
-    bool get_error() const;
+    void delete_ball(int index);
+
+    void ball_brick_reaction(const std::unique_ptr<Ball>& ball_ptr, const std::unique_ptr<Brick>& brick_ptr); 
+
+    void update();
 
 
     // void error_and_empty_canvas(string message);
@@ -56,6 +65,8 @@ private:
     Ball_list ball_list;
     std::string filename;
     bool error_occured;
+    double mouse_x = 0.0;
+
 
 
 

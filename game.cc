@@ -42,6 +42,21 @@ string Game::get_file() const
     return filename;
 }
 
+bool Game::get_error() const
+{
+    return error_occured;
+}
+
+double Game::get_mouse_x() const
+{
+    return mouse_x;
+}
+
+void Game::set_mouse_x(double new_x)
+{
+    mouse_x = new_x;
+}
+
 void Game::add_brick(unique_ptr<Brick> ptr)
 {
     brick_list.push_back(move(ptr));
@@ -51,6 +66,85 @@ void Game::add_ball(Ball& new_ball)
 {
     unique_ptr<Ball> ptr (new Ball(new_ball));
     ball_list.push_back(move(ptr));
+}
+
+void Game::update_paddle_position(double new_x)
+{
+    if(paddle_ptr == nullptr) return;
+
+    double current_x = paddle_ptr->get_x();
+    double delta = new_x - current_x;
+    if (delta > delta_norm_max)  new_x = current_x + delta_norm_max;
+    if (delta < -delta_norm_max) new_x = current_x - delta_norm_max;
+
+    double min_x = half_paddle_width(paddle_ptr->get_x(), paddle_ptr->get_y(), 
+                                                            paddle_ptr->get_radius());
+    double max_x = arena_size - half_paddle_width(paddle_ptr->get_x(), 
+                                    paddle_ptr->get_y(), paddle_ptr->get_radius());
+    
+    if(new_x<min_x) 
+    {
+        paddle_ptr->set_x(min_x);
+        return;
+    }
+    else if (new_x > max_x)
+    {
+        paddle_ptr->set_x(max_x);
+        return;
+    }
+
+    Circle temp_circle;
+    temp_circle.set_x(new_x);
+    temp_circle.set_y(paddle_ptr->get_y());
+    temp_circle.set_radius(paddle_ptr->get_radius());
+
+    for (const auto& brick: brick_list)
+    {
+        if (circle_square_intersection(temp_circle, brick->get_square())) return;
+    }
+
+
+    paddle_ptr->set_x(new_x);
+}
+
+void Game::save(const string &file_name) const
+{
+    ofstream file(file_name);
+    if (!file.is_open()) return;
+
+    // Score
+    file << "# score\n" << score << "\n\n";
+
+    // Lives
+    file << "# lives\n" << lives << "\n\n";
+
+    // Paddle
+    file << "# paddle\n";
+    if (paddle_ptr) file << paddle_ptr->get_x() << " " << paddle_ptr->get_y() << " "
+                                                << paddle_ptr->get_radius() << "\n\n";
+    // Bricks
+    file << "# bricks\n"<< brick_list.size() << "\n";
+    for (const auto &brick : brick_list)
+    {
+        file << brick->get_type() << " " << brick->get_x() << " "
+             << brick->get_y() << " " << brick->get_width();
+        // hit_points uniquement pour RainbowBrick (type 0)
+        if (brick->get_type() == 0) file << " " << brick->get_hitpoints();
+        
+        file << "\n";
+    }
+    file << "\n";
+
+    // Balls
+    file << "# balls\n";
+    file << ball_list.size() << "\n";
+    for (const auto &ball : ball_list)
+    {
+        file << ball->get_x() << " " << ball->get_y() << " "
+             << ball->get_radius() << " " << ball->get_dx() << " " 
+             << ball->get_dy() << "\n";
+    }
+    file.close();
 }
 
 void Game::create_new_ball(double x, double y)
@@ -72,10 +166,33 @@ void Game::create_new_ball(double x, double y)
     add_ball(new_ball);
 }
 
-bool Game::get_error() const
+void Game::delete_ball(int index)
 {
-    return error_occured;
+    ball_list.erase(ball_list.begin() + index);
 }
+
+void Game::ball_brick_reaction(const unique_ptr<Ball>& ball_ptr, const unique_ptr<Brick>& brick_ptr)
+{
+    // add ball reaction
+
+    brick_ptr->hit();
+}
+
+void Game::update()
+{
+    int index(0);
+    vector<int> delete_balls;
+
+    for (const auto& ball: ball_list)
+    {
+        ball->update_position();
+        if(ball->get_y() < 0) delete_balls.push_back(index);
+        ++index;
+    }
+    for(int i(delete_balls.size()-1); i>=0; i-- ) delete_ball(delete_balls[i]);
+    update_paddle_position(get_mouse_x());
+}
+
 
 // PRIVATE AND CHECKING FUNCTIONS
 
@@ -286,52 +403,7 @@ void Game::read_and_check_ball_data(istringstream &data, unsigned int ball_count
     add_ball(ball);
 }
 
-void Game::update_balls_data()
-{
-    for (const auto& ball: ball_list)
-    {
-        ball->update_position();
-    }
-}
 
-void Game::update_paddle_position(double new_x)
-{
-    if(paddle_ptr == nullptr) return;
-
-    double current_x = paddle_ptr->get_x();
-    double delta = new_x - current_x;
-    if (delta > delta_norm_max)  new_x = current_x + delta_norm_max;
-    if (delta < -delta_norm_max) new_x = current_x - delta_norm_max;
-
-    double min_x = half_paddle_width(paddle_ptr->get_x(), paddle_ptr->get_y(), 
-                                                            paddle_ptr->get_radius());
-    double max_x = arena_size - half_paddle_width(paddle_ptr->get_x(), 
-                                    paddle_ptr->get_y(), paddle_ptr->get_radius());
-    
-    if(new_x<min_x) 
-    {
-        paddle_ptr->set_x(min_x);
-        return;
-    }
-    else if (new_x > max_x)
-    {
-        paddle_ptr->set_x(max_x);
-        return;
-    }
-
-    Circle temp_circle;
-    temp_circle.set_x(new_x);
-    temp_circle.set_y(paddle_ptr->get_y());
-    temp_circle.set_radius(paddle_ptr->get_radius());
-
-    for (const auto& brick: brick_list)
-    {
-        if (circle_square_intersection(temp_circle, brick->get_square())) return;
-    }
-
-
-    paddle_ptr->set_x(new_x);
-}
 
 int Game::resolve_hit_points_split_brick(double w)
 {
@@ -353,44 +425,4 @@ void Game::reset()
     paddle_ptr = nullptr;
     brick_list.clear();
     ball_list.clear();
-}
-
-void Game::save(const string &file_name) const
-{
-    ofstream file(file_name);
-    if (!file.is_open()) return;
-
-    // Score
-    file << "# score\n" << score << "\n\n";
-
-    // Lives
-    file << "# lives\n" << lives << "\n\n";
-
-    // Paddle
-    file << "# paddle\n";
-    if (paddle_ptr) file << paddle_ptr->get_x() << " " << paddle_ptr->get_y() << " "
-                                                << paddle_ptr->get_radius() << "\n\n";
-    // Bricks
-    file << "# bricks\n"<< brick_list.size() << "\n";
-    for (const auto &brick : brick_list)
-    {
-        file << brick->get_type() << " " << brick->get_x() << " "
-             << brick->get_y() << " " << brick->get_width();
-        // hit_points uniquement pour RainbowBrick (type 0)
-        if (brick->get_type() == 0) file << " " << brick->get_hitpoints();
-        
-        file << "\n";
-    }
-    file << "\n";
-
-    // Balls
-    file << "# balls\n";
-    file << ball_list.size() << "\n";
-    for (const auto &ball : ball_list)
-    {
-        file << ball->get_x() << " " << ball->get_y() << " "
-             << ball->get_radius() << " " << ball->get_dx() << " " 
-             << ball->get_dy() << "\n";
-    }
-    file.close();
 }

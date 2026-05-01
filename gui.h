@@ -26,7 +26,6 @@ private:
     Gtk::Frame info_frame;
     std::array<Gtk::Label, 4> info_text, info_value;
     Gtk::DrawingArea drawing;
-    double mouse_x = 0.0;
 
     Game game;
 

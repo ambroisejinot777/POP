@@ -313,8 +313,8 @@ void My_window::on_drawing_move(double x, double y)
 {
     // cout << __func__ << endl;
     double new_x(to_game_x(x));
-    if (new_x > 0) mouse_x = new_x;
-    else if (game.get_paddle()) mouse_x = (game.get_paddle())->get_x();
+    if (new_x > 0) game.set_mouse_x(new_x);
+    else if (game.get_paddle()) game.set_mouse_x((game.get_paddle())->get_x());
 }
 
 double My_window::to_game_x(double px) const
@@ -348,8 +348,9 @@ void My_window::draw_all_balls(const Cairo::RefPtr<Cairo::Context> &cr)
 void My_window::update_frame()
 {
     update_infos();
-    game.update_balls_data();
-    game.update_paddle_position(mouse_x);
+    game.update();
+    // game.update_balls_data();
+    // game.update_paddle_position(mouse_x);
     drawing.queue_draw();
 }
 
