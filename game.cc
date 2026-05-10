@@ -5,28 +5,6 @@
 
 using namespace std;
 
-bool circle_arena_bounce(Circle &c)
-{
-    bool left   = (c.get_x() - c.get_radius()) < epsil_zero;
-    bool right  = (c.get_x() + c.get_radius()) > arena_size - epsil_zero;
-    bool top    = (c.get_y() + c.get_radius()) > arena_size - epsil_zero;
-    // bas = perte, géré ailleurs
-
-    if (!left && !right && !top) return false;
-
-    // Cas coin : on rebondit sur le bord le plus éloigné du centre
-    if ((left || right) && top)
-    {
-        double dist_x = left  ? c.get_x() : (arena_size - c.get_x());
-        double dist_y = arena_size - c.get_y();
-        if (dist_x < dist_y) top = false;   // bord vertical plus éloigné
-        else                 left = right = false; // bord horizontal plus éloigné
-    }
-
-    return true; // la direction à inverser est indiquée par left/right/top
-    // NOTE : on retourne juste les flags, le appelant fait l'inversion
-}
-
 // PUBLIC FUNCTIONS
 
 Game::Game(string filename): score(0), lives(0), paddle_ptr(nullptr)
@@ -125,7 +103,7 @@ void Game::update_paddle_position(double new_x)
         if (circle_square_intersection(temp_circle, brick->get_square())) return;
     }
 
-
+    paddle_ptr->set_last_dx(new_x - paddle_ptr->get_x());
     paddle_ptr->set_x(new_x);
 }
 
@@ -165,9 +143,175 @@ bool Game::has_collision(const unique_ptr<Ball>& ball, int ball_idx)
     return false;
 }
 
-void Game::apply_collision(const std::unique_ptr<Ball>& ball, int ball_idx)
+void Game::wall_ball_bounce(const std::unique_ptr<Ball>& ball)
 {
-    return;
+    double dx = ball->get_dx();
+    double dy = ball->get_dy();
+
+
+    bool left  = (ball->get_x() - ball->get_radius()) < epsil_zero;
+    bool right = (ball->get_x() + ball->get_radius()) > arena_size - epsil_zero;
+    bool top   = (ball->get_y() + ball->get_radius()) > arena_size - epsil_zero;
+
+    if (left || right || top)
+    {
+        // Cas coin
+        if ((left || right) && top)
+        {
+            double dist_x = left ? ball->get_x() : (arena_size - ball->get_x());
+            double dist_y = arena_size - ball->get_y();
+            if (dist_x < dist_y) top = false;
+            else left = right = false;
+        }
+        if (left || right) dx = -dx;
+        if (top)           dy = -dy;
+        ball->set_dx(dx);
+        ball->set_dy(dy);
+    }
+}
+
+void Game::brick_ball_bounce(const std::unique_ptr<Ball>& ball)
+{
+    double dx = ball->get_dx();
+    double dy = ball->get_dy();
+    for (const auto& brick : brick_list)
+    {
+        if (circle_square_intersection(ball->get_circle(), brick->get_square()))
+        {
+            // Différence entre centres
+            double diff_x = ball->get_x() - brick->get_x();
+            double diff_y = ball->get_y() - brick->get_y();
+
+            // Différence bornée
+            double half = brick->get_width() / 2.0;
+            double clamped_x = max(-half, min(diff_x, half));
+            double clamped_y = max(-half, min(diff_y, half));
+
+            // Direction nominale
+            double nx = diff_x - clamped_x;
+            double ny = diff_y - clamped_y;
+            double len = sqrt(nx*nx + ny*ny);
+            if (len < epsil_zero) 
+            {
+                nx = 1.0 / sqrt(2);
+                ny = 1.0 / sqrt(2);
+            } 
+            else 
+            {
+                nx /= len;
+                ny /= len;
+            }
+
+            // vnew = v - 2*vn
+            double vn = dx*nx + dy*ny;
+            if (vn > delta_norm_max) vn = delta_norm_max;
+            dx = dx - 2.0*vn*nx;
+            dy = dy - 2.0*vn*ny;
+            ball->set_dx(dx);
+            ball->set_dy(dy);
+
+
+            ball_brick_reaction(ball, brick);
+            return ;
+        }
+    }
+    return ;
+}
+
+void Game::paddle_ball_bounce(const unique_ptr<Ball>& ball)
+{
+    double dx = ball->get_dx();
+    double dy = ball->get_dy();
+
+    if (paddle_ptr &&
+        circle_circle_intersection(ball->get_circle(), paddle_ptr->get_circle()))
+    {
+        double nx = ball->get_x() - paddle_ptr->get_x();
+        double ny = ball->get_y() - paddle_ptr->get_y();
+        double len = sqrt(nx*nx + ny*ny);
+        if (len < epsil_zero) return;
+        nx /= len;
+        ny /= len;
+
+        double vn_ball = dx*nx + dy*ny;
+
+
+        double vn_paddle = paddle_ptr->get_last_dx() * nx; // dy raquette = 0
+
+        double impulse = (-vn_ball + vn_paddle) * 2.0;
+        dx += impulse * nx;
+        dy += impulse * ny;
+
+        double norm = sqrt(dx*dx + dy*dy);
+        if (norm > delta_norm_max)
+        {
+            dx = dx / norm * delta_norm_max;
+            dy = dy / norm * delta_norm_max;
+        }
+        ball->set_dx(dx);
+        ball->set_dy(dy);
+    }
+}
+
+void Game::ball_ball_bounce(const unique_ptr<Ball>& ball, unsigned int ball_idx)
+{
+    double dx = ball->get_dx();
+    double dy = ball->get_dy();
+    for (int j = 0; j < (int)ball_list.size(); j++)
+    {
+        if (j == ball_idx) continue;
+        if (circle_circle_intersection(ball->get_circle(),
+                                       ball_list[j]->get_circle()))
+        {
+            // Direction : centre balle vers centre autre balle
+            double nx = ball_list[j]->get_x() - ball->get_x();
+            double ny = ball_list[j]->get_y() - ball->get_y();
+            double len = sqrt(nx*nx + ny*ny);
+            if (len < epsil_zero) return;
+            nx /= len;
+            ny /= len;
+
+            // Vitesses nominales
+            double vn  = dx*nx + dy*ny;
+            double vn2 = ball_list[j]->get_dx()*nx + ball_list[j]->get_dy()*ny;
+
+            // Masses proportionnelles à r²
+            double r1sq = ball->get_radius() * ball->get_radius();
+            double r2sq = ball_list[j]->get_radius() * ball_list[j]->get_radius();
+
+            // impulsion = (-vn + vn_autre) * 2*r_autre² / (r² + r_autre²)
+            double impulse = (-vn + vn2) * (2.0*r2sq) / (r1sq + r2sq);
+            dx += impulse * nx;
+            dy += impulse * ny;
+
+            // Bridage à delta_norm_max
+            double norm = sqrt(dx*dx + dy*dy);
+            if (norm > delta_norm_max)
+            {
+                dx = dx / norm * delta_norm_max;
+                dy = dy / norm * delta_norm_max;
+            }
+            ball->set_dx(dx);
+            ball->set_dy(dy);
+            return;
+        }
+    }
+}
+
+void Game::apply_bounce(const unique_ptr<Ball>& ball, unsigned int ball_idx)
+{
+    // Bords  ///probleme avce les coins
+    wall_ball_bounce(ball);
+
+    // Briques /// probleme des balls disparaissent
+    brick_ball_bounce(ball);
+
+    // Paddle /// probleme vraiment tres moche
+    paddle_ball_bounce(ball);
+
+    // Balls /// verifier car pas sur dutout
+    ball_ball_bounce(ball, ball_idx);
+
 }
 
 void Game::save(const string &file_name) const
@@ -244,7 +388,7 @@ void Game::ball_brick_reaction(const unique_ptr<Ball>& ball_ptr, const unique_pt
 void Game::update()
 {
     if (status != ONGOING) return;
-    int index(0);
+    unsigned int index(0);
     vector<int> to_delete;
 
     for (const auto &ball: ball_list)
@@ -257,29 +401,43 @@ void Game::update()
             continue;
         }
         
-
         unsigned int nb_rebonds(0);
         while(has_collision(ball, index))
         {
-            ball->undo_position();
-            if (nb_rebonds < nb_bounce_max)
-            {
-                apply_bounce(ball, index);
-                ball->update_position();
-                nb_rebonds++;
-            }
-            else break;
+            apply_bounce(ball, index);   
+            ball->undo_position();   
+            ball->update_position();     
+            nb_rebonds++;
+            if (nb_rebonds >= nb_bounce_max) break;
         }
-
-
-
-        // AJOUTER LES REBONDS DE BALLS
         ++index;
     }
+    // delete all the to_delete balls
     for(int i(to_delete.size()-1); i>=0; i-- ) delete_ball(to_delete[i]);
+
     update_paddle_position(get_mouse_x());
 
+    index = 0;
+    for (const auto &ball : ball_list)
+    {
+        if (circle_circle_intersection(ball->get_circle(),
+                                       paddle_ptr->get_circle()))
+        {
+            ball->undo_position();
+            ball->update_position();
 
+            unsigned int nb_rebonds(0);
+            while(has_collision(ball, index))
+            {
+                apply_bounce(ball, index); 
+                ball->undo_position();      
+                ball->update_position();   
+                nb_rebonds++;
+                if (nb_rebonds >= nb_bounce_max) break;
+            }
+        }
+        ++index;
+    }
 
     if(ball_list.size() == 0 and lives == 0) status = LOST;
     if(brick_list.size() == 0) status == WON;

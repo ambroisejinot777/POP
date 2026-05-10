@@ -20,12 +20,14 @@ public:
     double get_radius() const;
     void set_x(double x);
     void set_y(double y);
+    double get_last_dx() const;
+    void set_last_dx(double dx);
     void draw(const Cairo::RefPtr<Cairo::Context> &cr) const;
+
     
 private : 
     Circle circle;
-
-    
+    double last_dx;    
 };
 
 typedef std::unique_ptr<Paddle> Paddle_ptr; 

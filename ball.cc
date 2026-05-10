@@ -33,6 +33,15 @@ double Ball::get_y() const
     return circle.get_y();
 }
 
+void Ball::set_x(double x)
+{
+    get_circle().set_x(x);
+}
+void Ball::set_y(double y)
+{
+    get_circle().set_y(y);
+}
+
 double Ball::get_radius() const
 {
     return circle.get_radius();
@@ -46,6 +55,15 @@ double Ball::get_dx() const
 double Ball::get_dy() const
 {
     return delta.get_y();
+}
+
+void Ball::set_dx(double dx)
+{
+    delta.set_x(dx);
+}
+void Ball::set_dy(double dy)
+{
+    delta.set_y(dy);
 }
 
 Circle Ball::get_circle() const

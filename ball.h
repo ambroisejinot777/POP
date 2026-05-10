@@ -21,8 +21,12 @@ public:
     Ball(Ball const &old_ball);
     double get_x() const;
     double get_y() const;
+    void set_x(double x);
+    void set_y(double y);
     double get_dx() const;
     double get_dy() const;
+    void set_dx(double dx);
+    void set_dy(double dy);
     double get_radius() const;
     Circle get_circle() const;
     void update_position();

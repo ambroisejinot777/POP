@@ -50,6 +50,18 @@ void Paddle::set_y(double y)
     circle.set_y(y);
 }
 
+double Paddle::get_last_dx() const 
+{
+    return last_dx;
+}
+
+void Paddle::set_last_dx(double dx) 
+{
+    last_dx = dx;
+}
+
+
+
 
 void Paddle::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 {

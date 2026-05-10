@@ -53,7 +53,14 @@ public:
     void update_paddle_position(double x);
 
     bool has_collision(const std::unique_ptr<Ball>& ball, int ball_idx);
-    void apply_collision(const std::unique_ptr<Ball>& ball, int ball_idx);
+
+    void wall_ball_bounce(const std::unique_ptr<Ball>& ball);
+    void brick_ball_bounce(const std::unique_ptr<Ball>& ball);
+    void paddle_ball_bounce(const std::unique_ptr<Ball>& ball);
+    void ball_ball_bounce(const std::unique_ptr<Ball>& ball, unsigned int ball_idx);
+
+
+    void apply_bounce(const std::unique_ptr<Ball>& ball, unsigned int ball_idx);
 
     void save(const std::string &file_name) const;
 

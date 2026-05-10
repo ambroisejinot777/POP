@@ -192,18 +192,18 @@ void circle_brick_collision()
 
 }
 
-Point computeDiff(const Ball* ball, const Brick* brick) {
-    return { ball->get_x() - brick->get_(),
-             ball->pos.y - brick->pos.y };
-}
+// Point computeDiff(const Ball* ball, const Brick* brick) {
+//     return { ball->get_x() - brick->get_(),
+//              ball->pos.y - brick->pos.y };
+// }
 
-Point computeClamped(const Vec2& diff, const Brick* brick) {
-    Vec2 half = { brick->size.x / 2.f, brick->size.y / 2.f };
-    return { clamp(diff.x, -half.x, half.x),
-             clamp(diff.y, -half.y, half.y) };
-}
+// Point computeClamped(const Vec2& diff, const Brick* brick) {
+//     Vec2 half = { brick->size.x / 2.f, brick->size.y / 2.f };
+//     return { clamp(diff.x, -half.x, half.x),
+//              clamp(diff.y, -half.y, half.y) };
+// }
 
-Point computeNominal(const Point& diff, const Point& clamped) {
-    return { diff.x - clamped.x,
-             diff.y - clamped.y };
-}
+// Point computeNominal(const Point& diff, const Point& clamped) {
+//     return { diff.x - clamped.x,
+//              diff.y - clamped.y };
+// }
