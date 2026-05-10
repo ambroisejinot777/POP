@@ -143,7 +143,7 @@ bool Game::has_collision(const unique_ptr<Ball>& ball, int ball_idx)
     return false;
 }
 
-void Game::wall_ball_bounce(const std::unique_ptr<Ball>& ball)
+bool Game::wall_ball_bounce(const std::unique_ptr<Ball>& ball)
 {
     double dx = ball->get_dx();
     double dy = ball->get_dy();
@@ -167,13 +167,18 @@ void Game::wall_ball_bounce(const std::unique_ptr<Ball>& ball)
         if (top)           dy = -dy;
         ball->set_dx(dx);
         ball->set_dy(dy);
+        
+        return true;
     }
+    return false;
 }
 
-void Game::brick_ball_bounce(const std::unique_ptr<Ball>& ball)
+bool Game::brick_ball_bounce(const std::unique_ptr<Ball>& ball)
 {
     double dx = ball->get_dx();
     double dy = ball->get_dy();
+    int index(0);
+    vector<int> to_delete;
     for (const auto& brick : brick_list)
     {
         if (circle_square_intersection(ball->get_circle(), brick->get_square()))
@@ -211,14 +216,22 @@ void Game::brick_ball_bounce(const std::unique_ptr<Ball>& ball)
             ball->set_dy(dy);
 
 
-            ball_brick_reaction(ball, brick);
-            return ;
+            if(brick->hit())
+            {
+                if(brick->get_type() == 2)
+                {
+                    create_new_split_bricks(brick);
+                }
+                delete_brick(index);
+            }
+            return true;
         }
+        ++index;
     }
-    return ;
+    return false;
 }
 
-void Game::paddle_ball_bounce(const unique_ptr<Ball>& ball)
+bool Game::paddle_ball_bounce(const unique_ptr<Ball>& ball)
 {
     double dx = ball->get_dx();
     double dy = ball->get_dy();
@@ -229,7 +242,7 @@ void Game::paddle_ball_bounce(const unique_ptr<Ball>& ball)
         double nx = ball->get_x() - paddle_ptr->get_x();
         double ny = ball->get_y() - paddle_ptr->get_y();
         double len = sqrt(nx*nx + ny*ny);
-        if (len < epsil_zero) return;
+        if (len < epsil_zero) return true;
         nx /= len;
         ny /= len;
 
@@ -243,17 +256,19 @@ void Game::paddle_ball_bounce(const unique_ptr<Ball>& ball)
         dy += impulse * ny;
 
         double norm = sqrt(dx*dx + dy*dy);
-        if (norm > delta_norm_max)
-        {
-            dx = dx / norm * delta_norm_max;
-            dy = dy / norm * delta_norm_max;
-        }
+        if (norm > delta_norm_max) norm = delta_norm_max;
+        
+            dx = dx * delta_norm_max;
+            dy = dy * delta_norm_max;
+
         ball->set_dx(dx);
         ball->set_dy(dy);
+        return true;
     }
+    return false;
 }
 
-void Game::ball_ball_bounce(const unique_ptr<Ball>& ball, unsigned int ball_idx)
+bool Game::ball_ball_bounce(const unique_ptr<Ball>& ball, unsigned int ball_idx)
 {
     double dx = ball->get_dx();
     double dy = ball->get_dy();
@@ -267,7 +282,7 @@ void Game::ball_ball_bounce(const unique_ptr<Ball>& ball, unsigned int ball_idx)
             double nx = ball_list[j]->get_x() - ball->get_x();
             double ny = ball_list[j]->get_y() - ball->get_y();
             double len = sqrt(nx*nx + ny*ny);
-            if (len < epsil_zero) return;
+            if (len < epsil_zero) return true;
             nx /= len;
             ny /= len;
 
@@ -293,24 +308,25 @@ void Game::ball_ball_bounce(const unique_ptr<Ball>& ball, unsigned int ball_idx)
             }
             ball->set_dx(dx);
             ball->set_dy(dy);
-            return;
+            return true;
         }
     }
+    return false;
 }
 
 void Game::apply_bounce(const unique_ptr<Ball>& ball, unsigned int ball_idx)
 {
     // Bords  ///probleme avce les coins
-    wall_ball_bounce(ball);
+    if(wall_ball_bounce(ball))return ;
 
     // Briques /// probleme des balls disparaissent
-    brick_ball_bounce(ball);
+    if(brick_ball_bounce(ball)) return;
 
     // Paddle /// probleme vraiment tres moche
-    paddle_ball_bounce(ball);
+    if (paddle_ball_bounce(ball)) return;
 
     // Balls /// verifier car pas sur dutout
-    ball_ball_bounce(ball, ball_idx);
+    if (ball_ball_bounce(ball, ball_idx)) return;
 
 }
 
@@ -378,12 +394,38 @@ void Game::delete_ball(int index)
     ball_list.erase(ball_list.begin() + index);
 }
 
-void Game::ball_brick_reaction(const unique_ptr<Ball>& ball_ptr, const unique_ptr<Brick>& brick_ptr)
+void Game::delete_brick(int index)
 {
-    // add ball reaction
-
-    brick_ptr->hit();
+    brick_list.erase(brick_list.begin() + index);
 }
+
+void Game::create_new_split_bricks(const unique_ptr<Brick>& brick)
+{
+    double w = brick->get_width();
+    int hit_points = brick->get_hitpoints();
+    double x = brick->get_x();
+    double y = brick->get_y();
+
+    double new_width = (w - split_brick_gap) / 2.0;
+    double offset = new_width / 2.0 + split_brick_gap / 2.0;
+
+    if (hit_points > 2)
+    {
+        brick_list.push_back(unique_ptr<Brick>(new SplitBrick(x - offset, y - offset, new_width, hit_points - 1, 2)));
+        brick_list.push_back(unique_ptr<Brick>(new SplitBrick(x + offset, y - offset, new_width, hit_points - 1, 2)));
+        brick_list.push_back(unique_ptr<Brick>(new SplitBrick(x - offset, y + offset, new_width, hit_points - 1, 2)));
+        brick_list.push_back(unique_ptr<Brick>(new SplitBrick(x + offset, y + offset, new_width, hit_points - 1, 2)));
+    }
+    else if (hit_points > 2)
+    {
+        brick_list.push_back(unique_ptr<Brick>(new RainbowBrick(x - offset, y - offset, new_width, 1, 0)));
+        brick_list.push_back(unique_ptr<Brick>(new RainbowBrick(x + offset, y - offset, new_width, 1, 0)));
+        brick_list.push_back(unique_ptr<Brick>(new RainbowBrick(x - offset, y + offset, new_width, 1, 0)));
+        brick_list.push_back(unique_ptr<Brick>(new RainbowBrick(x + offset, y + offset, new_width, 1, 0)));
+    }
+}
+
+
 
 void Game::update()
 {
@@ -404,8 +446,8 @@ void Game::update()
         unsigned int nb_rebonds(0);
         while(has_collision(ball, index))
         {
-            apply_bounce(ball, index);   
             ball->undo_position();   
+            apply_bounce(ball, index);
             ball->update_position();     
             nb_rebonds++;
             if (nb_rebonds >= nb_bounce_max) break;
@@ -429,8 +471,8 @@ void Game::update()
             unsigned int nb_rebonds(0);
             while(has_collision(ball, index))
             {
-                apply_bounce(ball, index); 
-                ball->undo_position();      
+                ball->undo_position(); 
+                apply_bounce(ball, index);     
                 ball->update_position();   
                 nb_rebonds++;
                 if (nb_rebonds >= nb_bounce_max) break;
@@ -440,7 +482,7 @@ void Game::update()
     }
 
     if(ball_list.size() == 0 and lives == 0) status = LOST;
-    if(brick_list.size() == 0) status == WON;
+    if(brick_list.size() == 0) status = WON;
 }
 
 

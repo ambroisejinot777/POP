@@ -32,7 +32,7 @@ public:
     int get_hitpoints() const;
     Color get_color() const;
     virtual void draw(const Cairo::RefPtr<Cairo::Context> &cr) const = 0;
-    bool hit(); // return true if hit_points == 0
+    virtual bool hit() = 0; // return true if hit_points == 0
 
 private:
     Square square;
@@ -55,6 +55,7 @@ public:
                                             int hit_points, int type);
     RainbowBrick(double x, double y, double width, int hit_points, int type);
     void draw(const Cairo::RefPtr<Cairo::Context> &cr) const override;
+    bool hit() override;
 };
 
 
@@ -65,6 +66,8 @@ public:
                                                                         , int type);
     BallBrick(double x, double y, double width, int hitpoints, int type);
     void draw(const Cairo::RefPtr<Cairo::Context> &cr) const override;
+    bool hit() override;
+
 };
 
 
@@ -74,7 +77,10 @@ public:
     SplitBrick(bool &error_occured, double x, double y, double width, int hit_points,
                                                                          int type);
     SplitBrick(double x, double y, double width, int hit_points, int type);
+
     void draw(const Cairo::RefPtr<Cairo::Context> &cr) const override;
+    bool hit() override;
+
 };
 
 // CHECKING FUNCTIONS

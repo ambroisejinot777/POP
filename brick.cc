@@ -127,12 +127,6 @@ Color Brick::get_color() const
     }
 }
 
-bool Brick::hit()
-{
-    --hit_points;
-    if(hit_points<=0) return true;
-    return false;
-}
 
 // RAINBOWBRICK
 
@@ -147,6 +141,13 @@ RainbowBrick::RainbowBrick(double x, double y, double width, int hit_points, int
 void RainbowBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 {
     get_square().draw(cr, get_color());
+}
+
+bool RainbowBrick::hit()
+{
+    --hit_points;
+    if(hit_points<=0) return true;
+    return false;
 }
 
 
@@ -171,6 +172,12 @@ void BallBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
     draw_circle(cr, get_x(), get_y(), new_ball_radius);
 }
 
+bool BallBrick::hit()
+{
+    return false;
+}
+
+
 
 // SPLITBRICK
 
@@ -193,6 +200,10 @@ void SplitBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
     draw_brick_recursive(cr, x, y, w, level, color, split_brick_list);
 }
 
+bool SplitBrick::hit()
+{
+    return true;
+}
 
 
 // CHECKING FUNCTIONS
