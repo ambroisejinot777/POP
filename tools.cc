@@ -174,36 +174,21 @@ bool square_square_intersection(Square const &s1, Square const &s2)
     return false;
 }
 
-// BASIC ELEMENTS FUNCTION (avec le premier element correspondant a l'objet en 
-// mouvement (la balle))
+// BASIC ELEMENTS FUNCTION (de calcul
 
-void circle_arena_segment_collision()
-{
 
+Point computeDiff(const Ball* ball, const Brick* brick) {
+    return { ball->get_x() - brick->get_(),
+             ball->pos.y - brick->pos.y };
 }
 
-void circle_circle_collision()
-{
-
+Point computeClamped(const Vec2& diff, const Brick* brick) {
+    Vec2 half = { brick->size.x / 2.f, brick->size.y / 2.f };
+    return { clamp(diff.x, -half.x, half.x),
+             clamp(diff.y, -half.y, half.y) };
 }
 
-void circle_brick_collision()
-{
-
+Point computeNominal(const Point& diff, const Point& clamped) {
+    return { diff.x - clamped.x,
+             diff.y - clamped.y };
 }
-
-// Point computeDiff(const Ball* ball, const Brick* brick) {
-//     return { ball->get_x() - brick->get_(),
-//              ball->pos.y - brick->pos.y };
-// }
-
-// Point computeClamped(const Vec2& diff, const Brick* brick) {
-//     Vec2 half = { brick->size.x / 2.f, brick->size.y / 2.f };
-//     return { clamp(diff.x, -half.x, half.x),
-//              clamp(diff.y, -half.y, half.y) };
-// }
-
-// Point computeNominal(const Point& diff, const Point& clamped) {
-//     return { diff.x - clamped.x,
-//              diff.y - clamped.y };
-// }

@@ -92,6 +92,37 @@ void circle_circle_collision(); // with paddle and other ball
 
 void circle_brick_collision(); // with brick
 
+double circle_circle_impulse(double dx,  double dy,
+                                    double radius,
+                                    double dx2, double dy2,
+                                    double radius2,
+                                    double nx, double ny);
 
+double circle_circle_newdeltax(double dx,  double dy,  double radius,
+                               double dx2, double dy2, double radius2,
+                               double nx,  double ny);
+
+double circle_circle_newdeltay(double dx,  double dy,  double radius,
+                               double dx2, double dy2, double radius2,
+                               double nx,  double ny);
+
+double circle_segment_point_newdeltax(double dx, double dy,
+                                double nx, double ny);
+
+double circle_segment_point_newdeltay(double dx, double dy,
+                                double nx, double ny);
+
+
+
+
+
+
+
+
+
+
+
+
+                                    
 
 #endif
