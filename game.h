@@ -64,7 +64,7 @@ public:
 
     void save(const std::string &file_name) const;
 
-    void create_new_ball(double x, double y);
+    void create_new_ball(double x, double y, double dx, double dy);
     void delete_ball(int index);
     void delete_brick(int index);
     void create_new_split_bricks(const std::unique_ptr<Brick>& brick);
@@ -84,6 +84,7 @@ private:
     bool error_occured;
     double mouse_x = 0.0;
     Game_state status = ONGOING;
+    std::vector<Ball> pending_balls;
 
 
 

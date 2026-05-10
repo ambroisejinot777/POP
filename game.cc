@@ -175,39 +175,25 @@ bool Game::wall_ball_bounce(const std::unique_ptr<Ball>& ball)
 
 bool Game::brick_ball_bounce(const std::unique_ptr<Ball>& ball)
 {
+    int index(0);
     double dx = ball->get_dx();
     double dy = ball->get_dy();
-    int index(0);
-    vector<int> to_delete;
+
     for (const auto& brick : brick_list)
     {
         if (circle_square_intersection(ball->get_circle(), brick->get_square()))
         {
-            // Différence entre centres
             double diff_x = ball->get_x() - brick->get_x();
             double diff_y = ball->get_y() - brick->get_y();
-
-            // Différence bornée
             double half = brick->get_width() / 2.0;
             double clamped_x = max(-half, min(diff_x, half));
             double clamped_y = max(-half, min(diff_y, half));
-
-            // Direction nominale
             double nx = diff_x - clamped_x;
             double ny = diff_y - clamped_y;
             double len = sqrt(nx*nx + ny*ny);
-            if (len < epsil_zero) 
-            {
-                nx = 1.0 / sqrt(2);
-                ny = 1.0 / sqrt(2);
-            } 
-            else 
-            {
-                nx /= len;
-                ny /= len;
-            }
+            if (len < epsil_zero) { nx = 1.0/sqrt(2); ny = 1.0/sqrt(2); }
+            else { nx /= len; ny /= len; }
 
-            // vnew = v - 2*vn
             double vn = dx*nx + dy*ny;
             if (vn > delta_norm_max) vn = delta_norm_max;
             dx = dx - 2.0*vn*nx;
@@ -215,14 +201,17 @@ bool Game::brick_ball_bounce(const std::unique_ptr<Ball>& ball)
             ball->set_dx(dx);
             ball->set_dy(dy);
 
-
-            if(brick->hit())
+            if (brick->hit())
             {
-                if(brick->get_type() == 2)
-                {
-                    create_new_split_bricks(brick);
-                }
+                int type     = brick->get_type();
+                double brick_x    = brick->get_x();
+                double brick_y    = brick->get_y();
+
+                // Tout après — plus d'itération active
+                if (type == 2) create_new_split_bricks(brick);
                 delete_brick(index);
+                if (type == 1) create_new_ball(brick_x, brick_y, ball->get_dx(), ball->get_dy());
+                return true;
             }
             return true;
         }
@@ -370,23 +359,10 @@ void Game::save(const string &file_name) const
     file.close();
 }
 
-void Game::create_new_ball(double x, double y)
-{
-    if (!paddle_ptr) return;
-    double ball_x(get_paddle()->get_x());
-    double ball_y(get_paddle()->get_y() + get_paddle()->get_radius() +  
-                                            new_ball_radius + epsil_zero);
-
-    double dir_x = x - ball_x;
-    double dir_y = y - ball_y;
-    double norm = sqrt(dir_x * dir_x + dir_y * dir_y);
-
-    double dx = (abs(norm) >= epsil_zero) ? (dir_x / norm) * new_ball_delta_norm : 0;
-    double dy = (abs(norm) >= epsil_zero) ? (dir_y / norm) * new_ball_delta_norm : 
-                                                                new_ball_delta_norm;
-    
-    Ball new_ball(ball_x, ball_y, new_ball_radius, dx, dy);
-    add_ball(new_ball);
+void Game::create_new_ball(double x, double y, double dx, double dy)
+{   
+    Ball new_ball(x, y, new_ball_radius, dx, dy);
+    pending_balls.push_back(new_ball);
 }
 
 void Game::delete_ball(int index)
@@ -480,6 +456,12 @@ void Game::update()
         }
         ++index;
     }
+
+    for (auto& ball: pending_balls)
+    {
+        add_ball(ball);
+    }
+    pending_balls.clear();
 
     if(ball_list.size() == 0 and lives == 0) status = LOST;
     if(brick_list.size() == 0) status = WON;

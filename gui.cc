@@ -305,9 +305,18 @@ void My_window::on_drawing_left_click(int n_press, double x, double y)
     int nb_ball(game.get_ball_list().size());
     if(loop_activated and game.get_lives() > 0 and nb_ball == 0)
     {
-    game.create_new_ball(to_game_x(x), to_game_y(y) );
-    update_infos();
-    drawing.queue_draw();
+        double dir_x = to_game_x(x) - game.get_paddle()->get_x();
+        double dir_y = to_game_y(y) - game.get_paddle()->get_y();
+        double norm = sqrt(dir_x * dir_x + dir_y * dir_y);
+
+        game.create_new_ball(game.get_paddle()->get_x(),
+                            game.get_paddle()->get_y() 
+                            + game.get_paddle()->get_radius()
+                            + new_ball_radius + epsil_zero,
+        (abs(norm) >= epsil_zero) ? (dir_x / norm) * new_ball_delta_norm : 0,
+        (abs(norm) >= epsil_zero) ? (dir_y / norm) * new_ball_delta_norm : new_ball_delta_norm);
+        update_infos();
+        drawing.queue_draw();
     }
 }
 void My_window::on_drawing_move(double x, double y)

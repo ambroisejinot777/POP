@@ -174,7 +174,7 @@ void BallBrick::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 
 bool BallBrick::hit()
 {
-    return false;
+    return true;
 }
 
 
