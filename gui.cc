@@ -302,9 +302,10 @@ void My_window::set_mouse_controller()
 void My_window::on_drawing_left_click(int n_press, double x, double y)
 {
     // cout << __func__ << endl;
-    if(game.get_lives() > 0)
+    int nb_ball(game.get_ball_list().size());
+    if(loop_activated and game.get_lives() > 0 and nb_ball == 0)
     {
-    game.create_new_ball(to_game_x(x), to_game_y(y));
+    game.create_new_ball(to_game_x(x), to_game_y(y) );
     update_infos();
     drawing.queue_draw();
     }

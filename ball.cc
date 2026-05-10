@@ -59,6 +59,12 @@ void Ball::update_position()
     circle.set_y(circle.get_y() + delta.get_y());
 }
 
+void Ball::undo_position()
+{
+    circle.set_x(circle.get_x() - delta.get_x());
+    circle.set_y(circle.get_y() - delta.get_y());
+}
+
 void Ball::draw(const Cairo::RefPtr<Cairo::Context> &cr) const
 {
     get_circle().draw(cr, BLACK);

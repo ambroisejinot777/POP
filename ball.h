@@ -26,6 +26,7 @@ public:
     double get_radius() const;
     Circle get_circle() const;
     void update_position();
+    void undo_position();
     void draw(const Cairo::RefPtr<Cairo::Context> &cr) const;
 
 private:

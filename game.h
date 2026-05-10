@@ -23,6 +23,13 @@ enum Reading_state
     FINISHED,
 };
 
+enum Game_state
+{
+    ONGOING,
+    WON,
+    LOST,
+};
+
 class Game
 {
 public:
@@ -45,6 +52,9 @@ public:
     void add_ball(Ball& new_ball);
     void update_paddle_position(double x);
 
+    bool has_collision(const std::unique_ptr<Ball>& ball, int ball_idx);
+    void apply_collision(const std::unique_ptr<Ball>& ball, int ball_idx);
+
     void save(const std::string &file_name) const;
 
     void create_new_ball(double x, double y);
@@ -66,6 +76,7 @@ private:
     std::string filename;
     bool error_occured;
     double mouse_x = 0.0;
+    Game_state status = ONGOING;
 
 
 

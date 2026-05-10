@@ -5,6 +5,28 @@
 
 using namespace std;
 
+bool circle_arena_bounce(Circle &c)
+{
+    bool left   = (c.get_x() - c.get_radius()) < epsil_zero;
+    bool right  = (c.get_x() + c.get_radius()) > arena_size - epsil_zero;
+    bool top    = (c.get_y() + c.get_radius()) > arena_size - epsil_zero;
+    // bas = perte, géré ailleurs
+
+    if (!left && !right && !top) return false;
+
+    // Cas coin : on rebondit sur le bord le plus éloigné du centre
+    if ((left || right) && top)
+    {
+        double dist_x = left  ? c.get_x() : (arena_size - c.get_x());
+        double dist_y = arena_size - c.get_y();
+        if (dist_x < dist_y) top = false;   // bord vertical plus éloigné
+        else                 left = right = false; // bord horizontal plus éloigné
+    }
+
+    return true; // la direction à inverser est indiquée par left/right/top
+    // NOTE : on retourne juste les flags, le appelant fait l'inversion
+}
+
 // PUBLIC FUNCTIONS
 
 Game::Game(string filename): score(0), lives(0), paddle_ptr(nullptr)
@@ -107,6 +129,47 @@ void Game::update_paddle_position(double new_x)
     paddle_ptr->set_x(new_x);
 }
 
+bool Game::has_collision(const unique_ptr<Ball>& ball, int ball_idx)
+{
+    // Bord gauche
+    if (ball->get_x() - ball->get_radius() < epsil_zero)
+        return true;
+
+    // Bord droit
+    if (ball->get_x() + ball->get_radius() > arena_size - epsil_zero)
+        return true;
+
+    // Bord supérieur
+    if (ball->get_y() + ball->get_radius() > arena_size - epsil_zero)
+        return true;
+
+    // Briques
+    for (const auto& brick : brick_list)
+        if (circle_square_intersection(ball->get_circle(), brick->get_square()))
+            return true;
+
+    // Raquette
+    if (paddle_ptr &&
+        circle_circle_intersection(ball->get_circle(), paddle_ptr->get_circle()))
+        return true;
+
+    // Autres balles
+    for (int j = 0; j < (int)ball_list.size(); j++)
+    {
+        if (j == ball_idx) continue;
+        if (circle_circle_intersection(ball->get_circle(),
+                                       ball_list[j]->get_circle()))
+            return true;
+    }
+
+    return false;
+}
+
+void Game::apply_collision(const std::unique_ptr<Ball>& ball, int ball_idx)
+{
+    return;
+}
+
 void Game::save(const string &file_name) const
 {
     ofstream file(file_name);
@@ -180,17 +243,46 @@ void Game::ball_brick_reaction(const unique_ptr<Ball>& ball_ptr, const unique_pt
 
 void Game::update()
 {
+    if (status != ONGOING) return;
     int index(0);
-    vector<int> delete_balls;
+    vector<int> to_delete;
 
-    for (const auto& ball: ball_list)
+    for (const auto &ball: ball_list)
     {
         ball->update_position();
-        if(ball->get_y() < 0) delete_balls.push_back(index);
+        if(ball->get_y() < 0) 
+        {
+            to_delete.push_back(index);
+            ++index;
+            continue;
+        }
+        
+
+        unsigned int nb_rebonds(0);
+        while(has_collision(ball, index))
+        {
+            ball->undo_position();
+            if (nb_rebonds < nb_bounce_max)
+            {
+                apply_bounce(ball, index);
+                ball->update_position();
+                nb_rebonds++;
+            }
+            else break;
+        }
+
+
+
+        // AJOUTER LES REBONDS DE BALLS
         ++index;
     }
-    for(int i(delete_balls.size()-1); i>=0; i-- ) delete_ball(delete_balls[i]);
+    for(int i(to_delete.size()-1); i>=0; i-- ) delete_ball(to_delete[i]);
     update_paddle_position(get_mouse_x());
+
+
+
+    if(ball_list.size() == 0 and lives == 0) status = LOST;
+    if(brick_list.size() == 0) status == WON;
 }
 
 
