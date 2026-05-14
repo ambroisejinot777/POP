@@ -174,3 +174,60 @@ bool square_square_intersection(Square const &s1, Square const &s2)
     return false;
 }
 
+// FONCTIONS DE CALCULS
+
+// ── 4.1.2 : Collision cercle / cercle (ou raquette si radius2 = 0)
+// Formule : impulsion = (-vn + v_autre_n) * (2 * r2² / (r² + r2²))
+// Si radius2 == 0 → masse infinie (raquette) → facteur = 2
+
+static double circle_circle_impulse(double dx,  double dy,
+                                    double radius,
+                                    double dx2, double dy2,
+                                    double radius2,
+                                    double nx, double ny)
+{
+    double vn        = dx  * nx + dy  * ny;
+    double v_autre_n = dx2 * nx + dy2 * ny;
+
+    double mass_factor;
+    if (radius2 <= 0.0)
+        mass_factor = 2.0; // raquette : masse infinie
+    else
+        mass_factor = (2.0 * radius2 * radius2) /
+                      (radius * radius + radius2 * radius2);
+
+    return (-vn + v_autre_n) * mass_factor;
+}
+
+double circle_circle_newdeltax(double dx,  double dy,  double radius,
+                               double dx2, double dy2, double radius2,
+                               double nx,  double ny)
+{
+    return dx + circle_circle_impulse(dx, dy, radius,
+                                      dx2, dy2, radius2, nx, ny) * nx;
+}
+
+double circle_circle_newdeltay(double dx,  double dy,  double radius,
+                               double dx2, double dy2, double radius2,
+                               double nx,  double ny)
+{
+    return dy + circle_circle_impulse(dx, dy, radius,
+                                      dx2, dy2, radius2, nx, ny) * ny;
+}
+
+// ── 4.1.1 : Collision cercle / segment, arena, point
+// Formule : réflexion pure  v_new = v − 2·(v·n)·n
+
+double circle_segment_newdeltax(double dx, double dy,
+                                double nx, double ny)
+{
+    double vn = dx * nx + dy * ny;
+    return dx - 2.0 * vn * nx;
+}
+
+double circle_segment_newdeltay(double dx, double dy,
+                                double nx, double ny)
+{
+    double vn = dx * nx + dy * ny;
+    return dy - 2.0 * vn * ny;
+}
