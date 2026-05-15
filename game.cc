@@ -178,24 +178,8 @@ bool Game::brick_ball_bounce(const std::unique_ptr<Ball>& ball)
     {
         if (circle_square_intersection(ball->get_circle(), brick->get_square()))
         {
-            double diff_x = ball->get_x() - brick->get_x();
-            double diff_y = ball->get_y() - brick->get_y();
-            double half = brick->get_width() / 2.0;
-            double clamped_x = max(-half, min(diff_x, half));
-            double clamped_y = max(-half, min(diff_y, half));
-            double nx = diff_x - clamped_x;
-            double ny = diff_y - clamped_y;
-            double len = sqrt(nx*nx + ny*ny);
-            if (len < epsil_zero) { nx = 1.0/sqrt(2); ny = 1.0/sqrt(2); }
-            else { nx /= len; ny /= len; }
 
-            double vn = dx*nx + dy*ny;
-            if (vn > delta_norm_max) vn = delta_norm_max;
-            dx = dx - 2.0*vn*nx;
-            dy = dy - 2.0*vn*ny;
-            ball->set_dx(dx);
-            ball->set_dy(dy);
-
+            score += score_per_hit;
             if (brick->hit())
             {
                 int type     = brick->get_type();
@@ -308,11 +292,6 @@ void Game::ball_ball_bounce(const unique_ptr<Ball>& ball1, const unique_ptr<Ball
     ball2->set_dy(new_delta2.get_y());
 }
 
-void Game::apply_bounce(const unique_ptr<Ball>& ball)
-{
-    wall_ball_bounce(ball);
-
-}
 
 void Game::save(const string &file_name) const
 {
@@ -380,14 +359,14 @@ void Game::create_new_split_bricks(const unique_ptr<Brick>& brick)
     double new_width = (w - split_brick_gap) / 2.0;
     double offset = new_width / 2.0 + split_brick_gap / 2.0;
 
-    if (hit_points > 2)
+    if (hit_points > 3)
     {
         brick_list.push_back(unique_ptr<Brick>(new SplitBrick(x - offset, y - offset, new_width, hit_points - 1, 2)));
         brick_list.push_back(unique_ptr<Brick>(new SplitBrick(x + offset, y - offset, new_width, hit_points - 1, 2)));
         brick_list.push_back(unique_ptr<Brick>(new SplitBrick(x - offset, y + offset, new_width, hit_points - 1, 2)));
         brick_list.push_back(unique_ptr<Brick>(new SplitBrick(x + offset, y + offset, new_width, hit_points - 1, 2)));
     }
-    else if (hit_points == 2)
+    else if (hit_points > 2)
     {
         brick_list.push_back(unique_ptr<Brick>(new RainbowBrick(x - offset, y - offset, new_width, 1, 0)));
         brick_list.push_back(unique_ptr<Brick>(new RainbowBrick(x + offset, y - offset, new_width, 1, 0)));

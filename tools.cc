@@ -180,7 +180,7 @@ bool square_square_intersection(Square const &s1, Square const &s2)
                                                        s2.get_width() / 2);
     double y_overlap = abs(s1.get_y() - s2.get_y()) - (s1.get_width() / 2 +
                                                        s2.get_width() / 2);
-    if (x_overlap < epsil_zero and y_overlap < epsil_zero)
+    if (x_overlap < 0 and y_overlap < 0)
     {
         return true;
     }

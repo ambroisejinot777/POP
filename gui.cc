@@ -306,7 +306,7 @@ void My_window::on_drawing_left_click(int n_press, double x, double y)
     if(loop_activated and game.get_lives() > 0 and nb_ball == 0)
     {
         double dir_x = to_game_x(x) - game.get_paddle()->get_x();
-        double dir_y = to_game_y(y) - game.get_paddle()->get_y();
+        double dir_y = to_game_y(y);
         double norm = sqrt(dir_x * dir_x + dir_y * dir_y);
 
         game.create_new_ball(game.get_paddle()->get_x(),

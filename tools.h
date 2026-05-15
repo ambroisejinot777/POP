@@ -13,7 +13,7 @@
 
 #include "graphic.h"
 
-constexpr double epsil_zero(0.125);
+constexpr double epsil_zero(0.0);
 
 // POINT
 
