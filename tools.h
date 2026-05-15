@@ -113,6 +113,9 @@ double circle_segment_point_newdeltay(double dx, double dy,
                                 double nx, double ny);
 
 
+void get_brick_collision_normal(double ball_x, double ball_y,
+                                double brick_x, double brick_y, double brick_width,
+                                double& nx, double& ny);
 
 
 

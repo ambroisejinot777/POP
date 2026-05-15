@@ -231,3 +231,27 @@ double circle_segment_newdeltay(double dx, double dy,
     double vn = dx * nx + dy * ny;
     return dy - 2.0 * vn * ny;
 }
+
+void get_brick_collision_normal(double ball_x, double ball_y,
+                                double brick_x, double brick_y, double brick_width,
+                                double& nx, double& ny)
+{
+    double diff_x = ball_x - brick_x;
+    double diff_y = ball_y - brick_y;
+
+    double half = brick_width / 2.0;
+
+    double clamped_x = std::max(-half, std::min(diff_x, half));
+    double clamped_y = std::max(-half, std::min(diff_y, half));
+
+    double nom_x = diff_x - clamped_x;
+    double nom_y = diff_y - clamped_y;
+
+    double norm = std::sqrt(nom_x * nom_x + nom_y * nom_y);
+    if (norm == 0.0) { nx = 0.0; ny = 0.0; return; }
+
+    nx = nom_x / norm;
+    ny = nom_y / norm;
+}
+
+
