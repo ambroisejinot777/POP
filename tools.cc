@@ -130,6 +130,19 @@ void display_error(string message, bool& error_occured)
     error_occured=true;
 }
 
+double compute_norm(Point& point)
+{
+    double x(point.get_x());
+    double y(point.get_y());
+    return sqrt(x*x+y*y);
+}
+
+double dot_product(Point const& a, Point const& b)
+{
+    return a.get_x() * b.get_x() + a.get_y() * b.get_y();
+}
+
+
 // INTERSECTION FUNCTIONS
 bool circle_circle_intersection(Circle const &c1, Circle const &c2)
 {
@@ -174,46 +187,74 @@ bool square_square_intersection(Square const &s1, Square const &s2)
     return false;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // FONCTIONS DE CALCULS
 
 // ── 4.1.2 : Collision cercle / cercle (ou raquette si radius2 = 0)
 // Formule : impulsion = (-vn + v_autre_n) * (2 * r2² / (r² + r2²))
 // Si radius2 == 0 → masse infinie (raquette) → facteur = 2
 
-static double circle_circle_impulse(double dx,  double dy,
-                                    double radius,
-                                    double dx2, double dy2,
-                                    double radius2,
-                                    double nx, double ny)
+double circle_circle_impulse(Circle const& c1, double dx1, double dy1,
+                             Circle const& c2, double dx2, double dy2, bool isPaddle)
 {
-    double vn        = dx  * nx + dy  * ny;
-    double v_autre_n = dx2 * nx + dy2 * ny;
+    double delta_x = c2.get_x() - c1.get_x();
+    double delta_y = c2.get_y() - c1.get_y();
+    double dist    = sqrt(delta_x * delta_x + delta_y * delta_y);
 
-    double mass_factor;
-    if (radius2 <= 0.0)
-        mass_factor = 2.0; // raquette : masse infinie
-    else
-        mass_factor = (2.0 * radius2 * radius2) /
-                      (radius * radius + radius2 * radius2);
+    double nx = delta_x / dist;
+    double ny = delta_y / dist;
 
-    return (-vn + v_autre_n) * mass_factor;
+    double vn1 = dx1 * nx + dy1 * ny;
+    double vn2 = dx2 * nx + dy2 * ny;
+
+    double r2 = c2.get_radius();
+    double r1 = c1.get_radius();
+
+    double mass_factor = isPaddle ? 2.0 : (2.0 * r2 * r2) / (r1 * r1 + r2 * r2);
+
+    return (-vn1 + vn2) * mass_factor;
 }
 
-double circle_circle_newdeltax(double dx,  double dy,  double radius,
-                               double dx2, double dy2, double radius2,
-                               double nx,  double ny)
-{
-    return dx + circle_circle_impulse(dx, dy, radius,
-                                      dx2, dy2, radius2, nx, ny) * nx;
-}
+// double circle_circle_newdeltax(double dx,  double dy,  double radius,
+//                                double dx2, double dy2, double radius2,
+//                                double nx,  double ny)
+// {
+//     return dx + circle_circle_impulse(dx, dy, radius,
+//                                       dx2, dy2, radius2, nx, ny) * nx;
+// }
 
-double circle_circle_newdeltay(double dx,  double dy,  double radius,
-                               double dx2, double dy2, double radius2,
-                               double nx,  double ny)
-{
-    return dy + circle_circle_impulse(dx, dy, radius,
-                                      dx2, dy2, radius2, nx, ny) * ny;
-}
+// double circle_circle_newdeltay(double dx,  double dy,  double radius,
+//                                double dx2, double dy2, double radius2,
+//                                double nx,  double ny)
+// {
+//     return dy + circle_circle_impulse(dx, dy, radius,
+//                                       dx2, dy2, radius2, nx, ny) * ny;
+// }
 
 // ── 4.1.1 : Collision cercle / segment, arena, point
 // Formule : réflexion pure  v_new = v − 2·(v·n)·n

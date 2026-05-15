@@ -13,7 +13,7 @@
 
 #include "graphic.h"
 
-constexpr double epsil_zero(0.0);
+constexpr double epsil_zero(0.125);
 
 // POINT
 
@@ -73,30 +73,40 @@ private:
     double radius;
 };
 
-// ERROR FUNCTION 
+// UTILITY FUNCTIONS
 
 void display_error(std::string message, bool& error_occured);
+double compute_norm(Point& point);
+double dot_product(Point const& a, Point const& b);
 
-// CHECKING FUNCTIONS
+// INTERSECTION FUNCTIONS
 
 bool circle_circle_intersection(Circle const &c1, Circle const &c2);
 bool circle_square_intersection(Circle const &c, Square const &s);
 bool square_square_intersection(Square const &s1, Square const &s2);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // BASIC ELEMENTS FUNCTION (avec le premier element correspondant a l'objet en 
 // mouvement (la balle))
 
-void circle_arena_segment_collision(); // with arena
-
-void circle_circle_collision(); // with paddle and other ball 
-
-void circle_brick_collision(); // with brick
-
-double circle_circle_impulse(double dx,  double dy,
-                                    double radius,
-                                    double dx2, double dy2,
-                                    double radius2,
-                                    double nx, double ny);
+double circle_circle_impulse(Circle const& c1, double dx1, double dy1,
+                             Circle const& c2, double dx2, double dy2,
+                             bool isPaddle = false);
 
 double circle_circle_newdeltax(double dx,  double dy,  double radius,
                                double dx2, double dy2, double radius2,

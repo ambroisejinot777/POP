@@ -54,13 +54,13 @@ public:
 
     bool has_collision(const std::unique_ptr<Ball>& ball, int ball_idx);
 
-    bool wall_ball_bounce(const std::unique_ptr<Ball>& ball);
+    void wall_ball_bounce(const std::unique_ptr<Ball>& ball);
     bool brick_ball_bounce(const std::unique_ptr<Ball>& ball);
-    bool paddle_ball_bounce(const std::unique_ptr<Ball>& ball);
-    bool ball_ball_bounce(const std::unique_ptr<Ball>& ball, unsigned int ball_idx);
+    void paddle_ball_bounce(const std::unique_ptr<Ball>& ball);
+    void ball_ball_bounce(const std::unique_ptr<Ball>& ball1, const std::unique_ptr<Ball>& ball2);
 
 
-    void apply_bounce(const std::unique_ptr<Ball>& ball, unsigned int ball_idx);
+    void apply_bounce(const std::unique_ptr<Ball>& ball);
 
     void save(const std::string &file_name) const;
 
@@ -70,6 +70,7 @@ public:
     void create_new_split_bricks(const std::unique_ptr<Brick>& brick);
 
     void update();
+    void resolve_ball_collisions(const std::unique_ptr<Ball>& ball, int index);
 
 
     // void error_and_empty_canvas(string message);

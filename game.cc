@@ -143,7 +143,7 @@ bool Game::has_collision(const unique_ptr<Ball>& ball, int ball_idx)
     return false;
 }
 
-bool Game::wall_ball_bounce(const std::unique_ptr<Ball>& ball)
+void Game::wall_ball_bounce(const unique_ptr<Ball>& ball)
 {
     double dx = ball->get_dx();
     double dy = ball->get_dy();
@@ -158,19 +158,14 @@ bool Game::wall_ball_bounce(const std::unique_ptr<Ball>& ball)
         // Cas coin
         if ((left || right) && top)
         {
-            double dist_x = left ? ball->get_x() : (arena_size - ball->get_x());
-            double dist_y = arena_size - ball->get_y();
-            if (dist_x < dist_y) top = false;
-            else left = right = false;
+            dx *= -1;
+            dy *= -1;
         }
-        if (left || right) dx = -dx;
+        else if (left || right) dx = -dx;
         if (top)           dy = -dy;
         ball->set_dx(dx);
         ball->set_dy(dy);
-        
-        return true;
     }
-    return false;
 }
 
 bool Game::brick_ball_bounce(const std::unique_ptr<Ball>& ball)
@@ -220,102 +215,102 @@ bool Game::brick_ball_bounce(const std::unique_ptr<Ball>& ball)
     return false;
 }
 
-bool Game::paddle_ball_bounce(const unique_ptr<Ball>& ball)
+void Game::paddle_ball_bounce(const unique_ptr<Ball>& ball)
 {
-    double dx = ball->get_dx();
-    double dy = ball->get_dy();
+    if(paddle_ptr == nullptr) return;
+    Point ball_centre(ball->get_x(), ball->get_y());
+    Point paddle_centre(paddle_ptr->get_x(), paddle_ptr->get_y());
 
-    if (paddle_ptr &&
-        circle_circle_intersection(ball->get_circle(), paddle_ptr->get_circle()))
+    Point delta_ball(ball->get_dx(), ball->get_dy());
+    Point delta_paddle(paddle_ptr->get_last_dx(), 0);
+
+    Point vector_n(paddle_centre.get_x()-ball_centre.get_x(),
+                   paddle_centre.get_y() - ball_centre.get_y());
+    double norm_vector_n(compute_norm(vector_n));
+    if(norm_vector_n < epsil_zero) return;
+    vector_n.set_x(vector_n.get_x() / norm_vector_n);
+    vector_n.set_y(vector_n.get_y() / norm_vector_n);
+
+
+
+    double v_ball_n(dot_product(delta_ball, vector_n));
+    double v_paddle_n(dot_product(delta_paddle, vector_n));
+    double impulsion((-v_ball_n + v_paddle_n) * 2);
+
+
+
+    Point new_delta(delta_ball.get_x() + impulsion * vector_n.get_x(),
+                    delta_ball.get_y() + impulsion * vector_n.get_y());
+    double new_delta_norm(compute_norm(new_delta));
+    if(new_delta_norm > delta_norm_max)
     {
-        double nx = ball->get_x() - paddle_ptr->get_x();
-        double ny = ball->get_y() - paddle_ptr->get_y();
-        double len = sqrt(nx*nx + ny*ny);
-        if (len < epsil_zero) return true;
-        nx /= len;
-        ny /= len;
-
-        double vn_ball = dx*nx + dy*ny;
-
-
-        double vn_paddle = paddle_ptr->get_last_dx() * nx; // dy raquette = 0
-
-        double impulse = (-vn_ball + vn_paddle) * 2.0;
-        dx += impulse * nx;
-        dy += impulse * ny;
-
-        double norm = sqrt(dx*dx + dy*dy);
-        if (norm > delta_norm_max) norm = delta_norm_max;
-        
-            dx = dx * delta_norm_max;
-            dy = dy * delta_norm_max;
-
-        ball->set_dx(dx);
-        ball->set_dy(dy);
-        return true;
+        double correction_factor(delta_norm_max/new_delta_norm);
+        new_delta.set_x(new_delta.get_x() * correction_factor);
+        new_delta.set_y(new_delta.get_y() * correction_factor);
     }
-    return false;
+
+    ball->set_dx(new_delta.get_x());
+    ball->set_dy(new_delta.get_y());
+
 }
 
-bool Game::ball_ball_bounce(const unique_ptr<Ball>& ball, unsigned int ball_idx)
+void Game::ball_ball_bounce(const unique_ptr<Ball>& ball1, const unique_ptr<Ball>& ball2)
 {
-    double dx = ball->get_dx();
-    double dy = ball->get_dy();
-    for (int j = 0; j < (int)ball_list.size(); j++)
+    Point ball1_centre(ball1->get_x(), ball1->get_y());
+    Point ball2_centre(ball2->get_x(), ball2->get_y());
+
+    double r1 = ball1->get_radius();
+    double r2 = ball2->get_radius();
+
+    Point delta1(ball1->get_dx(), ball1->get_dy());
+    Point delta2(ball2->get_dx(), ball2->get_dy());
+
+    Point vector_n(ball1_centre.get_x() - ball2_centre.get_x(),
+            ball1_centre.get_y() - ball2_centre.get_y());
+
+    double norm_vector_n(compute_norm(vector_n));
+    if (norm_vector_n < epsil_zero) return;
+    vector_n.set_x(vector_n.get_x()/norm_vector_n);
+    vector_n.set_y(vector_n.get_y()/norm_vector_n);
+
+    double v1_n(dot_product(delta1, vector_n));
+    double v2_n(dot_product(delta2, vector_n));
+
+    double squared_r1(r1 * r1);
+    double squared_r2(r2 * r2);
+
+    // first ball
+    double impulsion1((-v1_n + v2_n) * 2 * squared_r2/(squared_r1 + squared_r2));
+    Point new_delta1(delta1.get_x() + impulsion1 * vector_n.get_x(),
+                     delta1.get_y() + impulsion1 * vector_n.get_y());
+    double norm_new_delta1(compute_norm(new_delta1));
+    if(norm_new_delta1 > delta_norm_max)
     {
-        if (j == ball_idx) continue;
-        if (circle_circle_intersection(ball->get_circle(),
-                                       ball_list[j]->get_circle()))
-        {
-            // Direction : centre balle vers centre autre balle
-            double nx = ball_list[j]->get_x() - ball->get_x();
-            double ny = ball_list[j]->get_y() - ball->get_y();
-            double len = sqrt(nx*nx + ny*ny);
-            if (len < epsil_zero) return true;
-            nx /= len;
-            ny /= len;
-
-            // Vitesses nominales
-            double vn  = dx*nx + dy*ny;
-            double vn2 = ball_list[j]->get_dx()*nx + ball_list[j]->get_dy()*ny;
-
-            // Masses proportionnelles à r²
-            double r1sq = ball->get_radius() * ball->get_radius();
-            double r2sq = ball_list[j]->get_radius() * ball_list[j]->get_radius();
-
-            // impulsion = (-vn + vn_autre) * 2*r_autre² / (r² + r_autre²)
-            double impulse = (-vn + vn2) * (2.0*r2sq) / (r1sq + r2sq);
-            dx += impulse * nx;
-            dy += impulse * ny;
-
-            // Bridage à delta_norm_max
-            double norm = sqrt(dx*dx + dy*dy);
-            if (norm > delta_norm_max)
-            {
-                dx = dx / norm * delta_norm_max;
-                dy = dy / norm * delta_norm_max;
-            }
-            ball->set_dx(dx);
-            ball->set_dy(dy);
-            return true;
-        }
+        double correction_factor(delta_norm_max/norm_new_delta1);
+        new_delta1.set_x(new_delta1.get_x() * correction_factor);
+        new_delta1.set_y(new_delta1.get_y() * correction_factor);
     }
-    return false;
+    ball1->set_dx(new_delta1.get_x());
+    ball1->set_dy(new_delta1.get_y());
+
+    // second ball
+    double impulsion2((v1_n - v2_n) * 2 * squared_r1/(squared_r1 + squared_r2));
+    Point new_delta2(delta2.get_x() + impulsion2 * vector_n.get_x(),
+                     delta2.get_y() + impulsion2 * vector_n.get_y());
+    double norm_new_delta2(compute_norm(new_delta2));
+    if(norm_new_delta2 > delta_norm_max)
+    {
+        double correction_factor(delta_norm_max/norm_new_delta2);
+        new_delta2.set_x(new_delta2.get_x() * correction_factor);
+        new_delta2.set_y(new_delta2.get_y() * correction_factor);
+    }
+    ball2->set_dx(new_delta2.get_x());
+    ball2->set_dy(new_delta2.get_y());
 }
 
-void Game::apply_bounce(const unique_ptr<Ball>& ball, unsigned int ball_idx)
+void Game::apply_bounce(const unique_ptr<Ball>& ball)
 {
-    // Bords  ///probleme avce les coins
-    if(wall_ball_bounce(ball))return ;
-
-    // Briques /// probleme des balls disparaissent
-    if(brick_ball_bounce(ball)) return;
-
-    // Paddle /// probleme vraiment tres moche
-    if (paddle_ball_bounce(ball)) return;
-
-    // Balls /// verifier car pas sur dutout
-    if (ball_ball_bounce(ball, ball_idx)) return;
+    wall_ball_bounce(ball);
 
 }
 
@@ -392,7 +387,7 @@ void Game::create_new_split_bricks(const unique_ptr<Brick>& brick)
         brick_list.push_back(unique_ptr<Brick>(new SplitBrick(x - offset, y + offset, new_width, hit_points - 1, 2)));
         brick_list.push_back(unique_ptr<Brick>(new SplitBrick(x + offset, y + offset, new_width, hit_points - 1, 2)));
     }
-    else if (hit_points > 2)
+    else if (hit_points == 2)
     {
         brick_list.push_back(unique_ptr<Brick>(new RainbowBrick(x - offset, y - offset, new_width, 1, 0)));
         brick_list.push_back(unique_ptr<Brick>(new RainbowBrick(x + offset, y - offset, new_width, 1, 0)));
@@ -401,70 +396,110 @@ void Game::create_new_split_bricks(const unique_ptr<Brick>& brick)
     }
 }
 
+void Game::resolve_ball_collisions(const unique_ptr<Ball>& ball, int index)
+{
+    unsigned int nb_bounce = 0;
+
+    while (has_collision(ball, index) && nb_bounce < nb_bounce_max)
+    {
+        ball->undo_position();
+
+        for (int j = 0; j < (int)ball_list.size(); ++j)
+        {
+            if (j == index) continue;
+
+            if (circle_circle_intersection(ball->get_circle(),
+                                           ball_list[j]->get_circle()))
+            {
+                ball_ball_bounce(ball, ball_list[j]);
+            }
+        }
+
+        wall_ball_bounce(ball);
+
+        bool hit_brick = brick_ball_bounce(ball);
+
+        if (paddle_ptr &&
+            circle_circle_intersection(ball->get_circle(),
+                                       paddle_ptr->get_circle()))
+        {
+            paddle_ball_bounce(ball);
+        }
+
+        ball->update_position();
+        ++nb_bounce;
+
+        if (hit_brick) break;
+    }
+}
+
 
 
 void Game::update()
 {
     if (status != ONGOING) return;
-    unsigned int index(0);
+
     vector<int> to_delete;
 
-    for (const auto &ball: ball_list)
+    // 1. Déplacement des balles
+    for (int i = 0; i < (int)ball_list.size(); ++i)
     {
+        auto& ball = ball_list[i];
+
         ball->update_position();
-        if(ball->get_y() < 0) 
+
+        // Si balle sous le bord inférieur
+        if (ball->get_y() + ball->get_radius() < 0)
         {
-            to_delete.push_back(index);
-            ++index;
+            to_delete.push_back(i);
             continue;
         }
-        
-        unsigned int nb_rebonds(0);
-        while(has_collision(ball, index))
-        {
-            ball->undo_position();   
-            apply_bounce(ball, index);
-            ball->update_position();     
-            nb_rebonds++;
-            if (nb_rebonds >= nb_bounce_max) break;
-        }
-        ++index;
+
+        resolve_ball_collisions(ball, i);
     }
-    // delete all the to_delete balls
-    for(int i(to_delete.size()-1); i>=0; i-- ) delete_ball(to_delete[i]);
 
-    update_paddle_position(get_mouse_x());
-
-    index = 0;
-    for (const auto &ball : ball_list)
+    // 2. Suppression des balles sorties
+    for (int i = (int)to_delete.size() - 1; i >= 0; --i)
     {
-        if (circle_circle_intersection(ball->get_circle(),
+        delete_ball(to_delete[i]);
+    }
+
+    // 3. Déplacement de la raquette
+    update_paddle_position(mouse_x);
+
+    // 4. Re-vérifier les collisions balle-raquette après déplacement raquette
+    for (int i = 0; i < (int)ball_list.size(); ++i)
+    {
+        auto& ball = ball_list[i];
+
+        if (paddle_ptr &&
+            circle_circle_intersection(ball->get_circle(),
                                        paddle_ptr->get_circle()))
         {
             ball->undo_position();
+            paddle_ball_bounce(ball);
             ball->update_position();
 
-            unsigned int nb_rebonds(0);
-            while(has_collision(ball, index))
-            {
-                ball->undo_position(); 
-                apply_bounce(ball, index);     
-                ball->update_position();   
-                nb_rebonds++;
-                if (nb_rebonds >= nb_bounce_max) break;
-            }
+            resolve_ball_collisions(ball, i);
         }
-        ++index;
     }
 
-    for (auto& ball: pending_balls)
+    // 5. Ajouter les nouvelles balles créées par BallBrick
+    for (auto& ball : pending_balls)
     {
         add_ball(ball);
     }
     pending_balls.clear();
 
-    if(ball_list.size() == 0 and lives == 0) status = LOST;
-    if(brick_list.size() == 0) status = WON;
+    // 6. Status du jeu
+    if (ball_list.empty() && lives == 0)
+    {
+        status = LOST;
+    }
+    else if (brick_list.empty())
+    {
+        status = WON;
+    }
 }
 
 
